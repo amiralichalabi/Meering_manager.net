@@ -112,8 +112,18 @@ public static class Tickets
     static readonly System.Collections.Concurrent.ConcurrentDictionary<string, Entry> Store = new();
     public static readonly TimeSpan Lifetime = TimeSpan.FromMinutes(2);
 
-    /// <summary>Only export and backup downloads can be ticketed.</summary>
-    public static bool Allowed(string url) => url.StartsWith("/api/export/") || url.StartsWith("/api/backup") && (url.Length == 11 || url[11] == '?');
+    static readonly HashSet<string> Downloads = new()
+    {
+        "/api/export/actions.xlsx", "/api/export/actions.pdf", "/api/export/actions.docx", "/api/export/tasks.xlsx",
+        "/api/export/meetings.xlsx", "/api/export/meetings.pdf", "/api/export/meetings.docx", "/api/backup", "/api/sync/export",
+    };
+
+    /// <summary>Only the known export / backup downloads can be ticketed (exact path, optional query string).</summary>
+    public static bool Allowed(string url)
+    {
+        var qi = url.IndexOf('?');
+        return Downloads.Contains(qi < 0 ? url : url[..qi]);
+    }
 
     public static string Canonical(string path, string query)
     {
