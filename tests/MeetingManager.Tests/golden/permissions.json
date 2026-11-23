@@ -1,0 +1,527 @@
+{
+ "perms": [
+  {
+   "code": "dashboard.view",
+   "label": "مشاهده داشبورد",
+   "group": "داشبورد"
+  },
+  {
+   "code": "meetings.view",
+   "label": "مشاهده جلسات",
+   "group": "جلسات"
+  },
+  {
+   "code": "meetings.manage",
+   "label": "مدیریت جلسات",
+   "group": "جلسات"
+  },
+  {
+   "code": "meetings.export",
+   "label": "خروجی جلسات",
+   "group": "جلسات"
+  },
+  {
+   "code": "actions.view",
+   "label": "مشاهده اقدامات",
+   "group": "اقدامات"
+  },
+  {
+   "code": "actions.manage",
+   "label": "مدیریت اقدامات",
+   "group": "اقدامات"
+  },
+  {
+   "code": "actions.export",
+   "label": "خروجی اقدامات",
+   "group": "اقدامات"
+  },
+  {
+   "code": "projects.view",
+   "label": "مشاهده پروژه‌ها",
+   "group": "پروژه‌ها"
+  },
+  {
+   "code": "projects.manage",
+   "label": "مدیریت پروژه‌ها",
+   "group": "پروژه‌ها"
+  },
+  {
+   "code": "people.manage",
+   "label": "مدیریت افراد",
+   "group": "افراد و تیم‌ها"
+  },
+  {
+   "code": "teams.manage",
+   "label": "مدیریت تیم‌ها",
+   "group": "افراد و تیم‌ها"
+  },
+  {
+   "code": "locations.manage",
+   "label": "مدیریت مکان‌ها",
+   "group": "افراد و تیم‌ها"
+  },
+  {
+   "code": "users.manage",
+   "label": "مدیریت کاربران",
+   "group": "دسترسی‌ها و مجوزها"
+  },
+  {
+   "code": "permissions.manage",
+   "label": "مدیریت مجوزها",
+   "group": "دسترسی‌ها و مجوزها"
+  },
+  {
+   "code": "backup.manage",
+   "label": "پشتیبان‌گیری و بازیابی",
+   "group": "خروجی و پشتیبان‌گیری"
+  }
+ ],
+ "default_roles": {
+  "admin": [
+   "actions.export",
+   "actions.manage",
+   "actions.view",
+   "backup.manage",
+   "dashboard.view",
+   "locations.manage",
+   "meetings.export",
+   "meetings.manage",
+   "meetings.view",
+   "people.manage",
+   "permissions.manage",
+   "projects.manage",
+   "projects.view",
+   "teams.manage",
+   "users.manage"
+  ],
+  "manager": [
+   "actions.export",
+   "actions.manage",
+   "actions.view",
+   "dashboard.view",
+   "locations.manage",
+   "meetings.export",
+   "meetings.manage",
+   "meetings.view",
+   "people.manage",
+   "projects.manage",
+   "projects.view",
+   "teams.manage",
+   "users.manage"
+  ],
+  "user": [
+   "actions.export",
+   "actions.manage",
+   "actions.view",
+   "dashboard.view",
+   "meetings.view",
+   "projects.view"
+  ]
+ },
+ "has_perm": [
+  {
+   "role": "admin",
+   "code": "actions.export",
+   "allowed": true
+  },
+  {
+   "role": "admin",
+   "code": "actions.manage",
+   "allowed": true
+  },
+  {
+   "role": "admin",
+   "code": "actions.view",
+   "allowed": true
+  },
+  {
+   "role": "admin",
+   "code": "backup.manage",
+   "allowed": true
+  },
+  {
+   "role": "admin",
+   "code": "dashboard.view",
+   "allowed": true
+  },
+  {
+   "role": "admin",
+   "code": "locations.manage",
+   "allowed": true
+  },
+  {
+   "role": "admin",
+   "code": "meetings.export",
+   "allowed": true
+  },
+  {
+   "role": "admin",
+   "code": "meetings.manage",
+   "allowed": true
+  },
+  {
+   "role": "admin",
+   "code": "meetings.view",
+   "allowed": true
+  },
+  {
+   "role": "admin",
+   "code": "people.manage",
+   "allowed": true
+  },
+  {
+   "role": "admin",
+   "code": "permissions.manage",
+   "allowed": true
+  },
+  {
+   "role": "admin",
+   "code": "projects.manage",
+   "allowed": true
+  },
+  {
+   "role": "admin",
+   "code": "projects.view",
+   "allowed": true
+  },
+  {
+   "role": "admin",
+   "code": "teams.manage",
+   "allowed": true
+  },
+  {
+   "role": "admin",
+   "code": "users.manage",
+   "allowed": true
+  },
+  {
+   "role": "manager",
+   "code": "actions.export",
+   "allowed": true
+  },
+  {
+   "role": "manager",
+   "code": "actions.manage",
+   "allowed": true
+  },
+  {
+   "role": "manager",
+   "code": "actions.view",
+   "allowed": true
+  },
+  {
+   "role": "manager",
+   "code": "backup.manage",
+   "allowed": false
+  },
+  {
+   "role": "manager",
+   "code": "dashboard.view",
+   "allowed": true
+  },
+  {
+   "role": "manager",
+   "code": "locations.manage",
+   "allowed": true
+  },
+  {
+   "role": "manager",
+   "code": "meetings.export",
+   "allowed": true
+  },
+  {
+   "role": "manager",
+   "code": "meetings.manage",
+   "allowed": true
+  },
+  {
+   "role": "manager",
+   "code": "meetings.view",
+   "allowed": true
+  },
+  {
+   "role": "manager",
+   "code": "people.manage",
+   "allowed": true
+  },
+  {
+   "role": "manager",
+   "code": "permissions.manage",
+   "allowed": false
+  },
+  {
+   "role": "manager",
+   "code": "projects.manage",
+   "allowed": true
+  },
+  {
+   "role": "manager",
+   "code": "projects.view",
+   "allowed": true
+  },
+  {
+   "role": "manager",
+   "code": "teams.manage",
+   "allowed": true
+  },
+  {
+   "role": "manager",
+   "code": "users.manage",
+   "allowed": true
+  },
+  {
+   "role": "user",
+   "code": "actions.export",
+   "allowed": true
+  },
+  {
+   "role": "user",
+   "code": "actions.manage",
+   "allowed": true
+  },
+  {
+   "role": "user",
+   "code": "actions.view",
+   "allowed": true
+  },
+  {
+   "role": "user",
+   "code": "backup.manage",
+   "allowed": false
+  },
+  {
+   "role": "user",
+   "code": "dashboard.view",
+   "allowed": true
+  },
+  {
+   "role": "user",
+   "code": "locations.manage",
+   "allowed": false
+  },
+  {
+   "role": "user",
+   "code": "meetings.export",
+   "allowed": false
+  },
+  {
+   "role": "user",
+   "code": "meetings.manage",
+   "allowed": false
+  },
+  {
+   "role": "user",
+   "code": "meetings.view",
+   "allowed": true
+  },
+  {
+   "role": "user",
+   "code": "people.manage",
+   "allowed": false
+  },
+  {
+   "role": "user",
+   "code": "permissions.manage",
+   "allowed": false
+  },
+  {
+   "role": "user",
+   "code": "projects.manage",
+   "allowed": false
+  },
+  {
+   "role": "user",
+   "code": "projects.view",
+   "allowed": true
+  },
+  {
+   "role": "user",
+   "code": "teams.manage",
+   "allowed": false
+  },
+  {
+   "role": "user",
+   "code": "users.manage",
+   "allowed": false
+  },
+  {
+   "role": "guest",
+   "code": "actions.export",
+   "allowed": false
+  },
+  {
+   "role": "guest",
+   "code": "actions.manage",
+   "allowed": false
+  },
+  {
+   "role": "guest",
+   "code": "actions.view",
+   "allowed": false
+  },
+  {
+   "role": "guest",
+   "code": "backup.manage",
+   "allowed": false
+  },
+  {
+   "role": "guest",
+   "code": "dashboard.view",
+   "allowed": false
+  },
+  {
+   "role": "guest",
+   "code": "locations.manage",
+   "allowed": false
+  },
+  {
+   "role": "guest",
+   "code": "meetings.export",
+   "allowed": false
+  },
+  {
+   "role": "guest",
+   "code": "meetings.manage",
+   "allowed": false
+  },
+  {
+   "role": "guest",
+   "code": "meetings.view",
+   "allowed": false
+  },
+  {
+   "role": "guest",
+   "code": "people.manage",
+   "allowed": false
+  },
+  {
+   "role": "guest",
+   "code": "permissions.manage",
+   "allowed": false
+  },
+  {
+   "role": "guest",
+   "code": "projects.manage",
+   "allowed": false
+  },
+  {
+   "role": "guest",
+   "code": "projects.view",
+   "allowed": false
+  },
+  {
+   "role": "guest",
+   "code": "teams.manage",
+   "allowed": false
+  },
+  {
+   "role": "guest",
+   "code": "users.manage",
+   "allowed": false
+  }
+ ],
+ "users": {
+  "admin": {
+   "role": "admin",
+   "person_id": null
+  },
+  "manager": {
+   "role": "manager",
+   "person_id": null
+  },
+  "user_p1": {
+   "role": "user",
+   "person_id": 1
+  },
+  "user_p2": {
+   "role": "user",
+   "person_id": 2
+  },
+  "user_nobody": {
+   "role": "user",
+   "person_id": null
+  },
+  "guest_p1": {
+   "role": "guest",
+   "person_id": 1
+  }
+ },
+ "actions": [
+  {
+   "name": "a_owner_p1",
+   "owner_id": 1,
+   "assignee_id": null,
+   "collaborator_ids": [],
+   "id": 1
+  },
+  {
+   "name": "a_assignee_p1",
+   "owner_id": null,
+   "assignee_id": 1,
+   "collaborator_ids": [],
+   "id": 2
+  },
+  {
+   "name": "a_collab_p1",
+   "owner_id": null,
+   "assignee_id": null,
+   "collaborator_ids": [
+    1
+   ],
+   "id": 3
+  },
+  {
+   "name": "a_owner_p2",
+   "owner_id": 2,
+   "assignee_id": null,
+   "collaborator_ids": [],
+   "id": 4
+  },
+  {
+   "name": "a_nobody",
+   "owner_id": null,
+   "assignee_id": null,
+   "collaborator_ids": [],
+   "id": 5
+  },
+  {
+   "name": "a_both",
+   "owner_id": 2,
+   "assignee_id": 1,
+   "collaborator_ids": [
+    2
+   ],
+   "id": 6
+  }
+ ],
+ "visible": {
+  "admin": [
+   "a_assignee_p1",
+   "a_both",
+   "a_collab_p1",
+   "a_nobody",
+   "a_owner_p1",
+   "a_owner_p2"
+  ],
+  "manager": [
+   "a_assignee_p1",
+   "a_both",
+   "a_collab_p1",
+   "a_nobody",
+   "a_owner_p1",
+   "a_owner_p2"
+  ],
+  "user_p1": [
+   "a_assignee_p1",
+   "a_both",
+   "a_collab_p1",
+   "a_owner_p1"
+  ],
+  "user_p2": [
+   "a_both",
+   "a_owner_p2"
+  ],
+  "user_nobody": [],
+  "guest_p1": []
+ }
+}

@@ -1,0 +1,425 @@
+{
+ "meeting_in": [
+  {
+   "input": {
+    "title": "جلسه",
+    "meeting_date": "1405/07/10"
+   },
+   "ok": true,
+   "output": {
+    "title": "جلسه",
+    "meeting_date": "1405/07/10",
+    "time": ""
+   },
+   "error": null
+  },
+  {
+   "input": {
+    "title": "جلسه",
+    "meeting_date": "۱۴۰۵-۷-۱۰",
+    "time": "۱۰:۳۰",
+    "place": "اتاق ۱"
+   },
+   "ok": true,
+   "output": {
+    "title": "جلسه",
+    "meeting_date": "1405/07/10",
+    "time": "10:30"
+   },
+   "error": null
+  },
+  {
+   "input": {
+    "title": "جلسه",
+    "meeting_date": "1405/07/10",
+    "time": "10:30"
+   },
+   "ok": true,
+   "output": {
+    "title": "جلسه",
+    "meeting_date": "1405/07/10",
+    "time": "10:30"
+   },
+   "error": null
+  },
+  {
+   "input": {
+    "title": "جلسه",
+    "meeting_date": "1405/07/10",
+    "time": "  "
+   },
+   "ok": true,
+   "output": {
+    "title": "جلسه",
+    "meeting_date": "1405/07/10",
+    "time": ""
+   },
+   "error": null
+  },
+  {
+   "input": {
+    "title": "جلسه",
+    "meeting_date": "1405/07/10",
+    "time": "24:00"
+   },
+   "ok": false,
+   "output": null,
+   "error": "ساعت باید به‌صورت ۲۴ ساعته و با فرمت ساعت:دقیقه باشد (مثلاً ۱۰:۳۰)."
+  },
+  {
+   "input": {
+    "title": "جلسه",
+    "meeting_date": "1405/07/10",
+    "time": "9:30"
+   },
+   "ok": false,
+   "output": null,
+   "error": "ساعت باید به‌صورت ۲۴ ساعته و با فرمت ساعت:دقیقه باشد (مثلاً ۱۰:۳۰)."
+  },
+  {
+   "input": {
+    "title": "جلسه",
+    "meeting_date": "1405/07/10",
+    "time": "10:60"
+   },
+   "ok": false,
+   "output": null,
+   "error": "ساعت باید به‌صورت ۲۴ ساعته و با فرمت ساعت:دقیقه باشد (مثلاً ۱۰:۳۰)."
+  },
+  {
+   "input": {
+    "title": "",
+    "meeting_date": "1405/07/10"
+   },
+   "ok": false,
+   "output": null,
+   "error": "مقدار «عنوان» معتبر نیست یا خالی است."
+  },
+  {
+   "input": {
+    "title": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "meeting_date": "1405/07/10"
+   },
+   "ok": true,
+   "output": {
+    "title": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "meeting_date": "1405/07/10",
+    "time": ""
+   },
+   "error": null
+  },
+  {
+   "input": {
+    "title": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "meeting_date": "1405/07/10"
+   },
+   "ok": false,
+   "output": null,
+   "error": "مقدار «عنوان» معتبر نیست یا خالی است."
+  },
+  {
+   "input": {
+    "title": "جلسه",
+    "meeting_date": ""
+   },
+   "ok": false,
+   "output": null,
+   "error": "تاریخ جلسه الزامی است."
+  },
+  {
+   "input": {
+    "title": "جلسه",
+    "meeting_date": "   "
+   },
+   "ok": false,
+   "output": null,
+   "error": "تاریخ جلسه الزامی است."
+  },
+  {
+   "input": {
+    "title": "جلسه",
+    "meeting_date": "1404/12/30"
+   },
+   "ok": false,
+   "output": null,
+   "error": "تاریخ واردشده در تقویم شمسی وجود ندارد."
+  },
+  {
+   "input": {
+    "title": "",
+    "meeting_date": "",
+    "time": "x"
+   },
+   "ok": false,
+   "output": null,
+   "error": "مقدار «عنوان» معتبر نیست یا خالی است. تاریخ جلسه الزامی است. ساعت باید به‌صورت ۲۴ ساعته و با فرمت ساعت:دقیقه باشد (مثلاً ۱۰:۳۰)."
+  },
+  {
+   "input": {
+    "title": "جلسه",
+    "meeting_date": "1405/07/10",
+    "actions": [
+     {
+      "subject": "اقدام"
+     }
+    ]
+   },
+   "ok": true,
+   "output": {
+    "title": "جلسه",
+    "meeting_date": "1405/07/10",
+    "time": ""
+   },
+   "error": null
+  },
+  {
+   "input": {
+    "title": "جلسه",
+    "meeting_date": "1405/07/10",
+    "actions": [
+     {
+      "subject": ""
+     }
+    ]
+   },
+   "ok": false,
+   "output": null,
+   "error": "مقدار «موضوع» معتبر نیست یا خالی است."
+  },
+  {
+   "input": {
+    "title": "جلسه",
+    "meeting_date": "1405/07/10",
+    "actions": [
+     {
+      "subject": "x",
+      "progress": 101
+     },
+     {
+      "subject": "",
+      "due": "abc"
+     }
+    ]
+   },
+   "ok": false,
+   "output": null,
+   "error": "مقدار «پیشرفت» معتبر نیست یا خالی است. مقدار «موضوع» معتبر نیست یا خالی است. تاریخ باید به صورت ۱۴۰۵/۰۷/۱۰ وارد شود."
+  },
+  {
+   "input": {
+    "title": "جلسه",
+    "meeting_date": "1405/07/10",
+    "actions": [
+     {
+      "subject": "x",
+      "start_date": "1405/07/10",
+      "due": "1405/07/09"
+     }
+    ]
+   },
+   "ok": false,
+   "output": null,
+   "error": "مهلت اقدام نمی‌تواند قبل از تاریخ شروع باشد."
+  },
+  {
+   "input": {
+    "title": "",
+    "meeting_date": "1405/07/10",
+    "actions": [
+     {
+      "subject": "x",
+      "start_date": "1405/07/10",
+      "due": "1405/07/09"
+     }
+    ]
+   },
+   "ok": false,
+   "output": null,
+   "error": "مقدار «عنوان» معتبر نیست یا خالی است. مهلت اقدام نمی‌تواند قبل از تاریخ شروع باشد."
+  },
+  {
+   "input": {
+    "title": "جلسه",
+    "meeting_date": "1405/07/10",
+    "previous_items": [
+     {
+      "progress": 50
+     }
+    ]
+   },
+   "ok": true,
+   "output": {
+    "title": "جلسه",
+    "meeting_date": "1405/07/10",
+    "time": ""
+   },
+   "error": null
+  },
+  {
+   "input": {
+    "title": "جلسه",
+    "meeting_date": "1405/07/10",
+    "previous_items": [
+     {
+      "progress": 101
+     },
+     {
+      "progress": -1
+     }
+    ],
+    "actions": [
+     {
+      "subject": ""
+     }
+    ]
+   },
+   "ok": false,
+   "output": null,
+   "error": "مقدار «پیشرفت» معتبر نیست یا خالی است. مقدار «موضوع» معتبر نیست یا خالی است."
+  },
+  {
+   "input": {
+    "title": "",
+    "meeting_date": "",
+    "time": "x",
+    "previous_items": [
+     {
+      "progress": 200
+     }
+    ],
+    "actions": [
+     {
+      "subject": ""
+     }
+    ]
+   },
+   "ok": false,
+   "output": null,
+   "error": "مقدار «عنوان» معتبر نیست یا خالی است. تاریخ جلسه الزامی است. ساعت باید به‌صورت ۲۴ ساعته و با فرمت ساعت:دقیقه باشد (مثلاً ۱۰:۳۰). مقدار «پیشرفت» معتبر نیست یا خالی است. مقدار «موضوع» معتبر نیست یا خالی است."
+  }
+ ],
+ "project_in": [
+  {
+   "input": {
+    "name": "پروژه"
+   },
+   "ok": true,
+   "output": {
+    "name": "پروژه",
+    "start_date": "",
+    "end_date": "",
+    "progress": 0
+   },
+   "error": null
+  },
+  {
+   "input": {
+    "name": "پروژه",
+    "start_date": "۱۴۰۵/۰۱/۰۱",
+    "end_date": "1405-12-29",
+    "progress": 40
+   },
+   "ok": true,
+   "output": {
+    "name": "پروژه",
+    "start_date": "1405/01/01",
+    "end_date": "1405/12/29",
+    "progress": 40
+   },
+   "error": null
+  },
+  {
+   "input": {
+    "name": "پروژه",
+    "start_date": "1405/07/10",
+    "end_date": "1405/07/09"
+   },
+   "ok": false,
+   "output": null,
+   "error": "تاریخ پایان پروژه نمی‌تواند قبل از تاریخ شروع باشد."
+  },
+  {
+   "input": {
+    "name": "پروژه",
+    "start_date": "1405/07/10",
+    "end_date": "1405/07/10"
+   },
+   "ok": true,
+   "output": {
+    "name": "پروژه",
+    "start_date": "1405/07/10",
+    "end_date": "1405/07/10",
+    "progress": 0
+   },
+   "error": null
+  },
+  {
+   "input": {
+    "name": ""
+   },
+   "ok": false,
+   "output": null,
+   "error": "مقدار «نام» معتبر نیست یا خالی است."
+  },
+  {
+   "input": {
+    "name": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+   },
+   "ok": true,
+   "output": {
+    "name": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "start_date": "",
+    "end_date": "",
+    "progress": 0
+   },
+   "error": null
+  },
+  {
+   "input": {
+    "name": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+   },
+   "ok": false,
+   "output": null,
+   "error": "مقدار «نام» معتبر نیست یا خالی است."
+  },
+  {
+   "input": {
+    "name": "پروژه",
+    "progress": 101
+   },
+   "ok": false,
+   "output": null,
+   "error": "مقدار «پیشرفت» معتبر نیست یا خالی است."
+  },
+  {
+   "input": {
+    "name": "پروژه",
+    "end_date": "1404/12/30"
+   },
+   "ok": false,
+   "output": null,
+   "error": "تاریخ واردشده در تقویم شمسی وجود ندارد."
+  },
+  {
+   "input": {
+    "name": "",
+    "start_date": "abc",
+    "progress": -1
+   },
+   "ok": false,
+   "output": null,
+   "error": "مقدار «نام» معتبر نیست یا خالی است. تاریخ باید به صورت ۱۴۰۵/۰۷/۱۰ وارد شود. مقدار «پیشرفت» معتبر نیست یا خالی است."
+  },
+  {
+   "input": {
+    "name": "پروژه",
+    "start_date": "1405/07/10",
+    "end_date": "1405/07/09",
+    "progress": 101
+   },
+   "ok": false,
+   "output": null,
+   "error": "مقدار «پیشرفت» معتبر نیست یا خالی است."
+  }
+ ]
+}

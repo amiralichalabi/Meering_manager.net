@@ -1,0 +1,126 @@
+{
+ "today": "1405/07/10",
+ "actions": [
+  {
+   "id": 1,
+   "project_id": 2,
+   "progress": 0,
+   "status": "جدید",
+   "due": ""
+  },
+  {
+   "id": 2,
+   "project_id": 2,
+   "progress": 1,
+   "status": "در حال انجام",
+   "due": "1405/07/09"
+  },
+  {
+   "id": 3,
+   "project_id": 3,
+   "progress": 1,
+   "status": "در حال انجام",
+   "due": "1405/08/01"
+  },
+  {
+   "id": 4,
+   "project_id": 3,
+   "progress": 2,
+   "status": "عقب‌افتاده",
+   "due": "1405/01/01"
+  },
+  {
+   "id": 5,
+   "project_id": 4,
+   "progress": 2,
+   "status": "در حال انجام",
+   "due": "1405/07/10"
+  },
+  {
+   "id": 6,
+   "project_id": 4,
+   "progress": 3,
+   "status": "در حال انجام",
+   "due": "1405/07/11"
+  },
+  {
+   "id": 7,
+   "project_id": 1,
+   "progress": 100,
+   "status": "انجام شده",
+   "due": "1400/01/01"
+  },
+  {
+   "id": 8,
+   "project_id": null,
+   "progress": 37,
+   "status": "در حال انجام",
+   "due": "1405/06/30"
+  }
+ ],
+ "projects": [
+  {
+   "id": 1,
+   "progress": 35
+  },
+  {
+   "id": 2,
+   "progress": 0
+  },
+  {
+   "id": 3,
+   "progress": 0
+  },
+  {
+   "id": 4,
+   "progress": 0
+  },
+  {
+   "id": 5,
+   "progress": 80
+  }
+ ],
+ "expected": {
+  "actions": 8,
+  "avg_progress": 18.2,
+  "overdue": 3,
+  "by_status": {
+   "جدید": 1,
+   "در حال انجام": 3,
+   "انجام شده": 1,
+   "عقب‌افتاده": 3
+  },
+  "project_stats": [
+   {
+    "id": 1,
+    "progress": 100,
+    "actions": 1,
+    "done": 1
+   },
+   {
+    "id": 2,
+    "progress": 0,
+    "actions": 2,
+    "done": 0
+   },
+   {
+    "id": 3,
+    "progress": 2,
+    "actions": 2,
+    "done": 0
+   },
+   {
+    "id": 4,
+    "progress": 2,
+    "actions": 2,
+    "done": 0
+   },
+   {
+    "id": 5,
+    "progress": 80,
+    "actions": 0,
+    "done": 0
+   }
+  ]
+ }
+}

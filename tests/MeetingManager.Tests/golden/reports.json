@@ -1,0 +1,827 @@
+{
+ "today": "1405/07/10",
+ "actions": [
+  {
+   "input": {
+    "name": "empty",
+    "user": "",
+    "actions": []
+   },
+   "expected": {
+    "title": "گزارش اقدامات و پیگیری",
+    "prepared_date": "1405/07/10",
+    "prepared_by": "",
+    "kpis": {
+     "total": 0,
+     "done": 0,
+     "in_progress": 0,
+     "late": 0,
+     "avg_progress": 0
+    },
+    "rows": []
+   }
+  },
+  {
+   "input": {
+    "name": "one full action (overdue -> late)",
+    "user": "مدیر",
+    "actions": [
+     {
+      "id": 1,
+      "subject": "اقدام 1",
+      "decision": "تصمیم",
+      "project": "پروژه",
+      "meeting": "جلسه",
+      "owner": "علی",
+      "assignee": "سارا",
+      "collaborators": [
+       "نیما",
+       "مینا"
+      ],
+      "due": "1405/07/09",
+      "priority": "زیاد",
+      "progress": 40,
+      "status": "در حال انجام"
+     }
+    ]
+   },
+   "expected": {
+    "title": "گزارش اقدامات و پیگیری",
+    "prepared_date": "1405/07/10",
+    "prepared_by": "مدیر",
+    "kpis": {
+     "total": 1,
+     "done": 0,
+     "in_progress": 0,
+     "late": 1,
+     "avg_progress": 40
+    },
+    "rows": [
+     {
+      "index": 1,
+      "subject": "اقدام 1",
+      "decision": "تصمیم",
+      "project": "پروژه",
+      "meeting": "جلسه",
+      "owner": "علی",
+      "assignee": "سارا",
+      "collaborators": "نیما، مینا",
+      "due": "1405/07/09",
+      "priority": "زیاد",
+      "progress": 40,
+      "status": "عقب‌افتاده"
+     }
+    ]
+   }
+  },
+  {
+   "input": {
+    "name": "missing everything",
+    "user": "x",
+    "actions": [
+     {
+      "id": 2,
+      "subject": "فقط موضوع",
+      "decision": null,
+      "due": null,
+      "priority": null,
+      "progress": 0,
+      "status": ""
+     }
+    ]
+   },
+   "expected": {
+    "title": "گزارش اقدامات و پیگیری",
+    "prepared_date": "1405/07/10",
+    "prepared_by": "x",
+    "kpis": {
+     "total": 1,
+     "done": 0,
+     "in_progress": 0,
+     "late": 0,
+     "avg_progress": 0
+    },
+    "rows": [
+     {
+      "index": 1,
+      "subject": "فقط موضوع",
+      "decision": "",
+      "project": "",
+      "meeting": "",
+      "owner": "",
+      "assignee": "",
+      "collaborators": "",
+      "due": "",
+      "priority": "",
+      "progress": 0,
+      "status": ""
+     }
+    ]
+   }
+  },
+  {
+   "input": {
+    "name": "average 1.5",
+    "user": "",
+    "actions": [
+     {
+      "id": 3,
+      "subject": "اقدام 3",
+      "progress": 1,
+      "due": "1405/12/01"
+     },
+     {
+      "id": 4,
+      "subject": "اقدام 4",
+      "progress": 2,
+      "due": "1405/12/01"
+     }
+    ]
+   },
+   "expected": {
+    "title": "گزارش اقدامات و پیگیری",
+    "prepared_date": "1405/07/10",
+    "prepared_by": "",
+    "kpis": {
+     "total": 2,
+     "done": 0,
+     "in_progress": 0,
+     "late": 0,
+     "avg_progress": 2
+    },
+    "rows": [
+     {
+      "index": 1,
+      "subject": "اقدام 3",
+      "decision": "",
+      "project": "",
+      "meeting": "",
+      "owner": "",
+      "assignee": "",
+      "collaborators": "",
+      "due": "1405/12/01",
+      "priority": "",
+      "progress": 1,
+      "status": "جدید"
+     },
+     {
+      "index": 2,
+      "subject": "اقدام 4",
+      "decision": "",
+      "project": "",
+      "meeting": "",
+      "owner": "",
+      "assignee": "",
+      "collaborators": "",
+      "due": "1405/12/01",
+      "priority": "",
+      "progress": 2,
+      "status": "جدید"
+     }
+    ]
+   }
+  },
+  {
+   "input": {
+    "name": "average 2.5",
+    "user": "",
+    "actions": [
+     {
+      "id": 5,
+      "subject": "اقدام 5",
+      "progress": 2,
+      "due": "1405/12/01"
+     },
+     {
+      "id": 6,
+      "subject": "اقدام 6",
+      "progress": 3,
+      "due": "1405/12/01"
+     }
+    ]
+   },
+   "expected": {
+    "title": "گزارش اقدامات و پیگیری",
+    "prepared_date": "1405/07/10",
+    "prepared_by": "",
+    "kpis": {
+     "total": 2,
+     "done": 0,
+     "in_progress": 0,
+     "late": 0,
+     "avg_progress": 2
+    },
+    "rows": [
+     {
+      "index": 1,
+      "subject": "اقدام 5",
+      "decision": "",
+      "project": "",
+      "meeting": "",
+      "owner": "",
+      "assignee": "",
+      "collaborators": "",
+      "due": "1405/12/01",
+      "priority": "",
+      "progress": 2,
+      "status": "جدید"
+     },
+     {
+      "index": 2,
+      "subject": "اقدام 6",
+      "decision": "",
+      "project": "",
+      "meeting": "",
+      "owner": "",
+      "assignee": "",
+      "collaborators": "",
+      "due": "1405/12/01",
+      "priority": "",
+      "progress": 3,
+      "status": "جدید"
+     }
+    ]
+   }
+  },
+  {
+   "input": {
+    "name": "average 0.5 and 3.5",
+    "user": "",
+    "actions": [
+     {
+      "id": 7,
+      "subject": "اقدام 7",
+      "progress": 0
+     },
+     {
+      "id": 8,
+      "subject": "اقدام 8",
+      "progress": 1
+     }
+    ]
+   },
+   "expected": {
+    "title": "گزارش اقدامات و پیگیری",
+    "prepared_date": "1405/07/10",
+    "prepared_by": "",
+    "kpis": {
+     "total": 2,
+     "done": 0,
+     "in_progress": 0,
+     "late": 0,
+     "avg_progress": 0
+    },
+    "rows": [
+     {
+      "index": 1,
+      "subject": "اقدام 7",
+      "decision": "",
+      "project": "",
+      "meeting": "",
+      "owner": "",
+      "assignee": "",
+      "collaborators": "",
+      "due": "",
+      "priority": "",
+      "progress": 0,
+      "status": "جدید"
+     },
+     {
+      "index": 2,
+      "subject": "اقدام 8",
+      "decision": "",
+      "project": "",
+      "meeting": "",
+      "owner": "",
+      "assignee": "",
+      "collaborators": "",
+      "due": "",
+      "priority": "",
+      "progress": 1,
+      "status": "جدید"
+     }
+    ]
+   }
+  },
+  {
+   "input": {
+    "name": "status counting",
+    "user": "ک",
+    "actions": [
+     {
+      "id": 9,
+      "subject": "اقدام 9",
+      "status": "جدید",
+      "due": "1405/07/09"
+     },
+     {
+      "id": 10,
+      "subject": "اقدام 10",
+      "status": "جدید",
+      "due": "1405/07/10"
+     },
+     {
+      "id": 11,
+      "subject": "اقدام 11",
+      "status": "در حال انجام",
+      "due": "1405/07/11",
+      "progress": 10
+     },
+     {
+      "id": 12,
+      "subject": "اقدام 12",
+      "status": "انجام شده",
+      "due": "1400/01/01",
+      "progress": 100
+     },
+     {
+      "id": 13,
+      "subject": "اقدام 13",
+      "status": "عقب‌افتاده",
+      "progress": 20
+     },
+     {
+      "id": 14,
+      "subject": "اقدام 14",
+      "status": "جدید",
+      "due": ""
+     }
+    ]
+   },
+   "expected": {
+    "title": "گزارش اقدامات و پیگیری",
+    "prepared_date": "1405/07/10",
+    "prepared_by": "ک",
+    "kpis": {
+     "total": 6,
+     "done": 1,
+     "in_progress": 1,
+     "late": 2,
+     "avg_progress": 22
+    },
+    "rows": [
+     {
+      "index": 1,
+      "subject": "اقدام 9",
+      "decision": "",
+      "project": "",
+      "meeting": "",
+      "owner": "",
+      "assignee": "",
+      "collaborators": "",
+      "due": "1405/07/09",
+      "priority": "",
+      "progress": 0,
+      "status": "عقب‌افتاده"
+     },
+     {
+      "index": 2,
+      "subject": "اقدام 10",
+      "decision": "",
+      "project": "",
+      "meeting": "",
+      "owner": "",
+      "assignee": "",
+      "collaborators": "",
+      "due": "1405/07/10",
+      "priority": "",
+      "progress": 0,
+      "status": "جدید"
+     },
+     {
+      "index": 3,
+      "subject": "اقدام 11",
+      "decision": "",
+      "project": "",
+      "meeting": "",
+      "owner": "",
+      "assignee": "",
+      "collaborators": "",
+      "due": "1405/07/11",
+      "priority": "",
+      "progress": 10,
+      "status": "در حال انجام"
+     },
+     {
+      "index": 4,
+      "subject": "اقدام 12",
+      "decision": "",
+      "project": "",
+      "meeting": "",
+      "owner": "",
+      "assignee": "",
+      "collaborators": "",
+      "due": "1400/01/01",
+      "priority": "",
+      "progress": 100,
+      "status": "انجام شده"
+     },
+     {
+      "index": 5,
+      "subject": "اقدام 13",
+      "decision": "",
+      "project": "",
+      "meeting": "",
+      "owner": "",
+      "assignee": "",
+      "collaborators": "",
+      "due": "",
+      "priority": "",
+      "progress": 20,
+      "status": "عقب‌افتاده"
+     },
+     {
+      "index": 6,
+      "subject": "اقدام 14",
+      "decision": "",
+      "project": "",
+      "meeting": "",
+      "owner": "",
+      "assignee": "",
+      "collaborators": "",
+      "due": "",
+      "priority": "",
+      "progress": 0,
+      "status": "جدید"
+     }
+    ]
+   }
+  }
+ ],
+ "meetings": [
+  {
+   "input": {
+    "name": "empty",
+    "meetings": []
+   },
+   "expected": {
+    "title": "گزارش جلسات و مصوبات",
+    "prepared_date": "1405/07/10",
+    "meeting_count": 0,
+    "meetings": []
+   }
+  },
+  {
+   "input": {
+    "name": "full meeting",
+    "meetings": [
+     {
+      "title": "جلسه",
+      "meeting_date": "1405/07/05",
+      "time": "10:30",
+      "place": "اتاق ۱",
+      "project": "پروژه",
+      "attendees": [
+       "علی",
+       "سارا"
+      ],
+      "summary": "  خلاصه  ",
+      "description": "توضیح",
+      "actions": [
+       {
+        "id": 20,
+        "subject": "اقدام 20",
+        "decision": "د",
+        "owner": "علی",
+        "due": "1405/07/09",
+        "progress": 50,
+        "status": "در حال انجام"
+       },
+       {
+        "id": 21,
+        "subject": "اقدام 21",
+        "progress": 100,
+        "status": "انجام شده"
+       }
+      ],
+      "linked_actions": [
+       {
+        "id": 22,
+        "subject": "اقدام 22",
+        "project": "پ",
+        "progress": 5
+       }
+      ]
+     }
+    ]
+   },
+   "expected": {
+    "title": "گزارش جلسات و مصوبات",
+    "prepared_date": "1405/07/10",
+    "meeting_count": 1,
+    "meetings": [
+     {
+      "title": "جلسه",
+      "date": "1405/07/05",
+      "time": "10:30",
+      "place": "اتاق ۱",
+      "project": "پروژه",
+      "attendees": [
+       "علی",
+       "سارا"
+      ],
+      "summary": "خلاصه",
+      "action_count": 3,
+      "actions": [
+       {
+        "index": 1,
+        "subject": "اقدام 20",
+        "decision": "د",
+        "project": "",
+        "meeting": "",
+        "owner": "علی",
+        "assignee": "",
+        "collaborators": "",
+        "due": "1405/07/09",
+        "priority": "",
+        "progress": 50,
+        "status": "عقب‌افتاده"
+       },
+       {
+        "index": 2,
+        "subject": "اقدام 21",
+        "decision": "",
+        "project": "",
+        "meeting": "",
+        "owner": "",
+        "assignee": "",
+        "collaborators": "",
+        "due": "",
+        "priority": "",
+        "progress": 100,
+        "status": "انجام شده"
+       },
+       {
+        "index": 3,
+        "subject": "اقدام 22",
+        "decision": "",
+        "project": "پ",
+        "meeting": "",
+        "owner": "",
+        "assignee": "",
+        "collaborators": "",
+        "due": "",
+        "priority": "",
+        "progress": 5,
+        "status": "جدید"
+       }
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "input": {
+    "name": "linked overlaps own actions (listed once)",
+    "meetings": [
+     {
+      "title": "جلسه",
+      "meeting_date": "1405/07/05",
+      "actions": [
+       {
+        "id": 20,
+        "subject": "اقدام 20",
+        "decision": "د",
+        "owner": "علی",
+        "due": "1405/07/09",
+        "progress": 50,
+        "status": "در حال انجام"
+       },
+       {
+        "id": 21,
+        "subject": "اقدام 21",
+        "progress": 100,
+        "status": "انجام شده"
+       }
+      ],
+      "linked_actions": [
+       {
+        "id": 21,
+        "subject": "اقدام 21",
+        "progress": 100,
+        "status": "انجام شده"
+       },
+       {
+        "id": 23,
+        "subject": "اقدام 23"
+       },
+       {
+        "id": 20,
+        "subject": "اقدام 20",
+        "decision": "د",
+        "owner": "علی",
+        "due": "1405/07/09",
+        "progress": 50,
+        "status": "در حال انجام"
+       }
+      ]
+     }
+    ]
+   },
+   "expected": {
+    "title": "گزارش جلسات و مصوبات",
+    "prepared_date": "1405/07/10",
+    "meeting_count": 1,
+    "meetings": [
+     {
+      "title": "جلسه",
+      "date": "1405/07/05",
+      "time": "",
+      "place": "",
+      "project": "",
+      "attendees": [],
+      "summary": "",
+      "action_count": 3,
+      "actions": [
+       {
+        "index": 1,
+        "subject": "اقدام 20",
+        "decision": "د",
+        "project": "",
+        "meeting": "",
+        "owner": "علی",
+        "assignee": "",
+        "collaborators": "",
+        "due": "1405/07/09",
+        "priority": "",
+        "progress": 50,
+        "status": "عقب‌افتاده"
+       },
+       {
+        "index": 2,
+        "subject": "اقدام 21",
+        "decision": "",
+        "project": "",
+        "meeting": "",
+        "owner": "",
+        "assignee": "",
+        "collaborators": "",
+        "due": "",
+        "priority": "",
+        "progress": 100,
+        "status": "انجام شده"
+       },
+       {
+        "index": 3,
+        "subject": "اقدام 23",
+        "decision": "",
+        "project": "",
+        "meeting": "",
+        "owner": "",
+        "assignee": "",
+        "collaborators": "",
+        "due": "",
+        "priority": "",
+        "progress": 0,
+        "status": "جدید"
+       }
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "input": {
+    "name": "summary falls back to description",
+    "meetings": [
+     {
+      "title": "الف",
+      "meeting_date": "1405/01/01",
+      "summary": "",
+      "description": "  فقط توضیح  "
+     },
+     {
+      "title": "ب",
+      "meeting_date": "1405/01/02",
+      "summary": null,
+      "description": null
+     },
+     {
+      "title": "ج",
+      "meeting_date": "1405/01/03",
+      "summary": "   ",
+      "description": "توضیح"
+     },
+     {
+      "title": "د",
+      "meeting_date": "1405/01/04",
+      "summary": "خلاصه",
+      "description": "توضیح"
+     }
+    ]
+   },
+   "expected": {
+    "title": "گزارش جلسات و مصوبات",
+    "prepared_date": "1405/07/10",
+    "meeting_count": 4,
+    "meetings": [
+     {
+      "title": "الف",
+      "date": "1405/01/01",
+      "time": "",
+      "place": "",
+      "project": "",
+      "attendees": [],
+      "summary": "فقط توضیح",
+      "action_count": 0,
+      "actions": []
+     },
+     {
+      "title": "ب",
+      "date": "1405/01/02",
+      "time": "",
+      "place": "",
+      "project": "",
+      "attendees": [],
+      "summary": "",
+      "action_count": 0,
+      "actions": []
+     },
+     {
+      "title": "ج",
+      "date": "1405/01/03",
+      "time": "",
+      "place": "",
+      "project": "",
+      "attendees": [],
+      "summary": "",
+      "action_count": 0,
+      "actions": []
+     },
+     {
+      "title": "د",
+      "date": "1405/01/04",
+      "time": "",
+      "place": "",
+      "project": "",
+      "attendees": [],
+      "summary": "خلاصه",
+      "action_count": 0,
+      "actions": []
+     }
+    ]
+   }
+  },
+  {
+   "input": {
+    "name": "several meetings keep their order",
+    "meetings": [
+     {
+      "title": "سوم",
+      "meeting_date": "1405/03/01"
+     },
+     {
+      "title": "اول",
+      "meeting_date": "1405/01/01"
+     },
+     {
+      "title": "دوم",
+      "meeting_date": "1405/02/01",
+      "time": null,
+      "place": null
+     }
+    ]
+   },
+   "expected": {
+    "title": "گزارش جلسات و مصوبات",
+    "prepared_date": "1405/07/10",
+    "meeting_count": 3,
+    "meetings": [
+     {
+      "title": "سوم",
+      "date": "1405/03/01",
+      "time": "",
+      "place": "",
+      "project": "",
+      "attendees": [],
+      "summary": "",
+      "action_count": 0,
+      "actions": []
+     },
+     {
+      "title": "اول",
+      "date": "1405/01/01",
+      "time": "",
+      "place": "",
+      "project": "",
+      "attendees": [],
+      "summary": "",
+      "action_count": 0,
+      "actions": []
+     },
+     {
+      "title": "دوم",
+      "date": "1405/02/01",
+      "time": "",
+      "place": "",
+      "project": "",
+      "attendees": [],
+      "summary": "",
+      "action_count": 0,
+      "actions": []
+     }
+    ]
+   }
+  }
+ ]
+}

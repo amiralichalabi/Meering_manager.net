@@ -1,0 +1,4032 @@
+{
+ "scenarios": [
+  {
+   "name": "into an empty database",
+   "local": {
+    "format": "meeting-manager-sync",
+    "version": 1,
+    "exported_at": 0,
+    "tables": {
+     "person_categories": [],
+     "people": [],
+     "teams": [],
+     "locations": [],
+     "projects": [],
+     "meetings": [],
+     "previous_items": [],
+     "actions": [],
+     "progress_history": [],
+     "action_notes": [],
+     "checklist_items": [],
+     "comments": []
+    }
+   },
+   "remote": {
+    "format": "meeting-manager-sync",
+    "version": 1,
+    "exported_at": 0,
+    "tables": {
+     "person_categories": [
+      {
+       "uuid": "cat",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "name": "کارمند"
+      }
+     ],
+     "people": [
+      {
+       "uuid": "ali",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "name": "علی",
+       "department": "",
+       "role": "مدیر",
+       "category": "کارمند",
+       "is_active": 1,
+       "created_at": 1793527200000,
+       "category_uuid": "cat"
+      },
+      {
+       "uuid": "sara",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "name": "سارا",
+       "department": "",
+       "role": "",
+       "category": "",
+       "is_active": 1,
+       "created_at": 1793527200000,
+       "category_uuid": null
+      },
+      {
+       "uuid": "nima",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "name": "نیما",
+       "department": "",
+       "role": "",
+       "category": "",
+       "is_active": 0,
+       "created_at": 1793527200000,
+       "category_uuid": null
+      }
+     ],
+     "teams": [
+      {
+       "uuid": "team",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "name": "تیم ۱",
+       "description": "",
+       "is_active": true,
+       "manager_uuid": "ali",
+       "member_uuids": [
+        "nima",
+        "sara"
+       ]
+      }
+     ],
+     "locations": [
+      {
+       "uuid": "loc",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "name": "اتاق ۱",
+       "address": "",
+       "description": "",
+       "is_active": true
+      }
+     ],
+     "projects": [
+      {
+       "uuid": "proj",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "name": "پروژه",
+       "description": "",
+       "status": "فعال",
+       "start_date": "",
+       "end_date": "",
+       "progress": 40,
+       "created_at": 1793527200000,
+       "archived_at": null,
+       "manager_uuid": "ali",
+       "member_uuids": [
+        "sara"
+       ]
+      }
+     ],
+     "meetings": [
+      {
+       "uuid": "meet1",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "title": "جلسه ۱",
+       "meeting_date": "1405/08/20",
+       "time": "10:30",
+       "place": "",
+       "description": "",
+       "summary": "خلاصه",
+       "created_at": 1793527200000,
+       "project_uuid": "proj",
+       "attendee_uuids": [
+        "ali",
+        "sara"
+       ],
+       "linked_action_uuids": []
+      },
+      {
+       "uuid": "meet2",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "title": "جلسه ۲",
+       "meeting_date": "1405/08/21",
+       "time": "",
+       "place": "",
+       "description": "",
+       "summary": "",
+       "created_at": 1793527200000,
+       "project_uuid": null,
+       "attendee_uuids": [],
+       "linked_action_uuids": [
+        "act-parent"
+       ]
+      }
+     ],
+     "previous_items": [
+      {
+       "uuid": "prev",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "activity": "قبلی",
+       "owner_name_snapshot": "علی",
+       "status": "",
+       "progress": 30,
+       "note": "",
+       "meeting_uuid": "meet2",
+       "owner_uuid": "ali"
+      }
+     ],
+     "actions": [
+      {
+       "uuid": "act-parent",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "start_date": "",
+       "subject": "اقدام والد",
+       "decision": "",
+       "due": "1405/09/01",
+       "status": "در حال انجام",
+       "priority": "متوسط",
+       "progress": 50,
+       "created_at": 1793527200000,
+       "sprint": "",
+       "carried_over_from": "",
+       "ado_id": "",
+       "done_date": "",
+       "work_item_type": "",
+       "parent_ref": "",
+       "ado_priority": null,
+       "ado_notes": "",
+       "archived_at": null,
+       "meeting_uuid": "meet1",
+       "project_uuid": "proj",
+       "parent_uuid": null,
+       "owner_uuid": "ali",
+       "assignee_uuid": "sara",
+       "collaborator_uuids": [
+        "nima"
+       ]
+      },
+      {
+       "uuid": "act-child",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "start_date": "",
+       "subject": "زیر وظیفه",
+       "decision": "",
+       "due": "",
+       "status": "جدید",
+       "priority": "متوسط",
+       "progress": 0,
+       "created_at": 1793527200000,
+       "sprint": "",
+       "carried_over_from": "",
+       "ado_id": "",
+       "done_date": "",
+       "work_item_type": "",
+       "parent_ref": "",
+       "ado_priority": null,
+       "ado_notes": "",
+       "archived_at": null,
+       "meeting_uuid": null,
+       "project_uuid": null,
+       "parent_uuid": "act-parent",
+       "owner_uuid": null,
+       "assignee_uuid": null,
+       "collaborator_uuids": []
+      }
+     ],
+     "progress_history": [
+      {
+       "uuid": "hist",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "update_date": "1405/08/20",
+       "old_progress": 0,
+       "new_progress": 50,
+       "note": "n",
+       "created_at": 1793527200000,
+       "action_uuid": "act-parent",
+       "author_name": ""
+      }
+     ],
+     "action_notes": [
+      {
+       "uuid": "note",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "body": "یادداشت",
+       "created_at": 1793527200000,
+       "action_uuid": "act-parent",
+       "author_name": ""
+      }
+     ],
+     "checklist_items": [
+      {
+       "uuid": "check",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "title": "مورد",
+       "is_done": true,
+       "sort_order": 2,
+       "created_at": 1793527200000,
+       "action_uuid": "act-parent"
+      }
+     ],
+     "comments": [
+      {
+       "uuid": "comment-a",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "body": "نظر",
+       "created_at": 1793527200000,
+       "action_uuid": "act-parent",
+       "meeting_uuid": null,
+       "author_name": ""
+      },
+      {
+       "uuid": "comment-m",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "body": "نظر جلسه",
+       "created_at": 1793527200000,
+       "action_uuid": null,
+       "meeting_uuid": "meet1",
+       "author_name": ""
+      }
+     ]
+    }
+   },
+   "stats": {
+    "inserted": 17,
+    "updated": 0,
+    "deleted": 0,
+    "skipped": 0,
+    "orphaned": 0
+   },
+   "result": {
+    "format": "meeting-manager-sync",
+    "version": 1,
+    "exported_at": 0,
+    "tables": {
+     "person_categories": [
+      {
+       "uuid": "cat",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "name": "کارمند"
+      }
+     ],
+     "people": [
+      {
+       "uuid": "ali",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "name": "علی",
+       "department": "",
+       "role": "مدیر",
+       "category": "کارمند",
+       "is_active": 1,
+       "created_at": 1793527200000,
+       "category_uuid": "cat"
+      },
+      {
+       "uuid": "sara",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "name": "سارا",
+       "department": "",
+       "role": "",
+       "category": "",
+       "is_active": 1,
+       "created_at": 1793527200000,
+       "category_uuid": null
+      },
+      {
+       "uuid": "nima",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "name": "نیما",
+       "department": "",
+       "role": "",
+       "category": "",
+       "is_active": 0,
+       "created_at": 1793527200000,
+       "category_uuid": null
+      }
+     ],
+     "teams": [
+      {
+       "uuid": "team",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "name": "تیم ۱",
+       "description": "",
+       "is_active": true,
+       "manager_uuid": "ali",
+       "member_uuids": [
+        "nima",
+        "sara"
+       ]
+      }
+     ],
+     "locations": [
+      {
+       "uuid": "loc",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "name": "اتاق ۱",
+       "address": "",
+       "description": "",
+       "is_active": true
+      }
+     ],
+     "projects": [
+      {
+       "uuid": "proj",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "name": "پروژه",
+       "description": "",
+       "status": "فعال",
+       "start_date": "",
+       "end_date": "",
+       "progress": 40,
+       "created_at": 1793527200000,
+       "archived_at": null,
+       "manager_uuid": "ali",
+       "member_uuids": [
+        "sara"
+       ]
+      }
+     ],
+     "meetings": [
+      {
+       "uuid": "meet1",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "title": "جلسه ۱",
+       "meeting_date": "1405/08/20",
+       "time": "10:30",
+       "place": "",
+       "description": "",
+       "summary": "خلاصه",
+       "created_at": 1793527200000,
+       "project_uuid": "proj",
+       "attendee_uuids": [
+        "ali",
+        "sara"
+       ],
+       "linked_action_uuids": []
+      },
+      {
+       "uuid": "meet2",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "title": "جلسه ۲",
+       "meeting_date": "1405/08/21",
+       "time": "",
+       "place": "",
+       "description": "",
+       "summary": "",
+       "created_at": 1793527200000,
+       "project_uuid": null,
+       "attendee_uuids": [],
+       "linked_action_uuids": [
+        "act-parent"
+       ]
+      }
+     ],
+     "previous_items": [
+      {
+       "uuid": "prev",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "activity": "قبلی",
+       "owner_name_snapshot": "علی",
+       "status": "",
+       "progress": 30,
+       "note": "",
+       "meeting_uuid": "meet2",
+       "owner_uuid": "ali"
+      }
+     ],
+     "actions": [
+      {
+       "uuid": "act-parent",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "start_date": "",
+       "subject": "اقدام والد",
+       "decision": "",
+       "due": "1405/09/01",
+       "status": "در حال انجام",
+       "priority": "متوسط",
+       "progress": 50,
+       "created_at": 1793527200000,
+       "sprint": "",
+       "carried_over_from": "",
+       "ado_id": "",
+       "done_date": "",
+       "work_item_type": "",
+       "parent_ref": "",
+       "ado_priority": null,
+       "ado_notes": "",
+       "archived_at": null,
+       "meeting_uuid": "meet1",
+       "project_uuid": "proj",
+       "parent_uuid": null,
+       "owner_uuid": "ali",
+       "assignee_uuid": "sara",
+       "collaborator_uuids": [
+        "nima"
+       ]
+      },
+      {
+       "uuid": "act-child",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "start_date": "",
+       "subject": "زیر وظیفه",
+       "decision": "",
+       "due": "",
+       "status": "جدید",
+       "priority": "متوسط",
+       "progress": 0,
+       "created_at": 1793527200000,
+       "sprint": "",
+       "carried_over_from": "",
+       "ado_id": "",
+       "done_date": "",
+       "work_item_type": "",
+       "parent_ref": "",
+       "ado_priority": null,
+       "ado_notes": "",
+       "archived_at": null,
+       "meeting_uuid": null,
+       "project_uuid": null,
+       "parent_uuid": "act-parent",
+       "owner_uuid": null,
+       "assignee_uuid": null,
+       "collaborator_uuids": []
+      }
+     ],
+     "progress_history": [
+      {
+       "uuid": "hist",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "update_date": "1405/08/20",
+       "old_progress": 0,
+       "new_progress": 50,
+       "note": "n",
+       "created_at": 1793527200000,
+       "action_uuid": "act-parent",
+       "author_name": ""
+      }
+     ],
+     "action_notes": [
+      {
+       "uuid": "note",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "body": "یادداشت",
+       "created_at": 1793527200000,
+       "action_uuid": "act-parent",
+       "author_name": ""
+      }
+     ],
+     "checklist_items": [
+      {
+       "uuid": "check",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "title": "مورد",
+       "is_done": true,
+       "sort_order": 2,
+       "created_at": 1793527200000,
+       "action_uuid": "act-parent"
+      }
+     ],
+     "comments": [
+      {
+       "uuid": "comment-a",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "body": "نظر",
+       "created_at": 1793527200000,
+       "action_uuid": "act-parent",
+       "meeting_uuid": null,
+       "author_name": ""
+      },
+      {
+       "uuid": "comment-m",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "body": "نظر جلسه",
+       "created_at": 1793527200000,
+       "action_uuid": null,
+       "meeting_uuid": "meet1",
+       "author_name": ""
+      }
+     ]
+    }
+   }
+  },
+  {
+   "name": "same file again changes nothing",
+   "local": {
+    "format": "meeting-manager-sync",
+    "version": 1,
+    "exported_at": 0,
+    "tables": {
+     "person_categories": [
+      {
+       "uuid": "cat",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "name": "کارمند"
+      }
+     ],
+     "people": [
+      {
+       "uuid": "ali",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "name": "علی",
+       "department": "",
+       "role": "مدیر",
+       "category": "کارمند",
+       "is_active": 1,
+       "created_at": 1793527200000,
+       "category_uuid": "cat"
+      },
+      {
+       "uuid": "sara",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "name": "سارا",
+       "department": "",
+       "role": "",
+       "category": "",
+       "is_active": 1,
+       "created_at": 1793527200000,
+       "category_uuid": null
+      },
+      {
+       "uuid": "nima",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "name": "نیما",
+       "department": "",
+       "role": "",
+       "category": "",
+       "is_active": 0,
+       "created_at": 1793527200000,
+       "category_uuid": null
+      }
+     ],
+     "teams": [
+      {
+       "uuid": "team",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "name": "تیم ۱",
+       "description": "",
+       "is_active": true,
+       "manager_uuid": "ali",
+       "member_uuids": [
+        "nima",
+        "sara"
+       ]
+      }
+     ],
+     "locations": [
+      {
+       "uuid": "loc",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "name": "اتاق ۱",
+       "address": "",
+       "description": "",
+       "is_active": true
+      }
+     ],
+     "projects": [
+      {
+       "uuid": "proj",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "name": "پروژه",
+       "description": "",
+       "status": "فعال",
+       "start_date": "",
+       "end_date": "",
+       "progress": 40,
+       "created_at": 1793527200000,
+       "archived_at": null,
+       "manager_uuid": "ali",
+       "member_uuids": [
+        "sara"
+       ]
+      }
+     ],
+     "meetings": [
+      {
+       "uuid": "meet1",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "title": "جلسه ۱",
+       "meeting_date": "1405/08/20",
+       "time": "10:30",
+       "place": "",
+       "description": "",
+       "summary": "خلاصه",
+       "created_at": 1793527200000,
+       "project_uuid": "proj",
+       "attendee_uuids": [
+        "ali",
+        "sara"
+       ],
+       "linked_action_uuids": []
+      },
+      {
+       "uuid": "meet2",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "title": "جلسه ۲",
+       "meeting_date": "1405/08/21",
+       "time": "",
+       "place": "",
+       "description": "",
+       "summary": "",
+       "created_at": 1793527200000,
+       "project_uuid": null,
+       "attendee_uuids": [],
+       "linked_action_uuids": [
+        "act-parent"
+       ]
+      }
+     ],
+     "previous_items": [
+      {
+       "uuid": "prev",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "activity": "قبلی",
+       "owner_name_snapshot": "علی",
+       "status": "",
+       "progress": 30,
+       "note": "",
+       "meeting_uuid": "meet2",
+       "owner_uuid": "ali"
+      }
+     ],
+     "actions": [
+      {
+       "uuid": "act-parent",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "start_date": "",
+       "subject": "اقدام والد",
+       "decision": "",
+       "due": "1405/09/01",
+       "status": "در حال انجام",
+       "priority": "متوسط",
+       "progress": 50,
+       "created_at": 1793527200000,
+       "sprint": "",
+       "carried_over_from": "",
+       "ado_id": "",
+       "done_date": "",
+       "work_item_type": "",
+       "parent_ref": "",
+       "ado_priority": null,
+       "ado_notes": "",
+       "archived_at": null,
+       "meeting_uuid": "meet1",
+       "project_uuid": "proj",
+       "parent_uuid": null,
+       "owner_uuid": "ali",
+       "assignee_uuid": "sara",
+       "collaborator_uuids": [
+        "nima"
+       ]
+      },
+      {
+       "uuid": "act-child",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "start_date": "",
+       "subject": "زیر وظیفه",
+       "decision": "",
+       "due": "",
+       "status": "جدید",
+       "priority": "متوسط",
+       "progress": 0,
+       "created_at": 1793527200000,
+       "sprint": "",
+       "carried_over_from": "",
+       "ado_id": "",
+       "done_date": "",
+       "work_item_type": "",
+       "parent_ref": "",
+       "ado_priority": null,
+       "ado_notes": "",
+       "archived_at": null,
+       "meeting_uuid": null,
+       "project_uuid": null,
+       "parent_uuid": "act-parent",
+       "owner_uuid": null,
+       "assignee_uuid": null,
+       "collaborator_uuids": []
+      }
+     ],
+     "progress_history": [
+      {
+       "uuid": "hist",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "update_date": "1405/08/20",
+       "old_progress": 0,
+       "new_progress": 50,
+       "note": "n",
+       "created_at": 1793527200000,
+       "action_uuid": "act-parent",
+       "author_name": ""
+      }
+     ],
+     "action_notes": [
+      {
+       "uuid": "note",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "body": "یادداشت",
+       "created_at": 1793527200000,
+       "action_uuid": "act-parent",
+       "author_name": ""
+      }
+     ],
+     "checklist_items": [
+      {
+       "uuid": "check",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "title": "مورد",
+       "is_done": true,
+       "sort_order": 2,
+       "created_at": 1793527200000,
+       "action_uuid": "act-parent"
+      }
+     ],
+     "comments": [
+      {
+       "uuid": "comment-a",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "body": "نظر",
+       "created_at": 1793527200000,
+       "action_uuid": "act-parent",
+       "meeting_uuid": null,
+       "author_name": ""
+      },
+      {
+       "uuid": "comment-m",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "body": "نظر جلسه",
+       "created_at": 1793527200000,
+       "action_uuid": null,
+       "meeting_uuid": "meet1",
+       "author_name": ""
+      }
+     ]
+    }
+   },
+   "remote": {
+    "format": "meeting-manager-sync",
+    "version": 1,
+    "exported_at": 0,
+    "tables": {
+     "person_categories": [
+      {
+       "uuid": "cat",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "name": "کارمند"
+      }
+     ],
+     "people": [
+      {
+       "uuid": "ali",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "name": "علی",
+       "department": "",
+       "role": "مدیر",
+       "category": "کارمند",
+       "is_active": 1,
+       "created_at": 1793527200000,
+       "category_uuid": "cat"
+      },
+      {
+       "uuid": "sara",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "name": "سارا",
+       "department": "",
+       "role": "",
+       "category": "",
+       "is_active": 1,
+       "created_at": 1793527200000,
+       "category_uuid": null
+      },
+      {
+       "uuid": "nima",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "name": "نیما",
+       "department": "",
+       "role": "",
+       "category": "",
+       "is_active": 0,
+       "created_at": 1793527200000,
+       "category_uuid": null
+      }
+     ],
+     "teams": [
+      {
+       "uuid": "team",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "name": "تیم ۱",
+       "description": "",
+       "is_active": true,
+       "manager_uuid": "ali",
+       "member_uuids": [
+        "nima",
+        "sara"
+       ]
+      }
+     ],
+     "locations": [
+      {
+       "uuid": "loc",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "name": "اتاق ۱",
+       "address": "",
+       "description": "",
+       "is_active": true
+      }
+     ],
+     "projects": [
+      {
+       "uuid": "proj",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "name": "پروژه",
+       "description": "",
+       "status": "فعال",
+       "start_date": "",
+       "end_date": "",
+       "progress": 40,
+       "created_at": 1793527200000,
+       "archived_at": null,
+       "manager_uuid": "ali",
+       "member_uuids": [
+        "sara"
+       ]
+      }
+     ],
+     "meetings": [
+      {
+       "uuid": "meet1",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "title": "جلسه ۱",
+       "meeting_date": "1405/08/20",
+       "time": "10:30",
+       "place": "",
+       "description": "",
+       "summary": "خلاصه",
+       "created_at": 1793527200000,
+       "project_uuid": "proj",
+       "attendee_uuids": [
+        "ali",
+        "sara"
+       ],
+       "linked_action_uuids": []
+      },
+      {
+       "uuid": "meet2",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "title": "جلسه ۲",
+       "meeting_date": "1405/08/21",
+       "time": "",
+       "place": "",
+       "description": "",
+       "summary": "",
+       "created_at": 1793527200000,
+       "project_uuid": null,
+       "attendee_uuids": [],
+       "linked_action_uuids": [
+        "act-parent"
+       ]
+      }
+     ],
+     "previous_items": [
+      {
+       "uuid": "prev",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "activity": "قبلی",
+       "owner_name_snapshot": "علی",
+       "status": "",
+       "progress": 30,
+       "note": "",
+       "meeting_uuid": "meet2",
+       "owner_uuid": "ali"
+      }
+     ],
+     "actions": [
+      {
+       "uuid": "act-parent",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "start_date": "",
+       "subject": "اقدام والد",
+       "decision": "",
+       "due": "1405/09/01",
+       "status": "در حال انجام",
+       "priority": "متوسط",
+       "progress": 50,
+       "created_at": 1793527200000,
+       "sprint": "",
+       "carried_over_from": "",
+       "ado_id": "",
+       "done_date": "",
+       "work_item_type": "",
+       "parent_ref": "",
+       "ado_priority": null,
+       "ado_notes": "",
+       "archived_at": null,
+       "meeting_uuid": "meet1",
+       "project_uuid": "proj",
+       "parent_uuid": null,
+       "owner_uuid": "ali",
+       "assignee_uuid": "sara",
+       "collaborator_uuids": [
+        "nima"
+       ]
+      },
+      {
+       "uuid": "act-child",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "start_date": "",
+       "subject": "زیر وظیفه",
+       "decision": "",
+       "due": "",
+       "status": "جدید",
+       "priority": "متوسط",
+       "progress": 0,
+       "created_at": 1793527200000,
+       "sprint": "",
+       "carried_over_from": "",
+       "ado_id": "",
+       "done_date": "",
+       "work_item_type": "",
+       "parent_ref": "",
+       "ado_priority": null,
+       "ado_notes": "",
+       "archived_at": null,
+       "meeting_uuid": null,
+       "project_uuid": null,
+       "parent_uuid": "act-parent",
+       "owner_uuid": null,
+       "assignee_uuid": null,
+       "collaborator_uuids": []
+      }
+     ],
+     "progress_history": [
+      {
+       "uuid": "hist",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "update_date": "1405/08/20",
+       "old_progress": 0,
+       "new_progress": 50,
+       "note": "n",
+       "created_at": 1793527200000,
+       "action_uuid": "act-parent",
+       "author_name": ""
+      }
+     ],
+     "action_notes": [
+      {
+       "uuid": "note",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "body": "یادداشت",
+       "created_at": 1793527200000,
+       "action_uuid": "act-parent",
+       "author_name": ""
+      }
+     ],
+     "checklist_items": [
+      {
+       "uuid": "check",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "title": "مورد",
+       "is_done": true,
+       "sort_order": 2,
+       "created_at": 1793527200000,
+       "action_uuid": "act-parent"
+      }
+     ],
+     "comments": [
+      {
+       "uuid": "comment-a",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "body": "نظر",
+       "created_at": 1793527200000,
+       "action_uuid": "act-parent",
+       "meeting_uuid": null,
+       "author_name": ""
+      },
+      {
+       "uuid": "comment-m",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "body": "نظر جلسه",
+       "created_at": 1793527200000,
+       "action_uuid": null,
+       "meeting_uuid": "meet1",
+       "author_name": ""
+      }
+     ]
+    }
+   },
+   "stats": {
+    "inserted": 0,
+    "updated": 0,
+    "deleted": 0,
+    "skipped": 17,
+    "orphaned": 0
+   },
+   "result": {
+    "format": "meeting-manager-sync",
+    "version": 1,
+    "exported_at": 0,
+    "tables": {
+     "person_categories": [
+      {
+       "uuid": "cat",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "name": "کارمند"
+      }
+     ],
+     "people": [
+      {
+       "uuid": "ali",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "name": "علی",
+       "department": "",
+       "role": "مدیر",
+       "category": "کارمند",
+       "is_active": 1,
+       "created_at": 1793527200000,
+       "category_uuid": "cat"
+      },
+      {
+       "uuid": "sara",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "name": "سارا",
+       "department": "",
+       "role": "",
+       "category": "",
+       "is_active": 1,
+       "created_at": 1793527200000,
+       "category_uuid": null
+      },
+      {
+       "uuid": "nima",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "name": "نیما",
+       "department": "",
+       "role": "",
+       "category": "",
+       "is_active": 0,
+       "created_at": 1793527200000,
+       "category_uuid": null
+      }
+     ],
+     "teams": [
+      {
+       "uuid": "team",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "name": "تیم ۱",
+       "description": "",
+       "is_active": true,
+       "manager_uuid": "ali",
+       "member_uuids": [
+        "nima",
+        "sara"
+       ]
+      }
+     ],
+     "locations": [
+      {
+       "uuid": "loc",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "name": "اتاق ۱",
+       "address": "",
+       "description": "",
+       "is_active": true
+      }
+     ],
+     "projects": [
+      {
+       "uuid": "proj",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "name": "پروژه",
+       "description": "",
+       "status": "فعال",
+       "start_date": "",
+       "end_date": "",
+       "progress": 40,
+       "created_at": 1793527200000,
+       "archived_at": null,
+       "manager_uuid": "ali",
+       "member_uuids": [
+        "sara"
+       ]
+      }
+     ],
+     "meetings": [
+      {
+       "uuid": "meet1",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "title": "جلسه ۱",
+       "meeting_date": "1405/08/20",
+       "time": "10:30",
+       "place": "",
+       "description": "",
+       "summary": "خلاصه",
+       "created_at": 1793527200000,
+       "project_uuid": "proj",
+       "attendee_uuids": [
+        "ali",
+        "sara"
+       ],
+       "linked_action_uuids": []
+      },
+      {
+       "uuid": "meet2",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "title": "جلسه ۲",
+       "meeting_date": "1405/08/21",
+       "time": "",
+       "place": "",
+       "description": "",
+       "summary": "",
+       "created_at": 1793527200000,
+       "project_uuid": null,
+       "attendee_uuids": [],
+       "linked_action_uuids": [
+        "act-parent"
+       ]
+      }
+     ],
+     "previous_items": [
+      {
+       "uuid": "prev",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "activity": "قبلی",
+       "owner_name_snapshot": "علی",
+       "status": "",
+       "progress": 30,
+       "note": "",
+       "meeting_uuid": "meet2",
+       "owner_uuid": "ali"
+      }
+     ],
+     "actions": [
+      {
+       "uuid": "act-parent",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "start_date": "",
+       "subject": "اقدام والد",
+       "decision": "",
+       "due": "1405/09/01",
+       "status": "در حال انجام",
+       "priority": "متوسط",
+       "progress": 50,
+       "created_at": 1793527200000,
+       "sprint": "",
+       "carried_over_from": "",
+       "ado_id": "",
+       "done_date": "",
+       "work_item_type": "",
+       "parent_ref": "",
+       "ado_priority": null,
+       "ado_notes": "",
+       "archived_at": null,
+       "meeting_uuid": "meet1",
+       "project_uuid": "proj",
+       "parent_uuid": null,
+       "owner_uuid": "ali",
+       "assignee_uuid": "sara",
+       "collaborator_uuids": [
+        "nima"
+       ]
+      },
+      {
+       "uuid": "act-child",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "start_date": "",
+       "subject": "زیر وظیفه",
+       "decision": "",
+       "due": "",
+       "status": "جدید",
+       "priority": "متوسط",
+       "progress": 0,
+       "created_at": 1793527200000,
+       "sprint": "",
+       "carried_over_from": "",
+       "ado_id": "",
+       "done_date": "",
+       "work_item_type": "",
+       "parent_ref": "",
+       "ado_priority": null,
+       "ado_notes": "",
+       "archived_at": null,
+       "meeting_uuid": null,
+       "project_uuid": null,
+       "parent_uuid": "act-parent",
+       "owner_uuid": null,
+       "assignee_uuid": null,
+       "collaborator_uuids": []
+      }
+     ],
+     "progress_history": [
+      {
+       "uuid": "hist",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "update_date": "1405/08/20",
+       "old_progress": 0,
+       "new_progress": 50,
+       "note": "n",
+       "created_at": 1793527200000,
+       "action_uuid": "act-parent",
+       "author_name": ""
+      }
+     ],
+     "action_notes": [
+      {
+       "uuid": "note",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "body": "یادداشت",
+       "created_at": 1793527200000,
+       "action_uuid": "act-parent",
+       "author_name": ""
+      }
+     ],
+     "checklist_items": [
+      {
+       "uuid": "check",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "title": "مورد",
+       "is_done": true,
+       "sort_order": 2,
+       "created_at": 1793527200000,
+       "action_uuid": "act-parent"
+      }
+     ],
+     "comments": [
+      {
+       "uuid": "comment-a",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "body": "نظر",
+       "created_at": 1793527200000,
+       "action_uuid": "act-parent",
+       "meeting_uuid": null,
+       "author_name": ""
+      },
+      {
+       "uuid": "comment-m",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "body": "نظر جلسه",
+       "created_at": 1793527200000,
+       "action_uuid": null,
+       "meeting_uuid": "meet1",
+       "author_name": ""
+      }
+     ]
+    }
+   }
+  },
+  {
+   "name": "other device with its own uuids and ids",
+   "local": {
+    "format": "meeting-manager-sync",
+    "version": 1,
+    "exported_at": 0,
+    "tables": {
+     "person_categories": [
+      {
+       "uuid": "b-cat",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "name": "کارمند"
+      }
+     ],
+     "people": [
+      {
+       "uuid": "b-pad-person-0",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "name": "pad0",
+       "department": "",
+       "role": "",
+       "category": "",
+       "is_active": 1,
+       "created_at": 1793527200000,
+       "category_uuid": null
+      },
+      {
+       "uuid": "b-pad-person-1",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "name": "pad1",
+       "department": "",
+       "role": "",
+       "category": "",
+       "is_active": 1,
+       "created_at": 1793527200000,
+       "category_uuid": null
+      },
+      {
+       "uuid": "b-pad-person-2",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "name": "pad2",
+       "department": "",
+       "role": "",
+       "category": "",
+       "is_active": 1,
+       "created_at": 1793527200000,
+       "category_uuid": null
+      },
+      {
+       "uuid": "b-ali",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "name": "علی",
+       "department": "",
+       "role": "مدیر",
+       "category": "کارمند",
+       "is_active": 1,
+       "created_at": 1793527200000,
+       "category_uuid": "b-cat"
+      },
+      {
+       "uuid": "b-sara",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "name": "سارا",
+       "department": "",
+       "role": "",
+       "category": "",
+       "is_active": 1,
+       "created_at": 1793527200000,
+       "category_uuid": null
+      },
+      {
+       "uuid": "b-nima",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "name": "نیما",
+       "department": "",
+       "role": "",
+       "category": "",
+       "is_active": 0,
+       "created_at": 1793527200000,
+       "category_uuid": null
+      }
+     ],
+     "teams": [
+      {
+       "uuid": "b-team",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "name": "تیم ۱",
+       "description": "",
+       "is_active": true,
+       "manager_uuid": "b-ali",
+       "member_uuids": [
+        "b-nima",
+        "b-sara"
+       ]
+      }
+     ],
+     "locations": [
+      {
+       "uuid": "b-loc",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "name": "اتاق ۱",
+       "address": "",
+       "description": "",
+       "is_active": true
+      }
+     ],
+     "projects": [
+      {
+       "uuid": "b-pad-project-0",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "name": "pad0",
+       "description": "",
+       "status": "فعال",
+       "start_date": "",
+       "end_date": "",
+       "progress": 0,
+       "created_at": 1793527200000,
+       "archived_at": null,
+       "manager_uuid": null,
+       "member_uuids": []
+      },
+      {
+       "uuid": "b-pad-project-1",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "name": "pad1",
+       "description": "",
+       "status": "فعال",
+       "start_date": "",
+       "end_date": "",
+       "progress": 0,
+       "created_at": 1793527200000,
+       "archived_at": null,
+       "manager_uuid": null,
+       "member_uuids": []
+      },
+      {
+       "uuid": "b-pad-project-2",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "name": "pad2",
+       "description": "",
+       "status": "فعال",
+       "start_date": "",
+       "end_date": "",
+       "progress": 0,
+       "created_at": 1793527200000,
+       "archived_at": null,
+       "manager_uuid": null,
+       "member_uuids": []
+      },
+      {
+       "uuid": "b-proj",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "name": "پروژه",
+       "description": "",
+       "status": "فعال",
+       "start_date": "",
+       "end_date": "",
+       "progress": 40,
+       "created_at": 1793527200000,
+       "archived_at": null,
+       "manager_uuid": "b-ali",
+       "member_uuids": [
+        "b-sara"
+       ]
+      }
+     ],
+     "meetings": [
+      {
+       "uuid": "b-meet1",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "title": "جلسه ۱",
+       "meeting_date": "1405/08/20",
+       "time": "10:30",
+       "place": "",
+       "description": "",
+       "summary": "خلاصه",
+       "created_at": 1793527200000,
+       "project_uuid": "b-proj",
+       "attendee_uuids": [
+        "b-ali",
+        "b-sara"
+       ],
+       "linked_action_uuids": []
+      },
+      {
+       "uuid": "b-meet2",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "title": "جلسه ۲",
+       "meeting_date": "1405/08/21",
+       "time": "",
+       "place": "",
+       "description": "",
+       "summary": "",
+       "created_at": 1793527200000,
+       "project_uuid": null,
+       "attendee_uuids": [],
+       "linked_action_uuids": [
+        "b-act-parent"
+       ]
+      }
+     ],
+     "previous_items": [
+      {
+       "uuid": "b-prev",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "activity": "قبلی",
+       "owner_name_snapshot": "علی",
+       "status": "",
+       "progress": 30,
+       "note": "",
+       "meeting_uuid": "b-meet2",
+       "owner_uuid": "b-ali"
+      }
+     ],
+     "actions": [
+      {
+       "uuid": "b-act-parent",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "start_date": "",
+       "subject": "اقدام والد",
+       "decision": "",
+       "due": "1405/09/01",
+       "status": "در حال انجام",
+       "priority": "متوسط",
+       "progress": 50,
+       "created_at": 1793527200000,
+       "sprint": "",
+       "carried_over_from": "",
+       "ado_id": "",
+       "done_date": "",
+       "work_item_type": "",
+       "parent_ref": "",
+       "ado_priority": null,
+       "ado_notes": "",
+       "archived_at": null,
+       "meeting_uuid": "b-meet1",
+       "project_uuid": "b-proj",
+       "parent_uuid": null,
+       "owner_uuid": "b-ali",
+       "assignee_uuid": "b-sara",
+       "collaborator_uuids": [
+        "b-nima"
+       ]
+      },
+      {
+       "uuid": "b-act-child",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "start_date": "",
+       "subject": "زیر وظیفه",
+       "decision": "",
+       "due": "",
+       "status": "جدید",
+       "priority": "متوسط",
+       "progress": 0,
+       "created_at": 1793527200000,
+       "sprint": "",
+       "carried_over_from": "",
+       "ado_id": "",
+       "done_date": "",
+       "work_item_type": "",
+       "parent_ref": "",
+       "ado_priority": null,
+       "ado_notes": "",
+       "archived_at": null,
+       "meeting_uuid": null,
+       "project_uuid": null,
+       "parent_uuid": "b-act-parent",
+       "owner_uuid": null,
+       "assignee_uuid": null,
+       "collaborator_uuids": []
+      }
+     ],
+     "progress_history": [
+      {
+       "uuid": "b-hist",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "update_date": "1405/08/20",
+       "old_progress": 0,
+       "new_progress": 50,
+       "note": "n",
+       "created_at": 1793527200000,
+       "action_uuid": "b-act-parent",
+       "author_name": ""
+      }
+     ],
+     "action_notes": [
+      {
+       "uuid": "b-note",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "body": "یادداشت",
+       "created_at": 1793527200000,
+       "action_uuid": "b-act-parent",
+       "author_name": ""
+      }
+     ],
+     "checklist_items": [
+      {
+       "uuid": "b-check",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "title": "مورد",
+       "is_done": true,
+       "sort_order": 2,
+       "created_at": 1793527200000,
+       "action_uuid": "b-act-parent"
+      }
+     ],
+     "comments": [
+      {
+       "uuid": "b-comment-a",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "body": "نظر",
+       "created_at": 1793527200000,
+       "action_uuid": "b-act-parent",
+       "meeting_uuid": null,
+       "author_name": ""
+      },
+      {
+       "uuid": "b-comment-m",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "body": "نظر جلسه",
+       "created_at": 1793527200000,
+       "action_uuid": null,
+       "meeting_uuid": "b-meet1",
+       "author_name": ""
+      }
+     ]
+    }
+   },
+   "remote": {
+    "format": "meeting-manager-sync",
+    "version": 1,
+    "exported_at": 0,
+    "tables": {
+     "person_categories": [
+      {
+       "uuid": "cat",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "name": "کارمند"
+      }
+     ],
+     "people": [
+      {
+       "uuid": "ali",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "name": "علی",
+       "department": "",
+       "role": "مدیر",
+       "category": "کارمند",
+       "is_active": 1,
+       "created_at": 1793527200000,
+       "category_uuid": "cat"
+      },
+      {
+       "uuid": "sara",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "name": "سارا",
+       "department": "",
+       "role": "",
+       "category": "",
+       "is_active": 1,
+       "created_at": 1793527200000,
+       "category_uuid": null
+      },
+      {
+       "uuid": "nima",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "name": "نیما",
+       "department": "",
+       "role": "",
+       "category": "",
+       "is_active": 0,
+       "created_at": 1793527200000,
+       "category_uuid": null
+      }
+     ],
+     "teams": [
+      {
+       "uuid": "team",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "name": "تیم ۱",
+       "description": "",
+       "is_active": true,
+       "manager_uuid": "ali",
+       "member_uuids": [
+        "nima",
+        "sara"
+       ]
+      }
+     ],
+     "locations": [
+      {
+       "uuid": "loc",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "name": "اتاق ۱",
+       "address": "",
+       "description": "",
+       "is_active": true
+      }
+     ],
+     "projects": [
+      {
+       "uuid": "proj",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "name": "پروژه",
+       "description": "",
+       "status": "فعال",
+       "start_date": "",
+       "end_date": "",
+       "progress": 40,
+       "created_at": 1793527200000,
+       "archived_at": null,
+       "manager_uuid": "ali",
+       "member_uuids": [
+        "sara"
+       ]
+      }
+     ],
+     "meetings": [
+      {
+       "uuid": "meet1",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "title": "جلسه ۱",
+       "meeting_date": "1405/08/20",
+       "time": "10:30",
+       "place": "",
+       "description": "",
+       "summary": "خلاصه",
+       "created_at": 1793527200000,
+       "project_uuid": "proj",
+       "attendee_uuids": [
+        "ali",
+        "sara"
+       ],
+       "linked_action_uuids": []
+      },
+      {
+       "uuid": "meet2",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "title": "جلسه ۲",
+       "meeting_date": "1405/08/21",
+       "time": "",
+       "place": "",
+       "description": "",
+       "summary": "",
+       "created_at": 1793527200000,
+       "project_uuid": null,
+       "attendee_uuids": [],
+       "linked_action_uuids": [
+        "act-parent"
+       ]
+      }
+     ],
+     "previous_items": [
+      {
+       "uuid": "prev",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "activity": "قبلی",
+       "owner_name_snapshot": "علی",
+       "status": "",
+       "progress": 30,
+       "note": "",
+       "meeting_uuid": "meet2",
+       "owner_uuid": "ali"
+      }
+     ],
+     "actions": [
+      {
+       "uuid": "act-parent",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "start_date": "",
+       "subject": "اقدام والد",
+       "decision": "",
+       "due": "1405/09/01",
+       "status": "در حال انجام",
+       "priority": "متوسط",
+       "progress": 50,
+       "created_at": 1793527200000,
+       "sprint": "",
+       "carried_over_from": "",
+       "ado_id": "",
+       "done_date": "",
+       "work_item_type": "",
+       "parent_ref": "",
+       "ado_priority": null,
+       "ado_notes": "",
+       "archived_at": null,
+       "meeting_uuid": "meet1",
+       "project_uuid": "proj",
+       "parent_uuid": null,
+       "owner_uuid": "ali",
+       "assignee_uuid": "sara",
+       "collaborator_uuids": [
+        "nima"
+       ]
+      },
+      {
+       "uuid": "act-child",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "start_date": "",
+       "subject": "زیر وظیفه",
+       "decision": "",
+       "due": "",
+       "status": "جدید",
+       "priority": "متوسط",
+       "progress": 0,
+       "created_at": 1793527200000,
+       "sprint": "",
+       "carried_over_from": "",
+       "ado_id": "",
+       "done_date": "",
+       "work_item_type": "",
+       "parent_ref": "",
+       "ado_priority": null,
+       "ado_notes": "",
+       "archived_at": null,
+       "meeting_uuid": null,
+       "project_uuid": null,
+       "parent_uuid": "act-parent",
+       "owner_uuid": null,
+       "assignee_uuid": null,
+       "collaborator_uuids": []
+      }
+     ],
+     "progress_history": [
+      {
+       "uuid": "hist",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "update_date": "1405/08/20",
+       "old_progress": 0,
+       "new_progress": 50,
+       "note": "n",
+       "created_at": 1793527200000,
+       "action_uuid": "act-parent",
+       "author_name": ""
+      }
+     ],
+     "action_notes": [
+      {
+       "uuid": "note",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "body": "یادداشت",
+       "created_at": 1793527200000,
+       "action_uuid": "act-parent",
+       "author_name": ""
+      }
+     ],
+     "checklist_items": [
+      {
+       "uuid": "check",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "title": "مورد",
+       "is_done": true,
+       "sort_order": 2,
+       "created_at": 1793527200000,
+       "action_uuid": "act-parent"
+      }
+     ],
+     "comments": [
+      {
+       "uuid": "comment-a",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "body": "نظر",
+       "created_at": 1793527200000,
+       "action_uuid": "act-parent",
+       "meeting_uuid": null,
+       "author_name": ""
+      },
+      {
+       "uuid": "comment-m",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "body": "نظر جلسه",
+       "created_at": 1793527200000,
+       "action_uuid": null,
+       "meeting_uuid": "meet1",
+       "author_name": ""
+      }
+     ]
+    }
+   },
+   "stats": {
+    "inserted": 16,
+    "updated": 0,
+    "deleted": 0,
+    "skipped": 1,
+    "orphaned": 0
+   },
+   "result": {
+    "format": "meeting-manager-sync",
+    "version": 1,
+    "exported_at": 0,
+    "tables": {
+     "person_categories": [
+      {
+       "uuid": "b-cat",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "name": "کارمند"
+      }
+     ],
+     "people": [
+      {
+       "uuid": "b-pad-person-0",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "name": "pad0",
+       "department": "",
+       "role": "",
+       "category": "",
+       "is_active": 1,
+       "created_at": 1793527200000,
+       "category_uuid": null
+      },
+      {
+       "uuid": "b-pad-person-1",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "name": "pad1",
+       "department": "",
+       "role": "",
+       "category": "",
+       "is_active": 1,
+       "created_at": 1793527200000,
+       "category_uuid": null
+      },
+      {
+       "uuid": "b-pad-person-2",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "name": "pad2",
+       "department": "",
+       "role": "",
+       "category": "",
+       "is_active": 1,
+       "created_at": 1793527200000,
+       "category_uuid": null
+      },
+      {
+       "uuid": "b-ali",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "name": "علی",
+       "department": "",
+       "role": "مدیر",
+       "category": "کارمند",
+       "is_active": 1,
+       "created_at": 1793527200000,
+       "category_uuid": "b-cat"
+      },
+      {
+       "uuid": "b-sara",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "name": "سارا",
+       "department": "",
+       "role": "",
+       "category": "",
+       "is_active": 1,
+       "created_at": 1793527200000,
+       "category_uuid": null
+      },
+      {
+       "uuid": "b-nima",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "name": "نیما",
+       "department": "",
+       "role": "",
+       "category": "",
+       "is_active": 0,
+       "created_at": 1793527200000,
+       "category_uuid": null
+      },
+      {
+       "uuid": "ali",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "name": "علی",
+       "department": "",
+       "role": "مدیر",
+       "category": "کارمند",
+       "is_active": 1,
+       "created_at": 1793527200000,
+       "category_uuid": "b-cat"
+      },
+      {
+       "uuid": "sara",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "name": "سارا",
+       "department": "",
+       "role": "",
+       "category": "",
+       "is_active": 1,
+       "created_at": 1793527200000,
+       "category_uuid": null
+      },
+      {
+       "uuid": "nima",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "name": "نیما",
+       "department": "",
+       "role": "",
+       "category": "",
+       "is_active": 0,
+       "created_at": 1793527200000,
+       "category_uuid": null
+      }
+     ],
+     "teams": [
+      {
+       "uuid": "b-team",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "name": "تیم ۱",
+       "description": "",
+       "is_active": true,
+       "manager_uuid": "b-ali",
+       "member_uuids": [
+        "b-nima",
+        "b-sara"
+       ]
+      },
+      {
+       "uuid": "team",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "name": "تیم ۱",
+       "description": "",
+       "is_active": true,
+       "manager_uuid": "ali",
+       "member_uuids": [
+        "nima",
+        "sara"
+       ]
+      }
+     ],
+     "locations": [
+      {
+       "uuid": "b-loc",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "name": "اتاق ۱",
+       "address": "",
+       "description": "",
+       "is_active": true
+      },
+      {
+       "uuid": "loc",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "name": "اتاق ۱",
+       "address": "",
+       "description": "",
+       "is_active": true
+      }
+     ],
+     "projects": [
+      {
+       "uuid": "b-pad-project-0",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "name": "pad0",
+       "description": "",
+       "status": "فعال",
+       "start_date": "",
+       "end_date": "",
+       "progress": 0,
+       "created_at": 1793527200000,
+       "archived_at": null,
+       "manager_uuid": null,
+       "member_uuids": []
+      },
+      {
+       "uuid": "b-pad-project-1",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "name": "pad1",
+       "description": "",
+       "status": "فعال",
+       "start_date": "",
+       "end_date": "",
+       "progress": 0,
+       "created_at": 1793527200000,
+       "archived_at": null,
+       "manager_uuid": null,
+       "member_uuids": []
+      },
+      {
+       "uuid": "b-pad-project-2",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "name": "pad2",
+       "description": "",
+       "status": "فعال",
+       "start_date": "",
+       "end_date": "",
+       "progress": 0,
+       "created_at": 1793527200000,
+       "archived_at": null,
+       "manager_uuid": null,
+       "member_uuids": []
+      },
+      {
+       "uuid": "b-proj",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "name": "پروژه",
+       "description": "",
+       "status": "فعال",
+       "start_date": "",
+       "end_date": "",
+       "progress": 40,
+       "created_at": 1793527200000,
+       "archived_at": null,
+       "manager_uuid": "b-ali",
+       "member_uuids": [
+        "b-sara"
+       ]
+      },
+      {
+       "uuid": "proj",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "name": "پروژه",
+       "description": "",
+       "status": "فعال",
+       "start_date": "",
+       "end_date": "",
+       "progress": 40,
+       "created_at": 1793527200000,
+       "archived_at": null,
+       "manager_uuid": "ali",
+       "member_uuids": [
+        "sara"
+       ]
+      }
+     ],
+     "meetings": [
+      {
+       "uuid": "b-meet1",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "title": "جلسه ۱",
+       "meeting_date": "1405/08/20",
+       "time": "10:30",
+       "place": "",
+       "description": "",
+       "summary": "خلاصه",
+       "created_at": 1793527200000,
+       "project_uuid": "b-proj",
+       "attendee_uuids": [
+        "b-ali",
+        "b-sara"
+       ],
+       "linked_action_uuids": []
+      },
+      {
+       "uuid": "b-meet2",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "title": "جلسه ۲",
+       "meeting_date": "1405/08/21",
+       "time": "",
+       "place": "",
+       "description": "",
+       "summary": "",
+       "created_at": 1793527200000,
+       "project_uuid": null,
+       "attendee_uuids": [],
+       "linked_action_uuids": [
+        "b-act-parent"
+       ]
+      },
+      {
+       "uuid": "meet1",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "title": "جلسه ۱",
+       "meeting_date": "1405/08/20",
+       "time": "10:30",
+       "place": "",
+       "description": "",
+       "summary": "خلاصه",
+       "created_at": 1793527200000,
+       "project_uuid": "proj",
+       "attendee_uuids": [
+        "ali",
+        "sara"
+       ],
+       "linked_action_uuids": []
+      },
+      {
+       "uuid": "meet2",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "title": "جلسه ۲",
+       "meeting_date": "1405/08/21",
+       "time": "",
+       "place": "",
+       "description": "",
+       "summary": "",
+       "created_at": 1793527200000,
+       "project_uuid": null,
+       "attendee_uuids": [],
+       "linked_action_uuids": [
+        "act-parent"
+       ]
+      }
+     ],
+     "previous_items": [
+      {
+       "uuid": "b-prev",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "activity": "قبلی",
+       "owner_name_snapshot": "علی",
+       "status": "",
+       "progress": 30,
+       "note": "",
+       "meeting_uuid": "b-meet2",
+       "owner_uuid": "b-ali"
+      },
+      {
+       "uuid": "prev",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "activity": "قبلی",
+       "owner_name_snapshot": "علی",
+       "status": "",
+       "progress": 30,
+       "note": "",
+       "meeting_uuid": "meet2",
+       "owner_uuid": "ali"
+      }
+     ],
+     "actions": [
+      {
+       "uuid": "b-act-parent",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "start_date": "",
+       "subject": "اقدام والد",
+       "decision": "",
+       "due": "1405/09/01",
+       "status": "در حال انجام",
+       "priority": "متوسط",
+       "progress": 50,
+       "created_at": 1793527200000,
+       "sprint": "",
+       "carried_over_from": "",
+       "ado_id": "",
+       "done_date": "",
+       "work_item_type": "",
+       "parent_ref": "",
+       "ado_priority": null,
+       "ado_notes": "",
+       "archived_at": null,
+       "meeting_uuid": "b-meet1",
+       "project_uuid": "b-proj",
+       "parent_uuid": null,
+       "owner_uuid": "b-ali",
+       "assignee_uuid": "b-sara",
+       "collaborator_uuids": [
+        "b-nima"
+       ]
+      },
+      {
+       "uuid": "b-act-child",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "start_date": "",
+       "subject": "زیر وظیفه",
+       "decision": "",
+       "due": "",
+       "status": "جدید",
+       "priority": "متوسط",
+       "progress": 0,
+       "created_at": 1793527200000,
+       "sprint": "",
+       "carried_over_from": "",
+       "ado_id": "",
+       "done_date": "",
+       "work_item_type": "",
+       "parent_ref": "",
+       "ado_priority": null,
+       "ado_notes": "",
+       "archived_at": null,
+       "meeting_uuid": null,
+       "project_uuid": null,
+       "parent_uuid": "b-act-parent",
+       "owner_uuid": null,
+       "assignee_uuid": null,
+       "collaborator_uuids": []
+      },
+      {
+       "uuid": "act-parent",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "start_date": "",
+       "subject": "اقدام والد",
+       "decision": "",
+       "due": "1405/09/01",
+       "status": "در حال انجام",
+       "priority": "متوسط",
+       "progress": 50,
+       "created_at": 1793527200000,
+       "sprint": "",
+       "carried_over_from": "",
+       "ado_id": "",
+       "done_date": "",
+       "work_item_type": "",
+       "parent_ref": "",
+       "ado_priority": null,
+       "ado_notes": "",
+       "archived_at": null,
+       "meeting_uuid": "meet1",
+       "project_uuid": "proj",
+       "parent_uuid": null,
+       "owner_uuid": "ali",
+       "assignee_uuid": "sara",
+       "collaborator_uuids": [
+        "nima"
+       ]
+      },
+      {
+       "uuid": "act-child",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "start_date": "",
+       "subject": "زیر وظیفه",
+       "decision": "",
+       "due": "",
+       "status": "جدید",
+       "priority": "متوسط",
+       "progress": 0,
+       "created_at": 1793527200000,
+       "sprint": "",
+       "carried_over_from": "",
+       "ado_id": "",
+       "done_date": "",
+       "work_item_type": "",
+       "parent_ref": "",
+       "ado_priority": null,
+       "ado_notes": "",
+       "archived_at": null,
+       "meeting_uuid": null,
+       "project_uuid": null,
+       "parent_uuid": "act-parent",
+       "owner_uuid": null,
+       "assignee_uuid": null,
+       "collaborator_uuids": []
+      }
+     ],
+     "progress_history": [
+      {
+       "uuid": "b-hist",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "update_date": "1405/08/20",
+       "old_progress": 0,
+       "new_progress": 50,
+       "note": "n",
+       "created_at": 1793527200000,
+       "action_uuid": "b-act-parent",
+       "author_name": ""
+      },
+      {
+       "uuid": "hist",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "update_date": "1405/08/20",
+       "old_progress": 0,
+       "new_progress": 50,
+       "note": "n",
+       "created_at": 1793527200000,
+       "action_uuid": "act-parent",
+       "author_name": ""
+      }
+     ],
+     "action_notes": [
+      {
+       "uuid": "b-note",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "body": "یادداشت",
+       "created_at": 1793527200000,
+       "action_uuid": "b-act-parent",
+       "author_name": ""
+      },
+      {
+       "uuid": "note",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "body": "یادداشت",
+       "created_at": 1793527200000,
+       "action_uuid": "act-parent",
+       "author_name": ""
+      }
+     ],
+     "checklist_items": [
+      {
+       "uuid": "b-check",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "title": "مورد",
+       "is_done": true,
+       "sort_order": 2,
+       "created_at": 1793527200000,
+       "action_uuid": "b-act-parent"
+      },
+      {
+       "uuid": "check",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "title": "مورد",
+       "is_done": true,
+       "sort_order": 2,
+       "created_at": 1793527200000,
+       "action_uuid": "act-parent"
+      }
+     ],
+     "comments": [
+      {
+       "uuid": "b-comment-a",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "body": "نظر",
+       "created_at": 1793527200000,
+       "action_uuid": "b-act-parent",
+       "meeting_uuid": null,
+       "author_name": ""
+      },
+      {
+       "uuid": "b-comment-m",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "body": "نظر جلسه",
+       "created_at": 1793527200000,
+       "action_uuid": null,
+       "meeting_uuid": "b-meet1",
+       "author_name": ""
+      },
+      {
+       "uuid": "comment-a",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "body": "نظر",
+       "created_at": 1793527200000,
+       "action_uuid": "act-parent",
+       "meeting_uuid": null,
+       "author_name": ""
+      },
+      {
+       "uuid": "comment-m",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "body": "نظر جلسه",
+       "created_at": 1793527200000,
+       "action_uuid": null,
+       "meeting_uuid": "meet1",
+       "author_name": ""
+      }
+     ]
+    }
+   }
+  },
+  {
+   "name": "mixed: newer wins, older ignored, tombstones",
+   "local": {
+    "format": "meeting-manager-sync",
+    "version": 1,
+    "exported_at": 0,
+    "tables": {
+     "person_categories": [
+      {
+       "uuid": "cat",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "name": "کارمند"
+      }
+     ],
+     "people": [
+      {
+       "uuid": "ali",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "name": "علی",
+       "department": "",
+       "role": "مدیر",
+       "category": "کارمند",
+       "is_active": 1,
+       "created_at": 1793527200000,
+       "category_uuid": "cat"
+      },
+      {
+       "uuid": "sara",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "name": "سارا",
+       "department": "",
+       "role": "",
+       "category": "",
+       "is_active": 1,
+       "created_at": 1793527200000,
+       "category_uuid": null
+      },
+      {
+       "uuid": "nima",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "name": "نیما",
+       "department": "",
+       "role": "",
+       "category": "",
+       "is_active": 0,
+       "created_at": 1793527200000,
+       "category_uuid": null
+      }
+     ],
+     "teams": [
+      {
+       "uuid": "team",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "name": "تیم ۱",
+       "description": "",
+       "is_active": true,
+       "manager_uuid": "ali",
+       "member_uuids": [
+        "nima",
+        "sara"
+       ]
+      }
+     ],
+     "locations": [
+      {
+       "uuid": "loc",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "name": "اتاق ۱",
+       "address": "",
+       "description": "",
+       "is_active": true
+      }
+     ],
+     "projects": [
+      {
+       "uuid": "proj",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "name": "پروژه",
+       "description": "",
+       "status": "فعال",
+       "start_date": "",
+       "end_date": "",
+       "progress": 40,
+       "created_at": 1793527200000,
+       "archived_at": null,
+       "manager_uuid": "ali",
+       "member_uuids": [
+        "sara"
+       ]
+      }
+     ],
+     "meetings": [
+      {
+       "uuid": "meet1",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "title": "جلسه ۱",
+       "meeting_date": "1405/08/20",
+       "time": "10:30",
+       "place": "",
+       "description": "",
+       "summary": "خلاصه",
+       "created_at": 1793527200000,
+       "project_uuid": "proj",
+       "attendee_uuids": [
+        "ali",
+        "sara"
+       ],
+       "linked_action_uuids": []
+      },
+      {
+       "uuid": "meet2",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "title": "جلسه ۲",
+       "meeting_date": "1405/08/21",
+       "time": "",
+       "place": "",
+       "description": "",
+       "summary": "",
+       "created_at": 1793527200000,
+       "project_uuid": null,
+       "attendee_uuids": [],
+       "linked_action_uuids": [
+        "act-parent"
+       ]
+      }
+     ],
+     "previous_items": [
+      {
+       "uuid": "prev",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "activity": "قبلی",
+       "owner_name_snapshot": "علی",
+       "status": "",
+       "progress": 30,
+       "note": "",
+       "meeting_uuid": "meet2",
+       "owner_uuid": "ali"
+      }
+     ],
+     "actions": [
+      {
+       "uuid": "act-parent",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "start_date": "",
+       "subject": "اقدام والد",
+       "decision": "",
+       "due": "1405/09/01",
+       "status": "در حال انجام",
+       "priority": "متوسط",
+       "progress": 50,
+       "created_at": 1793527200000,
+       "sprint": "",
+       "carried_over_from": "",
+       "ado_id": "",
+       "done_date": "",
+       "work_item_type": "",
+       "parent_ref": "",
+       "ado_priority": null,
+       "ado_notes": "",
+       "archived_at": null,
+       "meeting_uuid": "meet1",
+       "project_uuid": "proj",
+       "parent_uuid": null,
+       "owner_uuid": "ali",
+       "assignee_uuid": "sara",
+       "collaborator_uuids": [
+        "nima"
+       ]
+      },
+      {
+       "uuid": "act-child",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "start_date": "",
+       "subject": "زیر وظیفه",
+       "decision": "",
+       "due": "",
+       "status": "جدید",
+       "priority": "متوسط",
+       "progress": 0,
+       "created_at": 1793527200000,
+       "sprint": "",
+       "carried_over_from": "",
+       "ado_id": "",
+       "done_date": "",
+       "work_item_type": "",
+       "parent_ref": "",
+       "ado_priority": null,
+       "ado_notes": "",
+       "archived_at": null,
+       "meeting_uuid": null,
+       "project_uuid": null,
+       "parent_uuid": "act-parent",
+       "owner_uuid": null,
+       "assignee_uuid": null,
+       "collaborator_uuids": []
+      }
+     ],
+     "progress_history": [
+      {
+       "uuid": "hist",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "update_date": "1405/08/20",
+       "old_progress": 0,
+       "new_progress": 50,
+       "note": "n",
+       "created_at": 1793527200000,
+       "action_uuid": "act-parent",
+       "author_name": ""
+      }
+     ],
+     "action_notes": [
+      {
+       "uuid": "note",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "body": "یادداشت",
+       "created_at": 1793527200000,
+       "action_uuid": "act-parent",
+       "author_name": ""
+      }
+     ],
+     "checklist_items": [
+      {
+       "uuid": "check",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "title": "مورد",
+       "is_done": true,
+       "sort_order": 2,
+       "created_at": 1793527200000,
+       "action_uuid": "act-parent"
+      }
+     ],
+     "comments": [
+      {
+       "uuid": "comment-a",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "body": "نظر",
+       "created_at": 1793527200000,
+       "action_uuid": "act-parent",
+       "meeting_uuid": null,
+       "author_name": ""
+      },
+      {
+       "uuid": "comment-m",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "body": "نظر جلسه",
+       "created_at": 1793527200000,
+       "action_uuid": null,
+       "meeting_uuid": "meet1",
+       "author_name": ""
+      }
+     ]
+    }
+   },
+   "remote": {
+    "format": "meeting-manager-sync",
+    "version": 1,
+    "exported_at": 0,
+    "tables": {
+     "person_categories": [
+      {
+       "uuid": "cat",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "name": "کارمند"
+      }
+     ],
+     "people": [
+      {
+       "uuid": "ali",
+       "updated_at": 1793527199000,
+       "deleted_at": null,
+       "name": "ویرایش قدیمی‌تر",
+       "department": "",
+       "role": "مدیر",
+       "category": "کارمند",
+       "is_active": 1,
+       "created_at": 1793527200000,
+       "category_uuid": "cat"
+      },
+      {
+       "uuid": "sara",
+       "updated_at": 1793527199999,
+       "deleted_at": 1793527199999,
+       "name": "سارا",
+       "department": "",
+       "role": "",
+       "category": "",
+       "is_active": 1,
+       "created_at": 1793527200000,
+       "category_uuid": null
+      },
+      {
+       "uuid": "nima",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "name": "نیما",
+       "department": "",
+       "role": "",
+       "category": "",
+       "is_active": 0,
+       "created_at": 1793527200000,
+       "category_uuid": null
+      }
+     ],
+     "teams": [
+      {
+       "uuid": "team",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "name": "تیم ۱",
+       "description": "",
+       "is_active": true,
+       "manager_uuid": "ali",
+       "member_uuids": [
+        "nima",
+        "sara"
+       ]
+      }
+     ],
+     "locations": [
+      {
+       "uuid": "loc",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "name": "اتاق ۱",
+       "address": "",
+       "description": "",
+       "is_active": true
+      }
+     ],
+     "projects": [
+      {
+       "uuid": "proj",
+       "updated_at": 1793527200001,
+       "deleted_at": null,
+       "name": "پروژه",
+       "description": "",
+       "status": "فعال",
+       "start_date": "",
+       "end_date": "",
+       "progress": 40,
+       "created_at": 1793527200000,
+       "archived_at": null,
+       "manager_uuid": "ali",
+       "member_uuids": [
+        "ali",
+        "nima"
+       ]
+      }
+     ],
+     "meetings": [
+      {
+       "uuid": "meet1",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "title": "جلسه ۱",
+       "meeting_date": "1405/08/20",
+       "time": "10:30",
+       "place": "",
+       "description": "",
+       "summary": "خلاصه",
+       "created_at": 1793527200000,
+       "project_uuid": "proj",
+       "attendee_uuids": [
+        "ali",
+        "sara"
+       ],
+       "linked_action_uuids": []
+      },
+      {
+       "uuid": "meet2",
+       "updated_at": 1793527207000,
+       "deleted_at": 1793527207000,
+       "title": "جلسه ۲",
+       "meeting_date": "1405/08/21",
+       "time": "",
+       "place": "",
+       "description": "",
+       "summary": "",
+       "created_at": 1793527200000,
+       "project_uuid": null,
+       "attendee_uuids": [],
+       "linked_action_uuids": [
+        "act-parent"
+       ]
+      }
+     ],
+     "previous_items": [
+      {
+       "uuid": "prev",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "activity": "قبلی",
+       "owner_name_snapshot": "علی",
+       "status": "",
+       "progress": 30,
+       "note": "",
+       "meeting_uuid": "meet2",
+       "owner_uuid": "ali"
+      }
+     ],
+     "actions": [
+      {
+       "uuid": "act-parent",
+       "updated_at": 1793527205000,
+       "deleted_at": null,
+       "start_date": "",
+       "subject": "ویرایش جدیدتر",
+       "decision": "",
+       "due": "1405/09/01",
+       "status": "در حال انجام",
+       "priority": "متوسط",
+       "progress": 80,
+       "created_at": 1793527200000,
+       "sprint": "",
+       "carried_over_from": "",
+       "ado_id": "",
+       "done_date": "",
+       "work_item_type": "",
+       "parent_ref": "",
+       "ado_priority": null,
+       "ado_notes": "",
+       "archived_at": null,
+       "meeting_uuid": "meet1",
+       "project_uuid": "proj",
+       "parent_uuid": null,
+       "owner_uuid": "ali",
+       "assignee_uuid": "sara",
+       "collaborator_uuids": [
+        "nima"
+       ]
+      },
+      {
+       "uuid": "act-child",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "start_date": "",
+       "subject": "زیر وظیفه",
+       "decision": "",
+       "due": "",
+       "status": "جدید",
+       "priority": "متوسط",
+       "progress": 0,
+       "created_at": 1793527200000,
+       "sprint": "",
+       "carried_over_from": "",
+       "ado_id": "",
+       "done_date": "",
+       "work_item_type": "",
+       "parent_ref": "",
+       "ado_priority": null,
+       "ado_notes": "",
+       "archived_at": null,
+       "meeting_uuid": null,
+       "project_uuid": null,
+       "parent_uuid": "act-parent",
+       "owner_uuid": null,
+       "assignee_uuid": null,
+       "collaborator_uuids": []
+      }
+     ],
+     "progress_history": [
+      {
+       "uuid": "hist",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "update_date": "1405/08/20",
+       "old_progress": 0,
+       "new_progress": 50,
+       "note": "n",
+       "created_at": 1793527200000,
+       "action_uuid": "act-parent",
+       "author_name": ""
+      }
+     ],
+     "action_notes": [
+      {
+       "uuid": "note",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "body": "یادداشت",
+       "created_at": 1793527200000,
+       "action_uuid": "act-parent",
+       "author_name": ""
+      },
+      {
+       "uuid": "note-new",
+       "updated_at": 9000,
+       "deleted_at": null,
+       "body": "یادداشت تازه",
+       "created_at": 9000,
+       "action_uuid": "act-child",
+       "author_name": ""
+      }
+     ],
+     "checklist_items": [
+      {
+       "uuid": "check",
+       "updated_at": 1793527200001,
+       "deleted_at": null,
+       "title": "مورد",
+       "is_done": false,
+       "sort_order": 5,
+       "created_at": 1793527200000,
+       "action_uuid": "act-parent"
+      },
+      {
+       "uuid": "check-gone",
+       "updated_at": 9000,
+       "deleted_at": 9000,
+       "title": "x",
+       "is_done": false,
+       "sort_order": 0,
+       "created_at": 1,
+       "action_uuid": "act-child"
+      }
+     ],
+     "comments": [
+      {
+       "uuid": "comment-a",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "body": "نظر",
+       "created_at": 1793527200000,
+       "action_uuid": "act-parent",
+       "meeting_uuid": null,
+       "author_name": ""
+      },
+      {
+       "uuid": "comment-m",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "body": "نظر جلسه",
+       "created_at": 1793527200000,
+       "action_uuid": null,
+       "meeting_uuid": "meet1",
+       "author_name": ""
+      }
+     ]
+    }
+   },
+   "stats": {
+    "inserted": 1,
+    "updated": 3,
+    "deleted": 1,
+    "skipped": 13,
+    "orphaned": 1
+   },
+   "result": {
+    "format": "meeting-manager-sync",
+    "version": 1,
+    "exported_at": 0,
+    "tables": {
+     "person_categories": [
+      {
+       "uuid": "cat",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "name": "کارمند"
+      }
+     ],
+     "people": [
+      {
+       "uuid": "ali",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "name": "علی",
+       "department": "",
+       "role": "مدیر",
+       "category": "کارمند",
+       "is_active": 1,
+       "created_at": 1793527200000,
+       "category_uuid": "cat"
+      },
+      {
+       "uuid": "sara",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "name": "سارا",
+       "department": "",
+       "role": "",
+       "category": "",
+       "is_active": 1,
+       "created_at": 1793527200000,
+       "category_uuid": null
+      },
+      {
+       "uuid": "nima",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "name": "نیما",
+       "department": "",
+       "role": "",
+       "category": "",
+       "is_active": 0,
+       "created_at": 1793527200000,
+       "category_uuid": null
+      }
+     ],
+     "teams": [
+      {
+       "uuid": "team",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "name": "تیم ۱",
+       "description": "",
+       "is_active": true,
+       "manager_uuid": "ali",
+       "member_uuids": [
+        "nima",
+        "sara"
+       ]
+      }
+     ],
+     "locations": [
+      {
+       "uuid": "loc",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "name": "اتاق ۱",
+       "address": "",
+       "description": "",
+       "is_active": true
+      }
+     ],
+     "projects": [
+      {
+       "uuid": "proj",
+       "updated_at": 1793527200001,
+       "deleted_at": null,
+       "name": "پروژه",
+       "description": "",
+       "status": "فعال",
+       "start_date": "",
+       "end_date": "",
+       "progress": 40,
+       "created_at": 1793527200000,
+       "archived_at": null,
+       "manager_uuid": "ali",
+       "member_uuids": [
+        "ali",
+        "nima"
+       ]
+      }
+     ],
+     "meetings": [
+      {
+       "uuid": "meet1",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "title": "جلسه ۱",
+       "meeting_date": "1405/08/20",
+       "time": "10:30",
+       "place": "",
+       "description": "",
+       "summary": "خلاصه",
+       "created_at": 1793527200000,
+       "project_uuid": "proj",
+       "attendee_uuids": [
+        "ali",
+        "sara"
+       ],
+       "linked_action_uuids": []
+      },
+      {
+       "uuid": "meet2",
+       "updated_at": 1793527207000,
+       "deleted_at": 1793527207000
+      }
+     ],
+     "previous_items": [
+      {
+       "uuid": "prev",
+       "updated_at": 1,
+       "deleted_at": 1
+      }
+     ],
+     "actions": [
+      {
+       "uuid": "act-parent",
+       "updated_at": 1793527205000,
+       "deleted_at": null,
+       "start_date": "",
+       "subject": "ویرایش جدیدتر",
+       "decision": "",
+       "due": "1405/09/01",
+       "status": "در حال انجام",
+       "priority": "متوسط",
+       "progress": 80,
+       "created_at": 1793527200000,
+       "sprint": "",
+       "carried_over_from": "",
+       "ado_id": "",
+       "done_date": "",
+       "work_item_type": "",
+       "parent_ref": "",
+       "ado_priority": null,
+       "ado_notes": "",
+       "archived_at": null,
+       "meeting_uuid": "meet1",
+       "project_uuid": "proj",
+       "parent_uuid": null,
+       "owner_uuid": "ali",
+       "assignee_uuid": "sara",
+       "collaborator_uuids": [
+        "nima"
+       ]
+      },
+      {
+       "uuid": "act-child",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "start_date": "",
+       "subject": "زیر وظیفه",
+       "decision": "",
+       "due": "",
+       "status": "جدید",
+       "priority": "متوسط",
+       "progress": 0,
+       "created_at": 1793527200000,
+       "sprint": "",
+       "carried_over_from": "",
+       "ado_id": "",
+       "done_date": "",
+       "work_item_type": "",
+       "parent_ref": "",
+       "ado_priority": null,
+       "ado_notes": "",
+       "archived_at": null,
+       "meeting_uuid": null,
+       "project_uuid": null,
+       "parent_uuid": "act-parent",
+       "owner_uuid": null,
+       "assignee_uuid": null,
+       "collaborator_uuids": []
+      }
+     ],
+     "progress_history": [
+      {
+       "uuid": "hist",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "update_date": "1405/08/20",
+       "old_progress": 0,
+       "new_progress": 50,
+       "note": "n",
+       "created_at": 1793527200000,
+       "action_uuid": "act-parent",
+       "author_name": ""
+      }
+     ],
+     "action_notes": [
+      {
+       "uuid": "note",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "body": "یادداشت",
+       "created_at": 1793527200000,
+       "action_uuid": "act-parent",
+       "author_name": ""
+      },
+      {
+       "uuid": "note-new",
+       "updated_at": 9000,
+       "deleted_at": null,
+       "body": "یادداشت تازه",
+       "created_at": 9000,
+       "action_uuid": "act-child",
+       "author_name": ""
+      }
+     ],
+     "checklist_items": [
+      {
+       "uuid": "check",
+       "updated_at": 1793527200001,
+       "deleted_at": null,
+       "title": "مورد",
+       "is_done": false,
+       "sort_order": 5,
+       "created_at": 1793527200000,
+       "action_uuid": "act-parent"
+      }
+     ],
+     "comments": [
+      {
+       "uuid": "comment-a",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "body": "نظر",
+       "created_at": 1793527200000,
+       "action_uuid": "act-parent",
+       "meeting_uuid": null,
+       "author_name": ""
+      },
+      {
+       "uuid": "comment-m",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "body": "نظر جلسه",
+       "created_at": 1793527200000,
+       "action_uuid": null,
+       "meeting_uuid": "meet1",
+       "author_name": ""
+      }
+     ]
+    }
+   }
+  },
+  {
+   "name": "orphans, unknown tombstone, child listed before parent, unknown links",
+   "local": {
+    "format": "meeting-manager-sync",
+    "version": 1,
+    "exported_at": 0,
+    "tables": {
+     "person_categories": [],
+     "people": [],
+     "teams": [],
+     "locations": [],
+     "projects": [],
+     "meetings": [],
+     "previous_items": [],
+     "actions": [],
+     "progress_history": [],
+     "action_notes": [],
+     "checklist_items": [],
+     "comments": []
+    }
+   },
+   "remote": {
+    "format": "meeting-manager-sync",
+    "version": 1,
+    "exported_at": 0,
+    "tables": {
+     "person_categories": [
+      {
+       "uuid": "cat",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "name": "کارمند"
+      }
+     ],
+     "people": [
+      {
+       "uuid": "ali",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "name": "علی",
+       "department": "",
+       "role": "مدیر",
+       "category": "کارمند",
+       "is_active": 1,
+       "created_at": 1793527200000,
+       "category_uuid": "cat"
+      },
+      {
+       "uuid": "sara",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "name": "سارا",
+       "department": "",
+       "role": "",
+       "category": "",
+       "is_active": 1,
+       "created_at": 1793527200000,
+       "category_uuid": null
+      },
+      {
+       "uuid": "nima",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "name": "نیما",
+       "department": "",
+       "role": "",
+       "category": "",
+       "is_active": 0,
+       "created_at": 1793527200000,
+       "category_uuid": null
+      },
+      {
+       "uuid": "never-seen",
+       "updated_at": 5,
+       "deleted_at": 5,
+       "name": "x",
+       "department": "",
+       "role": "",
+       "category": "",
+       "is_active": true,
+       "created_at": 1,
+       "category_uuid": null
+      }
+     ],
+     "teams": [
+      {
+       "uuid": "team",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "name": "تیم ۱",
+       "description": "",
+       "is_active": true,
+       "manager_uuid": "ali",
+       "member_uuids": [
+        "nima",
+        "sara"
+       ]
+      }
+     ],
+     "locations": [
+      {
+       "uuid": "loc",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "name": "اتاق ۱",
+       "address": "",
+       "description": "",
+       "is_active": true
+      }
+     ],
+     "projects": [
+      {
+       "uuid": "proj",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "name": "پروژه",
+       "description": "",
+       "status": "فعال",
+       "start_date": "",
+       "end_date": "",
+       "progress": 40,
+       "created_at": 1793527200000,
+       "archived_at": null,
+       "manager_uuid": "ali",
+       "member_uuids": [
+        "sara"
+       ]
+      }
+     ],
+     "meetings": [
+      {
+       "uuid": "meet1",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "title": "جلسه ۱",
+       "meeting_date": "1405/08/20",
+       "time": "10:30",
+       "place": "",
+       "description": "",
+       "summary": "خلاصه",
+       "created_at": 1793527200000,
+       "project_uuid": "proj",
+       "attendee_uuids": [
+        "ali",
+        "sara"
+       ],
+       "linked_action_uuids": []
+      },
+      {
+       "uuid": "meet2",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "title": "جلسه ۲",
+       "meeting_date": "1405/08/21",
+       "time": "",
+       "place": "",
+       "description": "",
+       "summary": "",
+       "created_at": 1793527200000,
+       "project_uuid": null,
+       "attendee_uuids": [],
+       "linked_action_uuids": [
+        "act-parent"
+       ]
+      }
+     ],
+     "previous_items": [
+      {
+       "uuid": "prev",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "activity": "قبلی",
+       "owner_name_snapshot": "علی",
+       "status": "",
+       "progress": 30,
+       "note": "",
+       "meeting_uuid": "meet2",
+       "owner_uuid": "ali"
+      }
+     ],
+     "actions": [
+      {
+       "uuid": "act-parent",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "start_date": "",
+       "subject": "اقدام والد",
+       "decision": "",
+       "due": "1405/09/01",
+       "status": "در حال انجام",
+       "priority": "متوسط",
+       "progress": 50,
+       "created_at": 1793527200000,
+       "sprint": "",
+       "carried_over_from": "",
+       "ado_id": "",
+       "done_date": "",
+       "work_item_type": "",
+       "parent_ref": "",
+       "ado_priority": null,
+       "ado_notes": "",
+       "archived_at": null,
+       "meeting_uuid": "meet1",
+       "project_uuid": "proj",
+       "parent_uuid": null,
+       "owner_uuid": "ali",
+       "assignee_uuid": "sara",
+       "collaborator_uuids": [
+        "nima"
+       ]
+      },
+      {
+       "uuid": "act-child",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "start_date": "",
+       "subject": "زیر وظیفه",
+       "decision": "",
+       "due": "",
+       "status": "جدید",
+       "priority": "متوسط",
+       "progress": 0,
+       "created_at": 1793527200000,
+       "sprint": "",
+       "carried_over_from": "",
+       "ado_id": "",
+       "done_date": "",
+       "work_item_type": "",
+       "parent_ref": "",
+       "ado_priority": null,
+       "ado_notes": "",
+       "archived_at": null,
+       "meeting_uuid": null,
+       "project_uuid": null,
+       "parent_uuid": "act-parent",
+       "owner_uuid": null,
+       "assignee_uuid": null,
+       "collaborator_uuids": []
+      },
+      {
+       "uuid": "act-late-child",
+       "updated_at": 50,
+       "deleted_at": null,
+       "start_date": "",
+       "subject": "فرزند اول",
+       "decision": "",
+       "due": "",
+       "status": "جدید",
+       "priority": "متوسط",
+       "progress": 0,
+       "created_at": 1,
+       "meeting_uuid": null,
+       "project_uuid": null,
+       "parent_uuid": "act-parent",
+       "owner_uuid": "ghost",
+       "assignee_uuid": null,
+       "collaborator_uuids": [
+        "sara",
+        "ghost"
+       ],
+       "sprint": "",
+       "carried_over_from": "",
+       "ado_id": "",
+       "done_date": "",
+       "work_item_type": "",
+       "parent_ref": "",
+       "ado_priority": null,
+       "ado_notes": ""
+      }
+     ],
+     "progress_history": [
+      {
+       "uuid": "hist",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "update_date": "1405/08/20",
+       "old_progress": 0,
+       "new_progress": 50,
+       "note": "n",
+       "created_at": 1793527200000,
+       "action_uuid": "act-parent",
+       "author_name": ""
+      }
+     ],
+     "action_notes": [
+      {
+       "uuid": "note",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "body": "یادداشت",
+       "created_at": 1793527200000,
+       "action_uuid": "no-such-action",
+       "author_name": ""
+      }
+     ],
+     "checklist_items": [
+      {
+       "uuid": "check",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "title": "مورد",
+       "is_done": true,
+       "sort_order": 2,
+       "created_at": 1793527200000,
+       "action_uuid": "act-parent"
+      }
+     ],
+     "comments": [
+      {
+       "uuid": "comment-a",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "body": "نظر",
+       "created_at": 1793527200000,
+       "action_uuid": null,
+       "meeting_uuid": null,
+       "author_name": ""
+      },
+      {
+       "uuid": "comment-m",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "body": "نظر جلسه",
+       "created_at": 1793527200000,
+       "action_uuid": null,
+       "meeting_uuid": "meet1",
+       "author_name": ""
+      }
+     ]
+    }
+   },
+   "stats": {
+    "inserted": 16,
+    "updated": 0,
+    "deleted": 0,
+    "skipped": 1,
+    "orphaned": 2
+   },
+   "result": {
+    "format": "meeting-manager-sync",
+    "version": 1,
+    "exported_at": 0,
+    "tables": {
+     "person_categories": [
+      {
+       "uuid": "cat",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "name": "کارمند"
+      }
+     ],
+     "people": [
+      {
+       "uuid": "ali",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "name": "علی",
+       "department": "",
+       "role": "مدیر",
+       "category": "کارمند",
+       "is_active": 1,
+       "created_at": 1793527200000,
+       "category_uuid": "cat"
+      },
+      {
+       "uuid": "sara",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "name": "سارا",
+       "department": "",
+       "role": "",
+       "category": "",
+       "is_active": 1,
+       "created_at": 1793527200000,
+       "category_uuid": null
+      },
+      {
+       "uuid": "nima",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "name": "نیما",
+       "department": "",
+       "role": "",
+       "category": "",
+       "is_active": 0,
+       "created_at": 1793527200000,
+       "category_uuid": null
+      }
+     ],
+     "teams": [
+      {
+       "uuid": "team",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "name": "تیم ۱",
+       "description": "",
+       "is_active": true,
+       "manager_uuid": "ali",
+       "member_uuids": [
+        "nima",
+        "sara"
+       ]
+      }
+     ],
+     "locations": [
+      {
+       "uuid": "loc",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "name": "اتاق ۱",
+       "address": "",
+       "description": "",
+       "is_active": true
+      }
+     ],
+     "projects": [
+      {
+       "uuid": "proj",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "name": "پروژه",
+       "description": "",
+       "status": "فعال",
+       "start_date": "",
+       "end_date": "",
+       "progress": 40,
+       "created_at": 1793527200000,
+       "archived_at": null,
+       "manager_uuid": "ali",
+       "member_uuids": [
+        "sara"
+       ]
+      }
+     ],
+     "meetings": [
+      {
+       "uuid": "meet1",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "title": "جلسه ۱",
+       "meeting_date": "1405/08/20",
+       "time": "10:30",
+       "place": "",
+       "description": "",
+       "summary": "خلاصه",
+       "created_at": 1793527200000,
+       "project_uuid": "proj",
+       "attendee_uuids": [
+        "ali",
+        "sara"
+       ],
+       "linked_action_uuids": []
+      },
+      {
+       "uuid": "meet2",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "title": "جلسه ۲",
+       "meeting_date": "1405/08/21",
+       "time": "",
+       "place": "",
+       "description": "",
+       "summary": "",
+       "created_at": 1793527200000,
+       "project_uuid": null,
+       "attendee_uuids": [],
+       "linked_action_uuids": [
+        "act-parent"
+       ]
+      }
+     ],
+     "previous_items": [
+      {
+       "uuid": "prev",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "activity": "قبلی",
+       "owner_name_snapshot": "علی",
+       "status": "",
+       "progress": 30,
+       "note": "",
+       "meeting_uuid": "meet2",
+       "owner_uuid": "ali"
+      }
+     ],
+     "actions": [
+      {
+       "uuid": "act-parent",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "start_date": "",
+       "subject": "اقدام والد",
+       "decision": "",
+       "due": "1405/09/01",
+       "status": "در حال انجام",
+       "priority": "متوسط",
+       "progress": 50,
+       "created_at": 1793527200000,
+       "sprint": "",
+       "carried_over_from": "",
+       "ado_id": "",
+       "done_date": "",
+       "work_item_type": "",
+       "parent_ref": "",
+       "ado_priority": null,
+       "ado_notes": "",
+       "archived_at": null,
+       "meeting_uuid": "meet1",
+       "project_uuid": "proj",
+       "parent_uuid": null,
+       "owner_uuid": "ali",
+       "assignee_uuid": "sara",
+       "collaborator_uuids": [
+        "nima"
+       ]
+      },
+      {
+       "uuid": "act-child",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "start_date": "",
+       "subject": "زیر وظیفه",
+       "decision": "",
+       "due": "",
+       "status": "جدید",
+       "priority": "متوسط",
+       "progress": 0,
+       "created_at": 1793527200000,
+       "sprint": "",
+       "carried_over_from": "",
+       "ado_id": "",
+       "done_date": "",
+       "work_item_type": "",
+       "parent_ref": "",
+       "ado_priority": null,
+       "ado_notes": "",
+       "archived_at": null,
+       "meeting_uuid": null,
+       "project_uuid": null,
+       "parent_uuid": "act-parent",
+       "owner_uuid": null,
+       "assignee_uuid": null,
+       "collaborator_uuids": []
+      },
+      {
+       "uuid": "act-late-child",
+       "updated_at": 50,
+       "deleted_at": null,
+       "start_date": "",
+       "subject": "فرزند اول",
+       "decision": "",
+       "due": "",
+       "status": "جدید",
+       "priority": "متوسط",
+       "progress": 0,
+       "created_at": 1,
+       "sprint": "",
+       "carried_over_from": "",
+       "ado_id": "",
+       "done_date": "",
+       "work_item_type": "",
+       "parent_ref": "",
+       "ado_priority": null,
+       "ado_notes": "",
+       "archived_at": null,
+       "meeting_uuid": null,
+       "project_uuid": null,
+       "parent_uuid": "act-parent",
+       "owner_uuid": null,
+       "assignee_uuid": null,
+       "collaborator_uuids": [
+        "sara"
+       ]
+      }
+     ],
+     "progress_history": [
+      {
+       "uuid": "hist",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "update_date": "1405/08/20",
+       "old_progress": 0,
+       "new_progress": 50,
+       "note": "n",
+       "created_at": 1793527200000,
+       "action_uuid": "act-parent",
+       "author_name": ""
+      }
+     ],
+     "action_notes": [],
+     "checklist_items": [
+      {
+       "uuid": "check",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "title": "مورد",
+       "is_done": true,
+       "sort_order": 2,
+       "created_at": 1793527200000,
+       "action_uuid": "act-parent"
+      }
+     ],
+     "comments": [
+      {
+       "uuid": "comment-m",
+       "updated_at": 1793527200000,
+       "deleted_at": null,
+       "body": "نظر جلسه",
+       "created_at": 1793527200000,
+       "action_uuid": null,
+       "meeting_uuid": "meet1",
+       "author_name": ""
+      }
+     ]
+    }
+   }
+  }
+ ]
+}
