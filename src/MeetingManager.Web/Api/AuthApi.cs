@@ -12,13 +12,15 @@ public static class AuthApi
         {
             var x = await Http.Body<LoginIn>(c);
             var name = x.Username.Trim();
+            LoginThrottle.Check(name);
             var u = db.Users.FirstOrDefault(z => z.Username == name);
-            if (u == null || !Security.VerifyPw(x.Password, u.PasswordHash) || !u.IsActive) throw new ApiException(401, "نام کاربری یا رمز عبور صحیح نیست.");
+            if (u == null || !Security.VerifyPw(x.Password, u.PasswordHash) || !u.IsActive) { LoginThrottle.Fail(name); throw new ApiException(401, "نام کاربری یا رمز عبور صحیح نیست."); }
+            LoginThrottle.Reset(name);
             var tok = Security.NewToken();
             db.Sessions.Add(new UserSession { TokenHash = Security.TokenHash(tok), UserId = u.Id, ExpiresAt = Clock.Now().AddDays(7) });
             u.LastLogin = Clock.Now();
             db.SaveChanges();
-            return Http.Ok(new { token = tok, user = Views.UserMe(u) });
+            return Http.Ok(new { token = tok, user = Views.UserMe(u), default_password = IsDefaultPassword(u) });
         });
         app.MapPost("/api/auth/logout", (HttpContext c, AppDb db) =>
         {
@@ -32,12 +34,24 @@ public static class AuthApi
             return Http.Done();
         });
         app.MapGet("/api/auth/me", (HttpContext c, AppDb db) => Http.Ok(Views.UserMe(Security.Current(c, db))));
+        app.MapGet("/api/auth/security", (HttpContext c, AppDb db) => Http.Ok(new { default_password = IsDefaultPassword(Security.Current(c, db)) }));
+        app.MapPost("/api/auth/ticket", async (HttpContext c, AppDb db) =>
+        {
+            var u = Security.Current(c, db);
+            var x = await Http.Body<TicketIn>(c);
+            if (!Tickets.Allowed(x.Url ?? "")) throw new ApiException(400, "این آدرس قابل دانلود نیست.");
+            return Http.Ok(new { ticket = Tickets.Issue(u.Id, x.Url!) });
+        });
         app.MapPost("/api/auth/password", async (HttpContext c, AppDb db) =>
         {
             var u = Security.Current(c, db);
             var x = (await Http.Body<PasswordIn>(c)).Validate();
             if (!Security.VerifyPw(x.CurrentPassword, u.PasswordHash)) throw new ApiException(400, "رمز عبور فعلی صحیح نیست.");
             u.PasswordHash = Security.HashPw(x.NewPassword);
+            // other devices must log in again with the new password
+            var keep = Security.TokenOf(c.Request);
+            var keepHash = keep == null ? "" : Security.TokenHash(keep);
+            db.Sessions.RemoveRange(db.Sessions.Where(s => s.UserId == u.Id && s.TokenHash != keepHash).ToList());
             db.SaveChanges();
             return Http.Done();
         });
@@ -74,6 +88,7 @@ public static class AuthApi
             if (x.PersonId != null && x.PersonId != 0) Http.PersonOrThrow(db, x.PersonId);
             z.Username = x.Username; z.FullName = x.FullName; z.Role = x.Role; z.PersonId = x.PersonId; z.IsActive = x.IsActive;
             if (!string.IsNullOrEmpty(x.Password)) z.PasswordHash = Security.HashPw(x.Password);
+            if (!string.IsNullOrEmpty(x.Password) || !x.IsActive) db.Sessions.RemoveRange(db.Sessions.Where(s => s.UserId == uid).ToList());
             db.SaveChanges();
             Http.Audit(db, u, "user", uid, "update");
             return Http.Ok(Views.UserView(z));
@@ -135,6 +150,9 @@ public static class AuthApi
             return Http.Done();
         });
     }
+
+    /// <summary>The seeded admin account still has its well-known password: the UI warns until it is changed.</summary>
+    static bool IsDefaultPassword(User u) => u.Username == "admin" && Security.VerifyPw("Admin@123", u.PasswordHash);
 
     static object NoteDict(NoteItem n) => new { id = n.Id, text = n.Text, category = n.Category, done = n.Done };
     static NoteItem Own(AppDb db, User u, int id)

@@ -71,10 +71,11 @@ public static class ExportApi
         return ms.Where(m => (f == "" && t == "") || (m.MeetingDate != "" && (f == "" || string.CompareOrdinal(m.MeetingDate, f) >= 0) && (t == "" || string.CompareOrdinal(m.MeetingDate, t) <= 0))).ToList();
     }
 
-    static IResult Pdf(byte[] data, string name)
+    static IResult Pdf(HttpContext c, byte[] data, string name)
     {
         if (data.Length == 0) throw new ApiException(500, "ساخت PDF ناموفق بود: خروجی خالی است.");
-        return Results.File(data, "application/pdf", name);
+        // inline=1: shown in the browser (print preview) instead of saved as a file
+        return c.Request.Query["inline"] == "1" ? Results.File(data, "application/pdf") : Results.File(data, "application/pdf", name);
     }
 
     public static void Map(WebApplication app)
@@ -117,7 +118,7 @@ public static class ExportApi
             var u = Security.Require(c, db, "actions.export");
             var f = ParseFilter(c.Request);
             var acts = Actions(db, u, Http.IdList(c.Request.Query["ids"]), f);
-            return Pdf(PdfExport.Actions(ReportModel.Actions(acts, u.FullName)), "actions.pdf");
+            return Pdf(c, PdfExport.Actions(ReportModel.Actions(acts, u.FullName)), "actions.pdf");
         });
         app.MapGet("/api/export/actions.docx", (HttpContext c, AppDb db) =>
         {
@@ -135,7 +136,7 @@ public static class ExportApi
         {
             Security.Require(c, db, "meetings.export");
             var rng = Range(c.Request);
-            return Pdf(PdfExport.Meetings(ReportModel.Meetings(Meetings(db, Http.IdList(c.Request.Query["ids"]), rng))), "meetings.pdf");
+            return Pdf(c, PdfExport.Meetings(ReportModel.Meetings(Meetings(db, Http.IdList(c.Request.Query["ids"]), rng))), "meetings.pdf");
         });
         app.MapGet("/api/export/meetings.xlsx", (HttpContext c, AppDb db) =>
         {

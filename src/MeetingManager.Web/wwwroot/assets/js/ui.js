@@ -87,30 +87,19 @@ const badge = s => `<span class="badge ${s === 'انجام شده' ? 'done' : s 
 const progressBar = pct => `<div class="progressbar" role="progressbar" aria-valuenow="${pct}" aria-valuemin="0" aria-valuemax="100"><i style="width:${pct}%"></i></div>`;
 
 /* ───────── File download (Excel / Word / PDF / backup) ───────── */
+/** Asks the server for a short-lived ticket so the file URL works on its own (also for download managers such as IDM). */
+async function ticketUrl(url) {
+  const { ticket } = await api('/api/auth/ticket', { method: 'POST', body: JSON.stringify({ url }) });
+  return url + (url.includes('?') ? '&' : '?') + 'ticket=' + ticket;
+}
 async function download(url, name) {
   try {
-    const full = url + (url.includes('?') ? '&' : '?') + '_mm=' + Date.now();
-    const r = await fetch(full, { headers: { 'X-Session-Token': token }, cache: 'no-store' });
-    if (!r.ok) {
-      const j = await r.json().catch(() => null);
-      throw Error(typeof j?.detail === 'string' ? j.detail : `خطا در دریافت فایل (${r.status})`);
-    }
-    const blob = await r.blob();
-    if (!blob.size) {
-      throw Error(`سرور فایل خالی برگرداند (HTTP ${r.status}، ${r.headers.get('content-type') || 'بدون نوع'}). برنامه را کامل ببندید و دوباره اجرا کنید؛ اگر ادامه داشت، آدرس /api/health را در مرورگر باز کنید و نتیجه را بفرستید.`);
-    }
-    if (name.toLowerCase().endsWith('.pdf')) {
-      const head = new TextDecoder().decode(new Uint8Array(await blob.slice(0, 5).arrayBuffer()));
-      if (head !== '%PDF-') throw Error('فایل PDF معتبر از سرور دریافت نشد.');
-    }
-    const href = URL.createObjectURL(blob);
-    const a = Object.assign(document.createElement('a'), { href, download: name });
+    const a = Object.assign(document.createElement('a'), { href: await ticketUrl(url), download: name });
     a.style.display = 'none';
     document.body.appendChild(a);
     a.click();
     a.remove();
-    setTimeout(() => URL.revokeObjectURL(href), 10000);
-    toast(`فایل ${name} آماده شد.`);
+    toast(`دریافت ${name} شروع شد.`);
   } catch (e) { toast(e.message); }
 }
 
@@ -125,26 +114,14 @@ function getPrintFrame() {
   return printFrame;
 }
 
-/** Fetch a PDF and send it straight to the browser's print dialog, with no file ever saved to disk. */
+/** Opens a PDF in the browser's print dialog, with no file ever saved to disk. */
 async function printPdf(url) {
   try {
-    const full = url + (url.includes('?') ? '&' : '?') + '_mm=' + Date.now();
-    const r = await fetch(full, { headers: { 'X-Session-Token': token }, cache: 'no-store' });
-    if (!r.ok) {
-      const j = await r.json().catch(() => null);
-      throw Error(typeof j?.detail === 'string' ? j.detail : `خطا در دریافت فایل (${r.status})`);
-    }
-    const blob = await r.blob();
-    if (!blob.size) throw Error('سرور فایل خالی برگرداند.');
-    const head = new TextDecoder().decode(new Uint8Array(await blob.slice(0, 5).arrayBuffer()));
-    if (head !== '%PDF-') throw Error('فایل PDF معتبر از سرور دریافت نشد.');
-    const href = URL.createObjectURL(blob);
     const frame = getPrintFrame();
     frame.onload = () => {
       try { frame.contentWindow.focus(); frame.contentWindow.print(); }
-      catch (e) { toast('مرورگر اجازه چاپ مستقیم را نداد؛ فایل را دانلود کنید.'); }
+      catch (e) { toast('مرورگر اجازه‌ی چاپ مستقیم را نداد؛ فایل را دانلود کنید.'); }
     };
-    frame.src = href;
-    setTimeout(() => URL.revokeObjectURL(href), 60000);
+    frame.src = await ticketUrl(url + (url.includes('?') ? '&' : '?') + 'inline=1');
   } catch (e) { toast(e.message); }
 }

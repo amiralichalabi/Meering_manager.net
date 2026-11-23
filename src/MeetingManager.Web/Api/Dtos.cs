@@ -75,7 +75,7 @@ public class ProfileIn
     {
         BirthDate = V.Date(BirthDate);
         if (Avatar.Length > 400000) throw new ApiException(422, "اطلاعات واردشده معتبر نیست.");
-        if (Avatar != "" && !Avatar.StartsWith("data:image/")) throw new ApiException(422, "تصویر نامعتبر است.");
+        if (Avatar != "" && !Regex.IsMatch(Avatar, "^data:image/(png|jpeg|gif|webp);base64,[A-Za-z0-9+/=]+$")) throw new ApiException(422, "تصویر نامعتبر است.");
         return this;
     }
 }
@@ -165,3 +165,5 @@ public class AssistantIn
     public AssistantIn Validate() { V.Text(Question, "سؤال", 1, 2000); if (History.Count > 20) throw new ApiException(422, "اطلاعات واردشده معتبر نیست."); return this; }
 }
 public class AssistantConfigIn { public string Url { get; set; } = ""; public string Model { get; set; } = ""; public string Timeout { get; set; } = ""; }
+
+public class TicketIn { public string? Url { get; set; } }

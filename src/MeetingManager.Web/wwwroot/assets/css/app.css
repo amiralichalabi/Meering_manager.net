@@ -409,3 +409,15 @@ body.dark .cal-chip.meeting{color:#93c5fd}body.dark .cal-chip.action{color:#fcd3
 .bubble.me{align-self:flex-start;background:var(--brand-soft);border:1px solid transparent}
 .bubble.bot{align-self:flex-end;background:var(--panel);border:1px solid var(--line)}
 .chatwait{align-self:flex-end}
+
+/* Import / export page */
+.io-head{display:flex;align-items:baseline;gap:var(--s2);margin:var(--s3) 0 var(--s1)}
+.io-head:first-child{margin-top:0}
+.io-head h3{margin:0}
+.io-wide{grid-column:span 2}
+.dropzone{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;min-height:120px;padding:var(--s3);border:2px dashed var(--line,#cbd5e1);border-radius:14px;background:var(--surface-2,#f8fafc);cursor:pointer;text-align:center;transition:border-color .15s,background .15s}
+.dropzone:hover,.dropzone.over{border-color:var(--brand,#2563eb);background:color-mix(in srgb,var(--brand,#2563eb) 8%,transparent)}
+.import-result{margin-top:var(--s2)}
+.import-ok{padding:10px 14px;border-radius:10px;background:color-mix(in srgb,#16a34a 12%,transparent);color:#166534}
+.import-warn{margin:var(--s1) 0 0;padding-inline-start:20px;color:#92400e;font-size:.9em}
+@media(max-width:1000px){.io-wide{grid-column:span 1}}

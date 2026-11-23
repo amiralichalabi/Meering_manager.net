@@ -1,7 +1,7 @@
 /* Meeting Manager Pro — application screens.
    Load order: jalali.js → ui.js → datepicker.js → charts.js → calendar.js → app.js */
 let currentSection = 'dashboard';
-const SECTION_TITLES = { dashboard: 'صفحه اصلی', meetings: 'جلسات', actions: 'اقدامات', projects: 'پروژه‌ها', calendar: 'تقویم', people: 'افراد و تیم‌ها', reports: 'خروجی و پشتیبان‌گیری', assistant: 'دستیار هوشمند', notes: 'یادداشت‌های من', access: 'دسترسی‌ها و مجوزها' };
+const SECTION_TITLES = { dashboard: 'صفحه اصلی', meetings: 'جلسات', actions: 'اقدامات', projects: 'پروژه‌ها', calendar: 'تقویم', people: 'افراد و تیم‌ها', reports: 'ورودی و خروجی', assistant: 'دستیار هوشمند', notes: 'یادداشت‌های من', access: 'دسترسی‌ها و مجوزها' };
 const STATUS_COLORS = { 'انجام شده': '#16a34a', 'در حال انجام': '#2563eb', 'جدید': '#64748b', 'عقب‌افتاده': '#dc2626' };
 const ids = text => (text || '').split(',').filter(Boolean).map(Number);
 
@@ -12,6 +12,7 @@ async function login() {
     token = r.token;
     localStorage.setItem('mm_token', token);
     await start();
+    if (r.default_password) setTimeout(() => toast('هشدار: رمز عبور پیش‌فرض مدیر هنوز عوض نشده است؛ از منوی پروفایل آن را تغییر دهید.'), 600);
   } catch (e) { toast(e.message); }
 }
 
@@ -428,8 +429,12 @@ async function importTaskSheet(input) {
     const j = await r.json().catch(() => ({}));
     if (!r.ok) throw Error(typeof j.detail === 'string' ? j.detail : `خطا (${r.status})`);
     toast(`${fa(j.created)} اقدام جدید، ${fa(j.updated)} به‌روزرسانی${j.problems.length ? `، ${fa(j.problems.length)} هشدار` : ''}`);
-    if (j.problems.length) alert(j.problems.join('\n'));
-    await refresh(); goActions();
+    const box = $('importResult');
+    if (box) {
+      box.innerHTML = `<div class="import-ok"><b>${fa(j.created)}</b> اقدام جدید · <b>${fa(j.updated)}</b> به‌روزرسانی${j.skipped ? ` · <b>${fa(j.skipped)}</b> ردشده` : ''}</div>`
+        + (j.problems.length ? `<ul class="import-warn">${j.problems.map(x => `<li>${esc(x)}</li>`).join('')}</ul>` : '');
+      await refresh();
+    } else { if (j.problems.length) alert(j.problems.join('\n')); await refresh(); goActions(); }
   } catch (e) { toast(e.message || 'ورود فایل ناموفق بود.'); }
 }
 const exportAll = (base, format) => download(`/api/export/${base}.${format}`, `${base}.${format}`);
@@ -549,12 +554,28 @@ async function renderAssistant() {
   try { st = await api('/api/assistant/status'); } catch (e) { /* shown below */ }
   $('assistant').innerHTML = `<div class="section">
     <div class="sectionhead"><div><h3>دستیار هوشمند (مدل محلی)</h3><span class="muted">فقط از داده‌هایی که خودتان اجازه‌ی دیدنشان را دارید جواب می‌دهد و چیزی را تغییر نمی‌دهد.</span></div>
-      <span class="muted">${st.ok ? 'مدل: ' + esc(st.model) : 'مدل در دسترس نیست — ' + esc(st.error || '')}</span></div>
+      <span class="muted" id="chatStatus">${assistantStatusText(st)}</span></div>
     <div id="chatLog" class="chatlog">${assistantHistory.map(chatBubble).join('') || '<div class="empty">مثلاً: «اقدام‌های عقب‌افتاده‌ی اسپرینت ۲ کدامند؟» یا «خلاصه‌ی جلسات این ماه»</div>'}</div>
     <div class="searchbar"><input class="search" id="chatInput" placeholder="سؤال خود را بنویسید" onkeydown="if(event.key==='Enter')sendAssistant()"><button class="btn" id="chatSend" onclick="sendAssistant()">ارسال</button>
       <button class="btn secondary" onclick="assistantHistory=[];renderAssistant()">پاک کردن گفتگو</button>
       ${state.user.role === 'admin' ? '<button class="btn secondary" onclick="openAssistantConfig()">تنظیم اتصال مدل</button>' : ''}</div></div>`;
   scrollChat();
+  watchAssistant(st);
+}
+const assistantStatusText = st => st.ok ? '● مدل متصل است: ' + esc(st.model) : '○ مدل در دسترس نیست — ' + esc(st.error || '') + ' (هر چند ثانیه خودکار دوباره تلاش می‌شود)';
+/** While the assistant page is open, keeps checking the model server and connects by itself as soon as it is reachable. */
+let assistantWatch = null, assistantWasOk = null;
+function watchAssistant(first) {
+  assistantWasOk = first.ok;
+  clearInterval(assistantWatch);
+  assistantWatch = setInterval(async () => {
+    if ($('assistant').classList.contains('hide') || !token) { clearInterval(assistantWatch); assistantWatch = null; return; }
+    let st = { ok: false };
+    try { st = await api('/api/assistant/status'); } catch (e) { /* offline */ }
+    const el = $('chatStatus'); if (el) el.innerHTML = assistantStatusText(st);
+    if (st.ok && assistantWasOk === false) toast('مدل محلی متصل شد.');
+    assistantWasOk = st.ok;
+  }, 8000);
 }
 const chatBubble = m => `<div class="bubble ${m.role === 'user' ? 'me' : 'bot'}"><b>${m.role === 'user' ? 'شما' : 'دستیار'}</b><div>${esc(m.content)}</div></div>`;
 const scrollChat = () => { const l = $('chatLog'); if (l) l.scrollTop = l.scrollHeight; };
@@ -601,7 +622,7 @@ async function openSprints() {
   const rows = state.sprints.map((s, i) => `<tr><td>${fa(i + 1)}</td><td><b>${esc(s.name)}</b></td><td>${s.start_date || s.end_date ? `${fd(s.start_date) || '—'} تا ${fd(s.end_date) || '—'}` : '—'}</td>
     <td>${esc((state.projects.find(p => p.id === s.project_id) || {}).name || '—')}</td><td>${fa(s.actions)}</td>
     <td>${can ? `<button class="btn secondary small" onclick="editSprint(${i})">ویرایش</button> ${s.id ? `<button class="btn danger small" onclick="deleteSprint(${s.id})">حذف</button>` : ''}` : ''}
-      <button class="btn secondary small" onclick="closeModal();goActions({sprint:${JSON.stringify(s.name).replace(/"/g, '&quot;')}})">اقدام‌ها</button></td></tr>`).join('');
+      <button class="btn secondary small" onclick="closeModal();goActions({sprint:state.sprints[${i}].name})">اقدام‌ها</button></td></tr>`).join('');
   modal(mh('اسپرینت‌ها', `
     <div class="tablewrap"><table class="table"><thead><tr><th>ردیف</th><th>نام</th><th>بازه</th><th>پروژه</th><th>اقدام</th><th></th></tr></thead><tbody>${rows || '<tr><td colspan="6" class="empty">هنوز اسپرینتی ثبت نشده است.</td></tr>'}</tbody></table></div>
     ${can ? `<div class="section"><h3 id="sprintFormTitle">اسپرینت جدید</h3><div class="grid">
@@ -984,16 +1005,27 @@ async function addCategory() {
   catch (e) { toast(e.message); }
 }
 
-/* ───────── Reports & backup ───────── */
+/* ───────── Import & export ───────── */
 function renderReports() {
-  const canM = has('meetings.export'), canA = has('actions.export'), canB = has('backup.manage');
-  const buttons = (base, can, label) => can ? ['xlsx', 'docx', 'pdf'].map(f => `<button class="btn" onclick="download('/api/export/${base}.${f}','${base}.${f}')">${{ xlsx: 'Excel', docx: 'Word', pdf: 'PDF' }[f]}</button>`).join('') : `<span class="muted">مجوز خروجی ${label} ندارید.</span>`;
-  const printBtn = (base, can, label) => can ? `<button class="btn secondary" onclick="printPdf('/api/export/${base}.pdf')">چاپ PDF ${label}</button>` : '';
-  $('reports').innerHTML = `<div class="grid3 export-grid">
-    <div class="section"><h3>خروجی جلسات</h3><p class="muted">Word، PDF و Excel با ساختار راست‌به‌چپ.</p><div class="toolbar">${buttons('meetings', canM, 'جلسات')}</div></div>
-    <div class="section"><h3>خروجی اقدامات</h3><p class="muted">فقط اقداماتی که طبق سطح دسترسی شما مجاز هستند.</p><div class="toolbar">${buttons('actions', canA, 'اقدامات')}</div></div>
-    <div class="section"><h3>پشتیبان‌گیری</h3><p class="muted">نسخه‌ی پشتیبان از پایگاه داده تهیه می‌شود.</p>${canB ? `<button class="btn success" onclick="download('/api/backup','meeting_manager_backup.db')">Backup Database</button>` : '<span class="muted">مجوز پشتیبان‌گیری ندارید.</span>'}</div>
-    <div class="section"><h3>چاپ مستقیم PDF</h3><p class="muted">بدون دانلود فایل؛ مستقیماً در پنجره‌ی چاپ مرورگر باز می‌شود.</p><div class="toolbar">${printBtn('meetings', canM, 'جلسات') || (canM ? '' : '<span class="muted">مجوز خروجی جلسات ندارید.</span>')}${printBtn('actions', canA, 'اقدامات') || (canA ? '' : '<span class="muted">مجوز خروجی اقدامات ندارید.</span>')}</div></div></div>`;
+  const canM = has('meetings.export'), canA = has('actions.export'), canB = has('backup.manage'), canI = has('actions.manage');
+  const no = label => `<span class="muted">مجوز ${label} ندارید.</span>`;
+  const fmt = (base, can, label) => can ? ['xlsx', 'docx', 'pdf'].map(f => `<button class="btn" onclick="download('/api/export/${base}.${f}','${base}.${f}')">${{ xlsx: 'Excel', docx: 'Word', pdf: 'PDF' }[f]}</button>`).join('') + `<button class="btn secondary" onclick="printPdf('/api/export/${base}.pdf')">چاپ PDF</button>` : no('خروجی ' + label);
+  $('reports').innerHTML = `
+    <div class="io-head"><h3>خروجی</h3><span class="muted">فایل‌ها طبق سطح دسترسی شما ساخته می‌شوند.</span></div>
+    <div class="grid3 export-grid">
+      <div class="section"><h3>جلسات</h3><p class="muted">Word، PDF و Excel با ساختار راست‌به‌چپ؛ اقدام‌ها به تفکیک اسپرینت.</p><div class="toolbar">${fmt('meetings', canM, 'جلسات')}</div>${canM ? '<div class="toolbar"><button class="btn secondary" onclick="openExportFilter(\'meetings\',\'docx\')">خروجی بازه‌ای…</button></div>' : ''}</div>
+      <div class="section"><h3>اقدامات</h3><p class="muted">فقط اقداماتی که اجازه‌ی دیدنشان را دارید.</p><div class="toolbar">${fmt('actions', canA, 'اقدامات')}</div>${canA ? '<div class="toolbar"><button class="btn secondary" onclick="openExportFilter(\'actions\',\'xlsx\')">خروجی بازه‌ای / اسپرینت…</button></div>' : ''}</div>
+      <div class="section"><h3>فایل Excel تسک‌ها</h3><p class="muted">همان قالب Full_Tasks (شیت Items) که می‌توان دوباره وارد برنامه کرد.</p>${canA ? '<div class="toolbar"><button class="btn" onclick="exportTaskSheet(false)">دریافت Full_Tasks.xlsx</button></div>' : no('خروجی اقدامات')}</div>
+    </div>
+    <div class="io-head"><h3>ورودی</h3><span class="muted">فایل Excel تسک‌ها را وارد کنید؛ تسک‌های تکراری به‌روزرسانی و بقیه اضافه می‌شوند.</span></div>
+    <div class="grid3 export-grid">
+      <div class="section io-wide"><h3>ورود از Excel تسک‌ها</h3>
+        ${canI ? `<label class="dropzone" id="taskDrop" ondragover="event.preventDefault();this.classList.add('over')" ondragleave="this.classList.remove('over')" ondrop="event.preventDefault();this.classList.remove('over');importTaskSheet({files:event.dataTransfer.files,value:''})">
+          <input type="file" id="taskSheetFile" accept=".xlsx" hidden onchange="importTaskSheet(this)">
+          <b>فایل .xlsx را اینجا رها کنید</b><span class="muted">یا برای انتخاب فایل کلیک کنید (شیت Items)</span></label>
+          <div id="importResult" class="import-result"></div>` : no('ورود اقدامات')}</div>
+      <div class="section"><h3>پشتیبان‌گیری</h3><p class="muted">یک نسخه از پایگاه داده دریافت می‌شود.</p>${canB ? `<button class="btn success" onclick="download('/api/backup','meeting_manager_backup.db')">دریافت نسخه‌ی پشتیبان</button>` : no('پشتیبان‌گیری')}</div>
+    </div>`;
 }
 
 /* ───────── Users & permissions ───────── */
@@ -1039,7 +1071,7 @@ async function saveRolePerm(role) {
 
 /* ───────── Profile & password ───────── */
 function setAvatar(el, u) {
-  if (u.avatar) { el.textContent = ''; el.style.backgroundImage = `url(${u.avatar})`; el.style.backgroundSize = 'cover'; el.style.backgroundPosition = 'center'; }
+  if (u.avatar && /^data:image\/(png|jpeg|gif|webp);base64,[A-Za-z0-9+\/=]+$/.test(u.avatar)) { el.textContent = ''; el.style.backgroundImage = `url("${u.avatar}")`; el.style.backgroundSize = 'cover'; el.style.backgroundPosition = 'center'; }
   else { el.style.backgroundImage = ''; el.textContent = (u.full_name || u.username || 'م').slice(0, 1); }
 }
 /** Shrinks a chosen photo to a small square JPEG (data URL) so it stays light in the database. */

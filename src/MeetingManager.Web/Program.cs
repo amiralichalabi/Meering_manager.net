@@ -10,10 +10,29 @@ DbInit.Migrate();
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<AppDb>(o => o.UseSqlite(DbInit.ConnectionString()));
+builder.WebHost.ConfigureKestrel(k => { k.AddServerHeader = false; k.Limits.MaxRequestBodySize = 64 * 1024 * 1024; });
 builder.WebHost.UseUrls(Environment.GetEnvironmentVariable("MM_URLS") ?? "http://127.0.0.1:8000");
 
 var app = builder.Build();
 using (var scope = app.Services.CreateScope()) DbInit.Seed(scope.ServiceProvider.GetRequiredService<AppDb>());
+
+// Hardening: no sniffing, no framing, no referrer leaks, no caching of API answers, and a content security policy.
+app.Use(async (ctx, next) =>
+{
+    var h = ctx.Response.Headers;
+    h["X-Content-Type-Options"] = "nosniff";
+    h["X-Frame-Options"] = "DENY";
+    h["Referrer-Policy"] = "no-referrer";
+    h["Content-Security-Policy"] = "default-src 'self'; img-src 'self' data: blob:; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; font-src 'self' data:; frame-src 'self' blob:; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'";
+    if (ctx.Request.Path.StartsWithSegments("/api")) h["Cache-Control"] = "no-store";
+    await next();
+});
+// Download links carry a short-lived ticket instead of the session header (see Tickets).
+app.Use(async (ctx, next) =>
+{
+    if (HttpMethods.IsGet(ctx.Request.Method) && ctx.Request.Query.ContainsKey("ticket") && Tickets.Resolve(ctx.Request) is int uid) ctx.Items["ticket_uid"] = uid;
+    await next();
+});
 
 // Every error answers with {"detail": "..."}: the UI shows it as a toast.
 app.Use(async (ctx, next) =>
