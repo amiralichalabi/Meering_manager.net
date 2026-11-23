@@ -26,10 +26,13 @@ public class ApiFixture : IDisposable
 }
 
 [Collection("assistant")]
-public class ApiTests : IClassFixture<ApiFixture>
+public class ApiTests : IDisposable
 {
+    // A fresh host and database per test: the tests must not see each other's data.
+    readonly ApiFixture _f = new();
     readonly HttpClient _c;
-    public ApiTests(ApiFixture f) { _c = f.Client; }
+    public ApiTests() { _c = _f.Client; }
+    public void Dispose() => _f.Dispose();
 
     static StringContent J(object o) => new(JsonSerializer.Serialize(o), Encoding.UTF8, "application/json");
     HttpRequestMessage Req(HttpMethod m, string url, string? token, object? body = null)
@@ -152,7 +155,7 @@ public class ApiTests : IClassFixture<ApiFixture>
         // archive / delete
         await Json(HttpMethod.Post, $"/api/actions/{aid}/archive", t);
         Assert.Equal(0, (await Json(HttpMethod.Get, "/api/actions", t)).GetArrayLength());
-        Assert.Equal(1, (await Json(HttpMethod.Get, "/api/actions?archived=1", t)).GetArrayLength());
+        Assert.Equal(2, (await Json(HttpMethod.Get, "/api/actions?archived=1", t)).GetArrayLength()); // the action and its subtask
         await Json(HttpMethod.Delete, $"/api/actions/{aid}", t);
         await Json(HttpMethod.Delete, $"/api/projects/{pid}", t);
         await Json(HttpMethod.Delete, $"/api/meetings/{meeting.GetProperty("id").GetInt32()}", t);
