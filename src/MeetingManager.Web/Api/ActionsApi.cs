@@ -109,6 +109,17 @@ public static class ActionsApi
             db.ActionNotes.Add(n); db.SaveChanges();
             return Http.Ok(new { id = n.Id });
         });
+        app.MapDelete("/api/actions/{aid:int}/notes/{nid:int}", (int aid, int nid, HttpContext c, AppDb db) =>
+        {
+            var u = Security.Require(c, db, "actions.manage");
+            Load(db, u, aid);
+            var n = db.ActionNotes.FirstOrDefault(x => x.Id == nid && x.ActionId == aid) ?? throw new ApiException(404, "یادداشت پیدا نشد.");
+            // everyone may remove their own note; admins and managers may remove any
+            if (n.UserId != u.Id && u.Role is not ("admin" or "manager")) throw new ApiException(403, "فقط نویسنده‌ی یادداشت یا مدیر می‌تواند آن را حذف کند.");
+            db.ActionNotes.Remove(n); db.SaveChanges();
+            Http.Audit(db, u, "action", aid, "delete_note");
+            return Http.Done();
+        });
         app.MapPost("/api/actions/{aid:int}/checklist", async (int aid, HttpContext c, AppDb db) =>
         {
             var u = Security.Require(c, db, "actions.manage");

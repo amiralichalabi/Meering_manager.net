@@ -119,6 +119,9 @@ public class ApiTests : IDisposable
         Assert.Equal("در حال انجام", reopened.GetProperty("status").GetString());
 
         await Json(HttpMethod.Post, $"/api/actions/{aid}/checklist", t, new { title = "مورد", is_done = false });
+        var note = await Json(HttpMethod.Post, $"/api/actions/{aid}/notes", t, new { body = "یادداشت" });
+        await Json(HttpMethod.Delete, $"/api/actions/{aid}/notes/{note.GetProperty("id").GetInt32()}", t);
+        Assert.Equal(0, (await Json(HttpMethod.Get, $"/api/actions?q={Uri.EscapeDataString("گزارش")}", t))[0].GetProperty("notes").GetArrayLength());
         await Json(HttpMethod.Post, $"/api/actions/{aid}/notes", t, new { body = "یادداشت" });
         await Json(HttpMethod.Post, $"/api/actions/{aid}/comments", t, new { body = "نظر" });
         await Json(HttpMethod.Post, $"/api/actions/{aid}/subtasks", t, new { subject = "زیرکار" });

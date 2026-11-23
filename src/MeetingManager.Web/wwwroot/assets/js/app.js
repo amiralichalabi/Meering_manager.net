@@ -1,7 +1,7 @@
 /* Meeting Manager Pro — application screens.
    Load order: jalali.js → ui.js → datepicker.js → charts.js → calendar.js → app.js */
 let currentSection = 'dashboard';
-const SECTION_TITLES = { dashboard: 'صفحه اصلی', meetings: 'جلسات', actions: 'اقدامات', projects: 'پروژه‌ها', calendar: 'تقویم', people: 'افراد و تیم‌ها', reports: 'ورودی و خروجی', assistant: 'دستیار هوشمند', notes: 'یادداشت‌های من', access: 'دسترسی‌ها و مجوزها' };
+const SECTION_TITLES = { dashboard: 'صفحه اصلی', meetings: 'جلسات', actions: 'اقدامات', projects: 'پروژه‌ها', calendar: 'تقویم', people: 'افراد و تیم‌ها', reports: 'خروجی و پشتیبان‌گیری', imports: 'ورودی', assistant: 'دستیار هوشمند', notes: 'یادداشت‌های من', access: 'دسترسی‌ها و مجوزها' };
 const STATUS_COLORS = { 'انجام شده': '#16a34a', 'در حال انجام': '#2563eb', 'جدید': '#64748b', 'عقب‌افتاده': '#dc2626' };
 const ids = text => (text || '').split(',').filter(Boolean).map(Number);
 
@@ -55,6 +55,7 @@ async function start() {
   $('userName').textContent = state.user.full_name;
   $('userRole').textContent = ROLE_LABEL[state.user.role] || state.user.role;
   setAvatar($('profileAvatar'), state.user);
+  $('importNav').classList.toggle('hide', !has('actions.manage'));
   $('accessNav').classList.toggle('hide', !has('users.manage') && !has('permissions.manage'));
   MiniCal.render();
   checkServerVersion();
@@ -113,7 +114,7 @@ async function section(name) {
     projects: has('projects.manage') ? `<button class="btn" onclick="openProject()">+ پروژه جدید</button>` : '',
   };
   $('quick').innerHTML = quick[name] || '';
-  const render = { dashboard: renderDashboard, meetings: renderMeetings, actions: renderActions, projects: renderProjects, calendar: () => Calendar.render(), people: renderPeople, reports: renderReports, assistant: renderAssistant, notes: renderNotes, access: renderAccess }[name];
+  const render = { dashboard: renderDashboard, meetings: renderMeetings, actions: renderActions, projects: renderProjects, calendar: () => Calendar.render(), people: renderPeople, reports: renderReports, imports: renderImports, assistant: renderAssistant, notes: renderNotes, access: renderAccess }[name];
   await render();
 }
 
@@ -346,10 +347,10 @@ async function renderActions() {
     <div class="searchbar"><input class="search" id="actionSearch" value="${esc(actionFilter.q)}" placeholder="جستجوی اقدام، مسئول، پروژه، وضعیت یا جلسه" oninput="filterActions()">
       <select id="actionStatus" class="status-filter" aria-label="فیلتر وضعیت" onchange="filterActions()"><option value="">همه وضعیت‌ها</option>${STATUSES.map(s => `<option ${s === actionFilter.status ? 'selected' : ''}>${s}</option>`).join('')}</select>
       <select id="actionSprint" class="status-filter" aria-label="فیلتر اسپرینت" onchange="filterActions()"><option value="">همه اسپرینت‌ها</option>${sprintNames().map(n => `<option ${n === actionFilter.sprint ? 'selected' : ''}>${esc(n)}</option>`).join('')}</select>
-      <label class="check"><input id="actionArchived" type="checkbox" ${actionFilter.archived ? 'checked' : ''} onchange="toggleArchivedActions(this.checked)"> <span>نمایش بایگانی‌شده‌ها</span></label>
       <button class="btn secondary" onclick="clearSearch('actionSearch');$('actionStatus').value='';$('actionSprint').value='';filterActions()">پاک کردن</button>
       <button class="btn secondary" onclick="openSprints()">اسپرینت‌ها</button>
-      <button class="btn secondary" onclick="toggleActionBoard()">${actionBoard ? 'نمای جدول' : 'نمای بُرد'}</button></div>
+      <button class="btn secondary" onclick="toggleActionBoard()">${actionBoard ? 'نمای جدول' : 'نمای بُرد'}</button>
+      ${archiveSwitch(actionFilter.archived, 'toggleArchivedActions')}</div>
     <div class="sectionhead"><div><h3>اقدامات</h3><span class="muted">جستجو و فیلتر وضعیت روی همه‌ی اقدامات قابل‌دسترس اعمال می‌شود.</span></div>${can ? exportToolbar('action', 'actions') : ''}</div>
     ${actionBoard ? `<div id="actionBoard">${kanbanHtml(filteredActions())}</div>` : `<div class="tablewrap"><table class="table"><thead><tr><th><input type="checkbox" aria-label="انتخاب همه" onclick="toggleAll('action',this)"></th><th>ردیف</th><th>موضوع</th><th>پروژه</th><th>مسئول</th><th>همکاران</th><th>مهلت</th><th>اسپرینت</th><th>پیشرفت</th><th>وضعیت</th><th></th></tr></thead>
       <tbody id="actionRows">${actionRows(filteredActions())}</tbody></table></div>`}</div>`;
@@ -373,6 +374,10 @@ function actionRows(xs) {
     || '<tr><td colspan="11" class="empty">اقدامی پیدا نشد.</td></tr>';
 }
 
+/** Two-state switch "active | archived" used by actions and projects (same look as the other view buttons). */
+const archiveSwitch = (archived, fn) => `<div class="seg" role="group" aria-label="نمایش">
+  <button type="button" class="${archived ? '' : 'on'}" aria-pressed="${!archived}" onclick="${fn}(false)">فعال</button>
+  <button type="button" class="${archived ? 'on' : ''}" aria-pressed="${archived}" onclick="${fn}(true)">بایگانی‌شده</button></div>`;
 async function toggleArchivedActions(on) { actionFilter.archived = on; await renderActions(); }
 async function archiveAction(id, archive) {
   try { await api(`/api/actions/${id}/${archive ? 'archive' : 'unarchive'}`, { method: 'POST' }); toast(archive ? 'اقدام بایگانی شد.' : 'اقدام بازگردانی شد.'); await refresh(); await renderActions(); } catch (e) { toast(e.message); }
@@ -412,8 +417,7 @@ async function exportSelected(type, format) {
 }
 function taskSheetButtons() {
   const b = (label, js) => `<button type="button" class="menu-item" onclick="closeMenus();${js}">${label}</button>`;
-  return b('خروجی Excel تسک‌ها', "exportTaskSheet(false)") + b('Excel تسک‌ها (منتخب)', "exportTaskSheet(true)")
-    + (has('actions.manage') ? b('ورود از Excel تسک‌ها', "$('taskSheetFile').click()") + '<input id="taskSheetFile" type="file" accept=".xlsx" hidden onchange="importTaskSheet(this)">' : '');
+  return b('Excel تسک‌ها (همه)', "exportTaskSheet(false)") + b('Excel تسک‌ها (منتخب)', "exportTaskSheet(true)");
 }
 async function exportTaskSheet(onlySelected) {
   if (!has('actions.export')) { toast('مجوز این خروجی را ندارید.'); return; }
@@ -720,7 +724,7 @@ function openAction(id, prefill = {}) {
     <div class="section"><div class="sectionhead"><h3>زیرکارها</h3><button class="btn secondary" onclick="addSubtaskPrompt(${id})">+ زیرکار</button></div>
       ${(base.subtasks || []).map(x => `<div class="subtask"><b>${esc(x.subject)}</b> · ${fa(x.progress)}٪ · ${esc(x.assignee)}</div>`).join('') || '<div class="muted">زیرکاری ثبت نشده است.</div>'}</div>
     <div class="section"><div class="sectionhead"><h3>یادداشت‌ها</h3><button class="btn secondary" onclick="addNotePrompt(${id})">+ یادداشت</button></div>
-      ${(base.notes || []).map(n => `<div class="history"><b>${esc(n.user)}</b> · ${esc(new Date(n.created_at + 'Z').toLocaleString('fa-IR'))}<br>${esc(n.body)}</div>`).join('') || '<div class="muted">یادداشتی ثبت نشده است.</div>'}</div>
+      ${(base.notes || []).map(n => `<div class="history"><button class="iconbtn" style="float:left" title="حذف یادداشت" aria-label="حذف یادداشت" onclick="deleteActionNote(${id},${n.id})">×</button><b>${esc(n.user)}</b> · ${esc(new Date(n.created_at + 'Z').toLocaleString('fa-IR'))}<br>${esc(n.body)}</div>`).join('') || '<div class="muted">یادداشتی ثبت نشده است.</div>'}</div>
     <div class="section"><div class="sectionhead"><h3>تاریخچه پیشرفت</h3><button class="btn secondary" onclick="openProgress(${id})">ثبت پیشرفت</button></div>
       ${(base.history || []).slice().reverse().map(h => `<div class="history"><b>${fa(h.from)}٪ ← ${fa(h.to)}٪</b> · ${fd(h.date)}<br>${esc(h.note)}</div>`).join('') || '<div class="muted">سابقه‌ای وجود ندارد.</div>'}</div>` : '';
   modal(mh(id ? 'ویرایش اقدام' : 'اقدام جدید', `
@@ -779,6 +783,10 @@ async function addSubtaskPrompt(id) {
   const subject = await ask({ title: 'زیرکار جدید', label: 'موضوع زیرکار' });
   if (subject) inlineChange(id, () => api(`/api/actions/${id}/subtasks`, { method: 'POST', body: JSON.stringify({ subject }) }));
 }
+async function deleteActionNote(aid, nid) {
+  if (!confirm('این یادداشت حذف شود؟')) return;
+  inlineChange(aid, () => api(`/api/actions/${aid}/notes/${nid}`, { method: 'DELETE' }));
+}
 async function addNotePrompt(id) {
   const body = await ask({ title: 'یادداشت جدید', label: 'متن یادداشت', multiline: true });
   if (body) inlineChange(id, () => api(`/api/actions/${id}/notes`, { method: 'POST', body: JSON.stringify({ body }) }));
@@ -836,7 +844,7 @@ function renderProjects() {
   $('projects').innerHTML = `<div class="section">
     <div class="searchbar"><input class="search" id="projectSearch" placeholder="جستجوی پروژه"></div>
     <div class="sectionhead"><div><h3 style="margin:0">پروژه‌ها</h3><span class="muted">پروژه، جلسات و اقدامات مرتبط</span></div>
-      <label class="check"><input type="checkbox" ${projectArchivedView ? 'checked' : ''} onchange="toggleArchivedProjects(this.checked)"> <span>نمایش بایگانی‌شده‌ها</span></label></div>
+      ${archiveSwitch(projectArchivedView, 'toggleArchivedProjects')}</div>
     <div class="grid3">${(projectArchivedView ? archivedProjects : state.projects).map(p => { const c = countFor(p.id); return `<div class="card pcard" style="${p.color ? `border-top:5px solid ${p.color}` : ''}">
       <div class="sectionhead"><h3 style="margin:0;cursor:pointer" onclick="openProjectPage(${p.id})">${esc(p.name)}</h3>${badge(p.status)}</div><p class="muted">${esc(p.description)}</p>
       ${progressBar(p.progress)}<div class="mini" style="margin-top:7px">پیشرفت ${fa(p.progress)}٪ · مدیر: ${esc(p.manager || '—')}</div>
@@ -1005,27 +1013,37 @@ async function addCategory() {
   catch (e) { toast(e.message); }
 }
 
-/* ───────── Import & export ───────── */
+/* ───────── Export & backup ───────── */
+const IC = {
+  print: '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 9V4h10v5M7 17H5a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2"/><rect x="7" y="14" width="10" height="6" rx="1"/></svg>',
+  range: '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15.5" rx="2.5"/><path d="M8 3v4M16 3v4M3.5 10h17"/></svg>',
+  down: '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11M7 11l5 5 5-5M5 20h14"/></svg>',
+  up: '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 16V5M7 9l5-5 5 5M5 20h14"/></svg>',
+};
 function renderReports() {
-  const canM = has('meetings.export'), canA = has('actions.export'), canB = has('backup.manage'), canI = has('actions.manage');
+  const canM = has('meetings.export'), canA = has('actions.export'), canB = has('backup.manage');
   const no = label => `<span class="muted">مجوز ${label} ندارید.</span>`;
-  const fmt = (base, can, label) => can ? ['xlsx', 'docx', 'pdf'].map(f => `<button class="btn" onclick="download('/api/export/${base}.${f}','${base}.${f}')">${{ xlsx: 'Excel', docx: 'Word', pdf: 'PDF' }[f]}</button>`).join('') + `<button class="btn secondary" onclick="printPdf('/api/export/${base}.pdf')">چاپ PDF</button>` : no('خروجی ' + label);
-  $('reports').innerHTML = `
-    <div class="io-head"><h3>خروجی</h3><span class="muted">فایل‌ها طبق سطح دسترسی شما ساخته می‌شوند.</span></div>
-    <div class="grid3 export-grid">
-      <div class="section"><h3>جلسات</h3><p class="muted">Word، PDF و Excel با ساختار راست‌به‌چپ؛ اقدام‌ها به تفکیک اسپرینت.</p><div class="toolbar">${fmt('meetings', canM, 'جلسات')}</div>${canM ? '<div class="toolbar"><button class="btn secondary" onclick="openExportFilter(\'meetings\',\'docx\')">خروجی بازه‌ای…</button></div>' : ''}</div>
-      <div class="section"><h3>اقدامات</h3><p class="muted">فقط اقداماتی که اجازه‌ی دیدنشان را دارید.</p><div class="toolbar">${fmt('actions', canA, 'اقدامات')}</div>${canA ? '<div class="toolbar"><button class="btn secondary" onclick="openExportFilter(\'actions\',\'xlsx\')">خروجی بازه‌ای / اسپرینت…</button></div>' : ''}</div>
-      <div class="section"><h3>فایل Excel تسک‌ها</h3><p class="muted">همان قالب Full_Tasks (شیت Items) که می‌توان دوباره وارد برنامه کرد.</p>${canA ? '<div class="toolbar"><button class="btn" onclick="exportTaskSheet(false)">دریافت Full_Tasks.xlsx</button></div>' : no('خروجی اقدامات')}</div>
-    </div>
-    <div class="io-head"><h3>ورودی</h3><span class="muted">فایل Excel تسک‌ها را وارد کنید؛ تسک‌های تکراری به‌روزرسانی و بقیه اضافه می‌شوند.</span></div>
-    <div class="grid3 export-grid">
-      <div class="section io-wide"><h3>ورود از Excel تسک‌ها</h3>
-        ${canI ? `<label class="dropzone" id="taskDrop" ondragover="event.preventDefault();this.classList.add('over')" ondragleave="this.classList.remove('over')" ondrop="event.preventDefault();this.classList.remove('over');importTaskSheet({files:event.dataTransfer.files,value:''})">
-          <input type="file" id="taskSheetFile" accept=".xlsx" hidden onchange="importTaskSheet(this)">
-          <b>فایل .xlsx را اینجا رها کنید</b><span class="muted">یا برای انتخاب فایل کلیک کنید (شیت Items)</span></label>
-          <div id="importResult" class="import-result"></div>` : no('ورود اقدامات')}</div>
-      <div class="section"><h3>پشتیبان‌گیری</h3><p class="muted">یک نسخه از پایگاه داده دریافت می‌شود.</p>${canB ? `<button class="btn success" onclick="download('/api/backup','meeting_manager_backup.db')">دریافت نسخه‌ی پشتیبان</button>` : no('پشتیبان‌گیری')}</div>
-    </div>`;
+  /* Gestalt: one card = one subject. Top row: the three file formats as one joined group (proximity + similarity);
+     bottom row: two secondary actions of equal size, separated by a divider (common region). */
+  const card = (title, text, base, type, can, label) => `<div class="section io-card"><h3>${title}</h3><p class="muted">${text}</p>${can ? `
+    <div class="btngroup" role="group" aria-label="قالب فایل">${['xlsx', 'docx', 'pdf'].map(f => `<button class="btn" onclick="download('/api/export/${base}.${f}','${base}.${f}')">${{ xlsx: 'Excel', docx: 'Word', pdf: 'PDF' }[f]}</button>`).join('')}</div>
+    <div class="io-sub"><button class="btn ghost" onclick="printPdf('/api/export/${base}.pdf')">${IC.print}چاپ PDF</button><button class="btn ghost" onclick="openExportFilter('${type}')">${IC.range}خروجی بازه‌ای</button></div>` : no('خروجی ' + label)}</div>`;
+  $('reports').innerHTML = `<div class="grid3 export-grid">
+    ${card('جلسات', 'Word، PDF و Excel با ساختار راست‌به‌چپ؛ اقدام‌ها به تفکیک اسپرینت.', 'meetings', 'meeting', canM, 'جلسات')}
+    ${card('اقدامات', 'فقط اقداماتی که اجازه‌ی دیدنشان را دارید.', 'actions', 'action', canA, 'اقدامات')}
+    <div class="section io-card"><h3>Excel تسک‌ها</h3><p class="muted">همان قالب Full_Tasks (شیت Items) که می‌توان دوباره از بخش «ورودی» وارد برنامه کرد.</p>${canA ? `
+      <div class="io-sub single"><button class="btn" onclick="exportTaskSheet(false)">${IC.down}دریافت Full_Tasks.xlsx</button></div>` : no('خروجی اقدامات')}</div>
+    <div class="section io-card"><h3>پشتیبان‌گیری</h3><p class="muted">یک نسخه از پایگاه داده دریافت می‌شود.</p>${canB ? `<div class="io-sub single"><button class="btn success" onclick="download('/api/backup','meeting_manager_backup.db')">${IC.down}دریافت نسخه‌ی پشتیبان</button></div>` : no('پشتیبان‌گیری')}</div></div>`;
+}
+
+/* ───────── Import ───────── */
+function renderImports() {
+  $('imports').innerHTML = `<div class="section io-card">
+    <div class="sectionhead"><div><h3>ورود از Excel تسک‌ها</h3><span class="muted">فایل Full_Tasks (شیت Items)؛ تسک‌های موجود به‌روزرسانی و بقیه اضافه می‌شوند.</span></div></div>
+    ${has('actions.manage') ? `<label class="dropzone" ondragover="event.preventDefault();this.classList.add('over')" ondragleave="this.classList.remove('over')" ondrop="event.preventDefault();this.classList.remove('over');importTaskSheet({files:event.dataTransfer.files,value:''})">
+      <input type="file" id="taskSheetFile" accept=".xlsx" hidden onchange="importTaskSheet(this)">${IC.up}
+      <b>فایل .xlsx را اینجا رها کنید</b><span class="muted">یا برای انتخاب فایل کلیک کنید</span></label>
+    <div id="importResult" class="import-result"></div>` : '<span class="muted">مجوز ورود اقدامات را ندارید.</span>'}</div>`;
 }
 
 /* ───────── Users & permissions ───────── */
