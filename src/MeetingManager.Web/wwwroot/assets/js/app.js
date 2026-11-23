@@ -149,8 +149,8 @@ async function renderDashboard() {
       <button class="sumcard info" onclick="goActions({})"><span class="dot"></span><b>${fa(follow.length)}</b><span>کارهای قابل پیگیری</span></button>
     </div>
     <div class="mywork">
-      <div class="workcol"><div class="workhead green">کارهای من</div><div class="workbody">${mine.slice(0, 8).map(workRow).join('') || '<div class="empty">کاری برای انجام ندارید.</div>'}</div></div>
-      <div class="workcol"><div class="workhead red">پیگیری از دیگران</div><div class="workbody">${follow.slice(0, 8).map(workRow).join('') || '<div class="empty">کاری برای پیگیری ندارید.</div>'}</div></div>
+      <div class="workcol"><div class="workhead green">کارهای من</div><div class="workbody">${mine.slice(0, 60).map(workRow).join('') || '<div class="empty">کاری برای انجام ندارید.</div>'}</div></div>
+      <div class="workcol"><div class="workhead red">پیگیری از دیگران</div><div class="workbody">${follow.slice(0, 60).map(workRow).join('') || '<div class="empty">کاری برای پیگیری ندارید.</div>'}</div></div>
     </div>` : '';
 
   $('dashboard').innerHTML = mywork + `
@@ -170,11 +170,11 @@ async function renderDashboard() {
       <div class="dash-col">
       <div class="section">
         <div class="sectionhead"><h3>پیشرفت پروژه‌ها</h3><button class="btn secondary" onclick="section('projects')">مشاهده همه</button></div>
-        ${d.project_stats.map(p => `<div class="project-row"><b>${esc(p.name)}</b><div>${progressBar(p.progress)}<small class="muted">${fa(p.actions)} اقدام · ${fa(p.done)} انجام‌شده · مدیر: ${esc(p.manager || '—')} · پایان: ${fd(p.end_date) || '—'}</small></div><b>${fa(p.progress)}٪</b></div>`).join('') || '<div class="empty">پروژه‌ای ثبت نشده است.</div>'}
+        <div class="scrollbox">${d.project_stats.map(p => `<div class="project-row"><b>${esc(p.name)}</b><div>${progressBar(p.progress)}<small class="muted">${fa(p.actions)} اقدام · ${fa(p.done)} انجام‌شده · مدیر: ${esc(p.manager || '—')} · پایان: ${fd(p.end_date) || '—'}</small></div><b>${fa(p.progress)}٪</b></div>`).join('') || '<div class="empty">پروژه‌ای ثبت نشده است.</div>'}</div>
       </div>
       <div class="section">
       <div class="sectionhead"><h3>جلسات اخیر</h3><button class="btn secondary" onclick="section('meetings')">همه جلسات</button></div>
-      ${d.upcoming_meetings.map(m => `<div class="event"><div><b>${esc(m.title)}</b><br><span class="muted">${fd(m.date)}${m.time ? ' · ' + fa(m.time) : ''}${m.place ? ' · ' + esc(m.place) : ''}</span></div><button class="btn secondary" onclick="showMeeting(${m.id})">مشاهده</button></div>`).join('') || '<div class="empty">جلسه‌ای ثبت نشده است.</div>'}
+      <div class="scrollbox">${d.upcoming_meetings.map(m => `<div class="event"><div><b>${esc(m.title)}</b><br><span class="muted">${fd(m.date)}${m.time ? ' · ' + fa(m.time) : ''}${m.place ? ' · ' + esc(m.place) : ''}</span></div><button class="btn secondary" onclick="showMeeting(${m.id})">مشاهده</button></div>`).join('') || '<div class="empty">جلسه‌ای ثبت نشده است.</div>'}</div>
       </div>
       </div>
     </div>`;

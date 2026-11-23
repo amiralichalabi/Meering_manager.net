@@ -442,3 +442,9 @@ body.dark .cal-chip.meeting{color:#93c5fd}body.dark .cal-chip.action{color:#fcd3
 .btn.ghost{background:transparent;border:1px solid var(--line);color:var(--text);font-weight:600}
 .btn.ghost:hover{background:var(--brand-soft);border-color:var(--brand);color:var(--brand);filter:none}
 .btn.ghost svg{color:var(--brand)}
+
+/* Dashboard lists scroll inside their own box instead of stretching the page */
+.scrollbox{max-height:340px;overflow-y:auto;overscroll-behavior:contain;padding-inline-end:4px;scrollbar-gutter:stable}
+.scrollbox::-webkit-scrollbar,.workbody::-webkit-scrollbar{width:8px}
+.scrollbox::-webkit-scrollbar-thumb,.workbody::-webkit-scrollbar-thumb{background:var(--line);border-radius:8px}
+.workbody{overscroll-behavior:contain;scrollbar-gutter:stable}
