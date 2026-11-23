@@ -6,19 +6,19 @@ using Xunit;
 
 namespace MeetingManager.Tests;
 
-/// <summary>A database written by the Python app (golden/python_made.db) must open unchanged and export the same sync file.</summary>
+/// <summary>A database written by an earlier release (golden/legacy_made.db) must open unchanged and export the same sync file.</summary>
 [Collection("assistant")]
-public class PythonCompatTests : IDisposable
+public class LegacyDatabaseTests : IDisposable
 {
     readonly string? _old = Environment.GetEnvironmentVariable("MEETING_MANAGER_DATA_DIR");
     readonly string _dir = Path.Combine(Path.GetTempPath(), "mm_py_" + Guid.NewGuid().ToString("N"));
     readonly WebApplicationFactory<Program> _f;
     readonly HttpClient _c;
 
-    public PythonCompatTests()
+    public LegacyDatabaseTests()
     {
         Directory.CreateDirectory(_dir);
-        File.Copy(Path.Combine(AppContext.BaseDirectory, "golden", "python_made.db"), Path.Combine(_dir, "meeting_manager.db"));
+        File.Copy(Path.Combine(AppContext.BaseDirectory, "golden", "legacy_made.db"), Path.Combine(_dir, "meeting_manager.db"));
         Environment.SetEnvironmentVariable("MEETING_MANAGER_DATA_DIR", _dir);
         _f = new WebApplicationFactory<Program>();
         _c = _f.CreateClient();
@@ -51,11 +51,11 @@ public class PythonCompatTests : IDisposable
     }
 
     [Fact]
-    public async Task Python_Database_Opens_And_Exports_Same_Sync_File()
+    public async Task Legacy_Database_Opens_And_Exports_Same_Sync_File()
     {
         var t = await Token();
         var actual = Norm(JsonNode.Parse(await Get("/api/sync/export", t)));
-        var expected = Norm(JsonNode.Parse(File.ReadAllText(Path.Combine(AppContext.BaseDirectory, "golden", "python_made.sync.json"))));
+        var expected = Norm(JsonNode.Parse(File.ReadAllText(Path.Combine(AppContext.BaseDirectory, "golden", "legacy_made.sync.json"))));
         foreach (var table in expected["tables"]!.AsObject())
         {
             var exp = table.Value!.AsArray().ToDictionary(r => r!["uuid"]!.GetValue<string>(), r => r!.ToJsonString());
@@ -67,7 +67,7 @@ public class PythonCompatTests : IDisposable
     }
 
     [Fact]
-    public async Task Python_Database_Works_Through_The_Api()
+    public async Task Legacy_Database_Works_Through_The_Api()
     {
         var t = await Token();
         var boot = JsonDocument.Parse(await Get("/api/bootstrap", t)).RootElement;

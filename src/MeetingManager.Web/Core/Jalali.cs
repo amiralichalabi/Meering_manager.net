@@ -2,7 +2,7 @@ using System.Text;
 
 namespace MeetingManager.Core;
 
-/// <summary>Jalali calendar helpers: a port of backend/jalali.py (jalaali algorithm). Dates are 'YYYY/MM/DD' with ASCII digits.</summary>
+/// <summary>Jalali calendar helpers: the jalaali algorithm. Dates are 'YYYY/MM/DD' with ASCII digits.</summary>
 public static class Jalali
 {
     static readonly int[] Breaks = { -61, 9, 38, 199, 426, 686, 756, 818, 1111, 1181, 1210, 1635, 2060, 2097, 2192, 2262, 2324, 2394, 2456, 3178 };

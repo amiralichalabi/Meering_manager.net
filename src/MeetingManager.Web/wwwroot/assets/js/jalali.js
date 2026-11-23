@@ -1,5 +1,5 @@
 /* Jalali (Persian) calendar math and formatting.
-   Same algorithm as backend/jalali.py (valid for 1178–1633 AP). Dates are exchanged with the
+   Same algorithm as Core/Jalali.cs (valid for 1178–1633 AP). Dates are exchanged with the
    server as 'YYYY/MM/DD' strings with ASCII digits and shown to users with Persian digits. */
 const Jalali = (() => {
   const BREAKS = [-61, 9, 38, 199, 426, 686, 756, 818, 1111, 1181, 1210, 1635, 2060, 2097, 2192, 2262, 2324, 2394, 2456, 3178];

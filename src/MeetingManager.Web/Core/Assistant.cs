@@ -8,7 +8,7 @@ using MeetingManager.Data;
 
 namespace MeetingManager.Core;
 
-/// <summary>Raised with a Persian message when the local model server is unavailable (Python: RuntimeError).</summary>
+/// <summary>Raised with a Persian message when the local model server is unavailable.</summary>
 public class AssistantException : Exception
 {
     public AssistantException(string message) : base(message) { }
@@ -133,7 +133,7 @@ public static class Assistant
         return cfg;
     }
 
-    /// <summary>Throws ArgumentException (Persian message) on bad input, like Python's ValueError.</summary>
+    /// <summary>Throws ArgumentException (Persian message) on bad input.</summary>
     public static Config SaveConfig(string? url, string? model, string? timeout)
     {
         var u = (url ?? "").Trim().TrimEnd('/');

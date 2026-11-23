@@ -43,7 +43,7 @@ async function checkServerVersion() {
     $('appVersion').textContent = ' · نسخه ' + fa(h.version);
     const banner = $('versionBanner');
     banner.classList.toggle('hide', h.version === APP_VERSION);
-    if (h.version !== APP_VERSION) banner.textContent = `نسخه‌ی در حال اجرای سرور (${fa(h.version)}) با فایل‌های برنامه (${fa(APP_VERSION)}) یکی نیست؛ احتمالاً نسخه‌ی قبلی هنوز باز است. برنامه را کامل ببندید (در ویندوز: Task Manager ← MeetingManager یا python) و دوباره اجرا کنید.`;
+    if (h.version !== APP_VERSION) banner.textContent = `نسخه‌ی در حال اجرای سرور (${fa(h.version)}) با فایل‌های برنامه (${fa(APP_VERSION)}) یکی نیست؛ احتمالاً نسخه‌ی قبلی هنوز باز است. برنامه را کامل ببندید (در ویندوز: Task Manager ← MeetingManager) و دوباره اجرا کنید.`;
     if (h.pdf && !h.pdf.ok) toast('خروجی PDF روی این سیستم کار نمی‌کند: ' + h.pdf.error);
   } catch (e) { /* server unreachable: api() reports it */ }
 }

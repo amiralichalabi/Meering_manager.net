@@ -203,7 +203,7 @@ public class GoldenTests
     static string Golden(string n) => Path.Combine(AppContext.BaseDirectory, "golden", n);
 
     [Fact]
-    public void Jalali_Matches_Python_Conversions()
+    public void Jalali_Matches_Reference_Conversions()
     {
         var doc = JsonDocument.Parse(File.ReadAllText(Golden("jalali.json"))).RootElement;
         int n = 0;
@@ -221,7 +221,7 @@ public class GoldenTests
     }
 
     [Fact]
-    public void Effective_Status_Matches_Python()
+    public void Effective_Status_Matches_Reference()
     {
         var doc = JsonDocument.Parse(File.ReadAllText(Golden("status.json"))).RootElement;
         foreach (var c in doc.GetProperty("cases").EnumerateArray())
@@ -232,9 +232,9 @@ public class GoldenTests
     }
 
     [Fact]
-    public void Password_Hash_Is_Compatible_With_Python_Format()
+    public void Password_Hash_Is_Compatible_With_Existing_Accounts()
     {
-        // pbkdf2_hmac('sha256', b'Admin@123', b'abc', 210000).hex() computed by the Python app
+        // pbkdf2_hmac('sha256', b'Admin@123', b'abc', 210000).hex() an account hash from an earlier release
         var h = Security.HashPw("Admin@123", "abc");
         Assert.Equal("abc$aa82190bf898b2930dcb3cc85d0c5b7b2f4e44508af9d69e90fd3b8ed4e40c5e", h);
         Assert.True(Security.VerifyPw("Admin@123", h));

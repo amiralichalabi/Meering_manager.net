@@ -31,7 +31,7 @@ public static class Ops
         return a;
     }
 
-    /// <summary>Removes an action with everything that hangs off it (subtasks recursively), like SQLAlchemy's delete-orphan cascade, so tombstones are written.</summary>
+    /// <summary>Removes an action with everything that hangs off it (subtasks recursively), so every removed row gets its sync tombstone (the database does not cascade).</summary>
     public static void DeleteAction(AppDb db, ActionItem a)
     {
         var subs = db.Actions.Where(x => x.ParentId == a.Id).ToList();

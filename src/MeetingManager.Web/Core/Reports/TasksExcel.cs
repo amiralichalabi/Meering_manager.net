@@ -31,7 +31,7 @@ public sealed class ImportResult
     public List<string> Problems { get; set; } = new();
 }
 
-/// <summary>Import/export of the Azure DevOps task sheet (Guide / Items / hidden Lists); port of backend/tasks_excel.py.
+/// <summary>Import/export of the Azure DevOps task sheet (Guide / Items / hidden Lists).
 /// Only the Items sheet matters. One row = one action; the same layout is written on export so a file round-trips.</summary>
 public static class TasksExcel
 {

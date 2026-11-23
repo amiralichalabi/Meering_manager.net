@@ -12,7 +12,7 @@ public class ReportGoldenTests
     static string Str(JsonNode? n) => n == null ? "" : n.GetValue<string>();
 
     [Fact]
-    public void Actions_Report_Model_Matches_Python()
+    public void Actions_Report_Model_Matches_Reference()
     {
         var root = JsonNode.Parse(File.ReadAllText(Path.Combine(AppContext.BaseDirectory, "golden", "reports.json")))!;
         var today = root["today"]!.GetValue<string>();

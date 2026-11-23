@@ -13,7 +13,7 @@ public class ApiException : Exception
 
 public static class Security
 {
-    // Same format as Python's hash_pw: "<salt>$<pbkdf2-sha256 hex>", salt is a hex string used as its own ASCII bytes, 210000 rounds.
+    // Password format (unchanged since the first release, so existing accounts keep working): "<salt>$<pbkdf2-sha256 hex>", salt is a hex string used as its own ASCII bytes, 210000 rounds.
     public static string HashPw(string p, string? salt = null)
     {
         salt ??= Convert.ToHexString(RandomNumberGenerator.GetBytes(16)).ToLowerInvariant();

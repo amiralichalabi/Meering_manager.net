@@ -3,7 +3,7 @@ using MeetingManager.Data;
 
 namespace MeetingManager.Core;
 
-/// <summary>Format-neutral content of the actions and meetings reports (port of backend/report_model.py).
+/// <summary>Format-neutral content of the actions and meetings reports.
 /// Plain data: strings and numbers, ASCII digits, empty string for "missing". Property names map to the golden JSON keys
 /// through the snake_case serializer options (PreparedDate -> prepared_date, ...).</summary>
 public sealed class ActionRowData
@@ -92,7 +92,7 @@ public static class ReportModel
         var rows = new List<ActionRowData>();
         int i = 1;
         foreach (var a in actions) rows.Add(ActionRow(a, i++, today));
-        // Python's round() is "half to even": an average of 2.5 is reported as 2.
+        // Rounding is "half to even" (banker's rounding): an average of 2.5 is reported as 2, as in every earlier release and on the phone.
         int avg = rows.Count == 0 ? 0 : (int)Math.Round(rows.Sum(r => (double)r.Progress) / rows.Count, MidpointRounding.ToEven);
         return new ActionsReportData
         {

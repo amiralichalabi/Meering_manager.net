@@ -3,8 +3,8 @@ using MeetingManager.Core;
 
 namespace MeetingManager.Api;
 
-// Request bodies. JSON is snake_case (SnakeCaseLower), identical to the pydantic models in backend/schemas.py.
-// Validate() throws ApiException(422) with the same Persian sentences the Python app returned.
+// Request bodies. JSON is snake_case (SnakeCaseLower), as the frontend sends it.
+// Validate() throws ApiException(422) with a Persian message the UI shows as a toast.
 
 public static class V
 {

@@ -1,6 +1,6 @@
 namespace MeetingManager.Data;
 
-// Entities mirror the existing SQLite schema (see schema.sql) so a database made by the Python app opens unchanged.
+// Entities mirror the existing SQLite schema (see schema.sql) so databases from earlier releases open unchanged.
 // Column names are derived from property names (PascalCase -> snake_case) in AppDb.OnModelCreating.
 
 public interface ISync
@@ -300,6 +300,6 @@ public class Tombstone
 
 public static class Clock
 {
-    /// <summary>UTC "now" without a kind, like Python's naive utcnow(); microseconds kept.</summary>
+    /// <summary>UTC "now" without a kind, microseconds kept.</summary>
     public static DateTime Now() => DateTime.SpecifyKind(DateTime.UtcNow, DateTimeKind.Unspecified);
 }

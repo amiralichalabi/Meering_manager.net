@@ -7,7 +7,7 @@ using MeetingManager.Data;
 
 namespace MeetingManager.Core;
 
-/// <summary>Port of backend/sync_file.py: a snapshot of all shared data that two devices can exchange and merge.
+/// <summary>A snapshot of all shared data that two devices can exchange and merge.
 /// Records are matched by uuid, every link is written as the linked record's uuid, merging is "newest change wins"
 /// per record (updated_at in epoch milliseconds, UTC). Deletions travel as tombstones (deleted_at set).</summary>
 public class SyncFileError : Exception
@@ -23,7 +23,7 @@ public class SyncStats
     public int Skipped { get; set; }
     public int Orphaned { get; set; }
 
-    /// <summary>Same text as Python's str(dict), used for the audit log.</summary>
+    /// <summary>Short text form of the stats, used for the audit log.</summary>
     public override string ToString() =>
         $"{{'inserted': {Inserted}, 'updated': {Updated}, 'deleted': {Deleted}, 'skipped': {Skipped}, 'orphaned': {Orphaned}}}";
 }
@@ -550,8 +550,8 @@ public static class SyncFile
     }
 
     // ------------------------------------------------------------------ deletion with dependents
-    // The database connection has foreign keys off, so cascades are done here (mirrors the SQLAlchemy cascades and
-    // ON DELETE SET NULL of backend/models.py); every removed shared row gets its tombstone from AppDb.Stamp().
+    // The database connection has foreign keys off, so cascades are done here (parents take their children with them,
+    // and links to removed records are cleared); every removed shared row gets its tombstone from AppDb.Stamp().
     static void Kill(AppDb db, List<ISync> gone, ISync x)
     {
         gone.Add(x);

@@ -6,7 +6,7 @@ using Xunit;
 
 namespace MeetingManager.Tests;
 
-/// <summary>The merge scenarios pinned by the Python app (golden/sync.json): local file + remote file -> stats + resulting file.</summary>
+/// <summary>The merge scenarios pinned as reference vectors (golden/sync.json): local file + remote file -> stats + resulting file.</summary>
 [Collection("assistant")]
 public class SyncScenarioTests : IDisposable
 {
@@ -46,7 +46,7 @@ public class SyncScenarioTests : IDisposable
 
     [Theory]
     [MemberData(nameof(Indexes))]
-    public async Task Scenario_Matches_Python(int i)
+    public async Task Scenario_Matches_Reference(int i)
     {
         var root = JsonNode.Parse(File.ReadAllText(Path.Combine(AppContext.BaseDirectory, "golden", "sync.json")))!;
         var sc = root["scenarios"]![i]!;

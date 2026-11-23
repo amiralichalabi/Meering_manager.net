@@ -4,7 +4,7 @@ using MeetingManager.Data;
 
 namespace MeetingManager.Api;
 
-/// <summary>JSON shapes the frontend expects (identical to the dict builders in backend/main.py).</summary>
+/// <summary>JSON shapes the frontend expects.</summary>
 public static class Views
 {
     public static string Iso(DateTime? d)

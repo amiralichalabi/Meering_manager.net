@@ -4,7 +4,7 @@ using MeetingManager.Data;
 
 namespace MeetingManager.Core;
 
-/// <summary>Excel exports of actions and meetings (port of the xlsx / make_xlsx_meetings handlers in backend/main.py).</summary>
+/// <summary>Excel exports of actions and meetings.</summary>
 public static class XlsxExport
 {
     const string FontName = "B Nazanin";

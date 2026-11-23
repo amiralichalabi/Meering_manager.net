@@ -101,7 +101,7 @@ public class AppDb : DbContext
             if (typeof(ISync).IsAssignableFrom(et.ClrType))
                 b.Entity(et.ClrType).HasIndex("Uuid").IsUnique().HasDatabaseName($"ix_{et.GetTableName()}_uuid");
         }
-        // Python wrote datetimes as 'YYYY-MM-DD HH:MM:SS.ffffff'; keep that text form on write, accept it on read.
+        // Datetimes are stored as 'YYYY-MM-DD HH:MM:SS.ffffff'; keep that text form on write, accept it on read.
         foreach (var p in b.Model.GetEntityTypes().SelectMany(e => e.GetProperties()))
         {
             if (p.ClrType == typeof(DateTime)) p.SetValueConverter(DtConv.NonNull);

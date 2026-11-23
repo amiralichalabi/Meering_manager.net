@@ -5,7 +5,7 @@ using MeetingManager.Data;
 
 namespace MeetingManager.Core;
 
-/// <summary>Word reports (actions / meetings): right-to-left tables, B Nazanin font, same columns as the Python app.</summary>
+/// <summary>Word reports (actions / meetings): right-to-left tables, B Nazanin font, same columns as the Excel report.</summary>
 public static class DocxExport
 {
     const string Font = "B Nazanin";

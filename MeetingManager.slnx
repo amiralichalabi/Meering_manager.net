@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="src/MeetingManager.Web/MeetingManager.Web.csproj" />
+  <Project Path="tests/MeetingManager.Tests/MeetingManager.Tests.csproj" />
+</Solution>
