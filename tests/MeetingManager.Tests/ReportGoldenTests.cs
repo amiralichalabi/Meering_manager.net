@@ -26,7 +26,7 @@ public class ReportGoldenTests
                 var x = new ActionItem
                 {
                     Id = a!["id"]!.GetValue<int>(), Subject = Str(a["subject"]), Decision = Str(a["decision"]), Due = Str(a["due"]), Priority = Str(a["priority"]),
-                    Progress = a["progress"]?.GetValue<int>() ?? 0, Status = Str(a["status"]),
+                    Progress = a["progress"]?.GetValue<int>() ?? 0, Status = a["status"] == null ? "جدید" : Str(a["status"]),
                 };
                 if (Str(a["project"]) != "") x.Project = new Project { Name = Str(a["project"]) };
                 if (Str(a["meeting"]) != "") x.Meeting = new Meeting { Title = Str(a["meeting"]) };
