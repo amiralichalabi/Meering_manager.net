@@ -53,7 +53,7 @@ async function start() {
   $('login').classList.add('hide');
   $('app').classList.remove('hide');
   $('userName').textContent = state.user.full_name;
-  $('userRole').textContent = ROLE_LABEL[state.user.role] || state.user.role;
+  $('userRole').textContent = (ROLE_LABEL[state.user.role] || state.user.role) + (state.user.birth_date ? ' · تولد ' + Jalali.toFa(state.user.birth_date) : '');
   setAvatar($('profileAvatar'), state.user);
   $('importNav').classList.toggle('hide', !has('actions.manage'));
   $('accessNav').classList.toggle('hide', !has('users.manage') && !has('permissions.manage'));
@@ -1116,6 +1116,7 @@ async function saveProfile() {
     const birth = readDate('pfBirth', 'تاریخ تولد');
     await api('/api/auth/profile', { method: 'PUT', body: JSON.stringify({ birth_date: birth, avatar: profileAvatarDraft }) });
     state.user.avatar = profileAvatarDraft; state.user.birth_date = birth; setAvatar($('profileAvatar'), state.user);
+    $('userRole').textContent = (ROLE_LABEL[state.user.role] || state.user.role) + (birth ? ' · تولد ' + Jalali.toFa(birth) : '');
     closeModal(); toast('اطلاعات ذخیره شد.');
   } catch (e) { toast(e.message); }
 }

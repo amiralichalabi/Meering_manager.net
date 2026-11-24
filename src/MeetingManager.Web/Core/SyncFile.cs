@@ -139,7 +139,7 @@ public static class SyncFile
         Mk("locations", typeof(Location), db => Ls(db.Locations.OrderBy(x => x.Id)), () => new Location(),
             "name:s,address:s,description:s,is_active:b", "", ""),
         Mk("projects", typeof(Project), db => Ls(db.Projects.OrderBy(x => x.Id)), () => new Project(),
-            "name:s,description:s,status:s,start_date:s,end_date:s,progress:i,created_at:dt,archived_at:ndt",
+            "name:s,description:s,status:s,start_date:s,end_date:s,progress:i,created_at:dt,archived_at:ndt,color:s",
             "manager_uuid>ManagerId>people", "member_uuids>Members>people",
             null, db => Ls(db.Projects.Include(x => x.Members).OrderBy(x => x.Id))),
         Mk("meetings", typeof(Meeting), db => Ls(db.Meetings.OrderBy(x => x.Id)), () => new Meeting(),

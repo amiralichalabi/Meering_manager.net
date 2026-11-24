@@ -84,6 +84,7 @@
     "progress": 40,
     "created_at": 1793527200000,
     "archived_at": null,
+    "color": "",
     "manager_uuid": "ali",
     "member_uuids": [
      "sara"
