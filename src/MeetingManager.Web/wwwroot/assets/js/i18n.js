@@ -29,6 +29,8 @@ const I18N = (() => {
   const PERSIAN = /[؀-ۿ]/;
   const FA = '۰۱۲۳۴۵۶۷۸۹', AR = '٠١٢٣٤٥٦٧٨٩';
   const digits = s => s.replace(/[۰-۹٠-٩]/g, c => { const i = FA.indexOf(c); return i >= 0 ? i : AR.indexOf(c); });
+  // Note: user-entered Persian text that contains a known word (a project called "پروژه نمونه") is translated word by word too.
+  // That is display only; stored data is never changed.
   const tr = s => (typeof s === 'string' && PERSIAN.test(s) ? digits(re ? s.replace(re, m => EN[m]) : s) : s);
   api.tr = tr;
 

@@ -460,3 +460,6 @@ body.dark .cal-chip.meeting{color:#93c5fd}body.dark .cal-chip.action{color:#fcd3
 [dir=ltr] .gantt-label{border-left:0;border-right:1px solid var(--line)}
 [dir=ltr] .sumcard .dot{right:auto;left:12px}
 [dir=ltr] .iconbtn[style*="float:left"]{float:right!important}
+[dir=ltr] .mc-nav button svg{transform:scaleX(-1)}
+[dir=ltr] .cal-head{font-size:12px;padding:9px 2px;overflow:hidden;text-overflow:ellipsis}
+[dir=ltr] .cal-grid{min-width:0}
