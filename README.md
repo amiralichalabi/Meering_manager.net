@@ -44,3 +44,20 @@ or run the **Windows build** GitHub Actions workflow and download the artifact. 
 - Sessions use random 256-bit tokens (only a SHA-256 hash is stored), expire after 7 days and are revoked when the password changes or the user is deactivated.
 - Passwords: PBKDF2-SHA256, 210,000 iterations, per-user salt. Failed logins are throttled per user name.
 - Downloads use short-lived, single-URL tickets; responses carry a Content-Security-Policy, `nosniff`, `X-Frame-Options: DENY` and `no-store` for API data.
+
+## Database: SQLite (default) or SQL Server
+
+By default the app keeps everything in one SQLite file (`data/meeting_manager.db`). To use SQL Server instead, set either environment variables
+
+```
+MEETING_MANAGER_DB=sqlserver
+MEETING_MANAGER_SQLSERVER=Server=myhost,1433;Database=MeetingManager;User Id=app;Password=...;TrustServerCertificate=True
+```
+
+or put a `database.json` next to the data folder's database:
+
+```json
+{ "provider": "sqlserver", "connection": "Server=myhost;Database=MeetingManager;Integrated Security=True;TrustServerCertificate=True" }
+```
+
+The database is created on first start if it does not exist (the login needs the `dbcreator` role, or create an empty database first), and the tables are created automatically. The Android/iPhone apps keep local SQLite and exchange data through the sync file, so they work the same with either engine. Moving existing SQLite data into SQL Server: export a sync file from the old setup and import it in the new one.

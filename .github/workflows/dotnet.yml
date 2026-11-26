@@ -13,3 +13,29 @@ jobs:
       - run: dotnet restore
       - run: dotnet build --no-restore -c Release
       - run: dotnet test --no-build -c Release --logger "trx" --verbosity normal
+
+  sqlserver:
+    name: Tests on SQL Server
+    runs-on: ubuntu-latest
+    services:
+      mssql:
+        image: mcr.microsoft.com/mssql/server:2022-latest
+        env:
+          ACCEPT_EULA: Y
+          MSSQL_SA_PASSWORD: "Mm_Test#2026pw"
+        ports: ['1433:1433']
+        options: >-
+          --health-cmd "/opt/mssql-tools18/bin/sqlcmd -C -S localhost -U sa -P 'Mm_Test#2026pw' -Q 'SELECT 1'"
+          --health-interval 10s --health-timeout 5s --health-retries 12 --health-start-period 20s
+    env:
+      MEETING_MANAGER_DB: sqlserver
+      MEETING_MANAGER_SQLSERVER: "Server=localhost,1433;User Id=sa;Password=Mm_Test#2026pw;TrustServerCertificate=True;Encrypt=False"
+      MEETING_MANAGER_SQLSERVER_PER_DATADIR: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.x
+      - run: dotnet restore
+      - run: dotnet build --no-restore -c Release
+      - run: dotnet test --no-build -c Release --verbosity normal

@@ -11,6 +11,7 @@ namespace MeetingManager.Tests;
 public class LegacyDatabaseTests : IDisposable
 {
     readonly string? _old = Environment.GetEnvironmentVariable("MEETING_MANAGER_DATA_DIR");
+    readonly string? _oldDb = Environment.GetEnvironmentVariable("MEETING_MANAGER_DB");
     readonly string _dir = Path.Combine(Path.GetTempPath(), "mm_py_" + Guid.NewGuid().ToString("N"));
     readonly WebApplicationFactory<Program> _f;
     readonly HttpClient _c;
@@ -20,10 +21,11 @@ public class LegacyDatabaseTests : IDisposable
         Directory.CreateDirectory(_dir);
         File.Copy(Path.Combine(AppContext.BaseDirectory, "golden", "legacy_made.db"), Path.Combine(_dir, "meeting_manager.db"));
         Environment.SetEnvironmentVariable("MEETING_MANAGER_DATA_DIR", _dir);
+        Environment.SetEnvironmentVariable("MEETING_MANAGER_DB", "sqlite"); // an old file database is SQLite by definition
         _f = new WebApplicationFactory<Program>();
         _c = _f.CreateClient();
     }
-    public void Dispose() { _c.Dispose(); _f.Dispose(); Environment.SetEnvironmentVariable("MEETING_MANAGER_DATA_DIR", _old); }
+    public void Dispose() { _c.Dispose(); _f.Dispose(); Environment.SetEnvironmentVariable("MEETING_MANAGER_DATA_DIR", _old); Environment.SetEnvironmentVariable("MEETING_MANAGER_DB", _oldDb); }
 
     async Task<string> Token()
     {

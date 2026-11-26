@@ -6,10 +6,11 @@ using MeetingManager.Core;
 using MeetingManager.Data;
 
 Paths.Init();
+DbConfig.Init();
 DbInit.Migrate();
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddDbContext<AppDb>(o => o.UseSqlite(DbInit.ConnectionString()));
+builder.Services.AddDbContext<AppDb>(o => { if (DbConfig.SqlServer) o.UseSqlServer(DbConfig.Connection); else o.UseSqlite(DbInit.ConnectionString()); });
 builder.WebHost.ConfigureKestrel(k => { k.AddServerHeader = false; k.Limits.MaxRequestBodySize = 64 * 1024 * 1024; });
 builder.WebHost.UseUrls(Environment.GetEnvironmentVariable("MM_URLS") ?? "http://127.0.0.1:8000");
 

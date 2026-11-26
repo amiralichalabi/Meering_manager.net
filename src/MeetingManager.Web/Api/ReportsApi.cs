@@ -10,7 +10,7 @@ public static class ReportsApi
 
     public static void Map(WebApplication app)
     {
-        app.MapGet("/api/health", () => Http.Ok(new { ok = true, version = Version, db = Paths.DbPath, pdf = new { ok = true, engine = "QuestPDF" } }));
+        app.MapGet("/api/health", () => Http.Ok(new { ok = true, version = Version, db = DbConfig.SqlServer ? "SQL Server: " + DbConfig.DatabaseName : Paths.DbPath, engine = DbConfig.SqlServer ? "sqlserver" : "sqlite", pdf = new { ok = true, engine = "QuestPDF" } }));
 
         app.MapGet("/api/bootstrap", (HttpContext c, AppDb db) =>
         {

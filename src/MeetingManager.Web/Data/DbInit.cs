@@ -1,6 +1,8 @@
 using System.Reflection;
 using System.Text.RegularExpressions;
 using Microsoft.Data.Sqlite;
+using Microsoft.Data.SqlClient;
+using System.Text.Json;
 using Microsoft.EntityFrameworkCore;
 using MeetingManager.Core;
 
@@ -15,6 +17,41 @@ public static class Paths
         var env = Environment.GetEnvironmentVariable("MEETING_MANAGER_DATA_DIR");
         DataDir = !string.IsNullOrEmpty(env) ? env : Path.Combine(Directory.GetCurrentDirectory(), "data");
         Directory.CreateDirectory(DataDir);
+    }
+}
+
+
+/// <summary>Which database the app uses: SQLite (default, one file) or SQL Server. Set by env vars or by data/database.json.</summary>
+public static class DbConfig
+{
+    public static bool SqlServer { get; private set; }
+    public static string Connection { get; private set; } = "";
+    public static string DatabaseName { get; private set; } = "";
+
+    static string Env(string n) => Environment.GetEnvironmentVariable(n) ?? "";
+
+    public static void Init()
+    {
+        var provider = Env("MEETING_MANAGER_DB");
+        var conn = Env("MEETING_MANAGER_SQLSERVER");
+        var file = Path.Combine(Paths.DataDir, "database.json");
+        if (provider == "" && File.Exists(file))
+        {
+            using var d = JsonDocument.Parse(File.ReadAllText(file));
+            if (d.RootElement.TryGetProperty("provider", out var p)) provider = p.GetString() ?? "";
+            if (d.RootElement.TryGetProperty("connection", out var c)) conn = c.GetString() ?? "";
+        }
+        SqlServer = provider.Equals("sqlserver", StringComparison.OrdinalIgnoreCase);
+        if (!SqlServer) { Connection = ""; DatabaseName = ""; return; }
+        if (conn == "") throw new InvalidOperationException("SQL Server selected but no connection string (MEETING_MANAGER_SQLSERVER or database.json).");
+        var b = new SqlConnectionStringBuilder(conn);
+        // Tests: one throw-away database per data directory.
+        if (Env("MEETING_MANAGER_SQLSERVER_PER_DATADIR") == "1")
+            b.InitialCatalog = "mm_" + Convert.ToHexString(System.Security.Cryptography.SHA1.HashData(System.Text.Encoding.UTF8.GetBytes(Paths.DataDir)))[..16].ToLowerInvariant();
+        if (b.InitialCatalog == "" || b.InitialCatalog == "master") b.InitialCatalog = "MeetingManager";
+        if (!Regex.IsMatch(b.InitialCatalog, @"^[A-Za-z0-9_]{1,100}$")) throw new InvalidOperationException("Database name may only contain letters, digits and underscore.");
+        DatabaseName = b.InitialCatalog;
+        Connection = b.ToString();
     }
 }
 
@@ -51,8 +88,51 @@ public static class DbInit
         return l;
     }
 
+    /// <summary>The reference SQLite schema rewritten as T-SQL (same tables and columns; datetimes stay text so both engines behave alike; no foreign keys, as with SQLite here).</summary>
+    public static string SqlServerSchema()
+    {
+        using var s = Assembly.GetExecutingAssembly().GetManifestResourceStream("schema.sql")!;
+        using var r = new StreamReader(s);
+        var sql = r.ReadToEnd().Replace("\r\n", "\n");
+        sql = Regex.Replace(sql, @"^\s*FOREIGN KEY[^\n]*\n", "", RegexOptions.Multiline);
+        sql = Regex.Replace(sql, @",\s*\n\);", "\n);");
+        sql = Regex.Replace(sql, @"^(\s*id) INTEGER NOT NULL", "$1 INT IDENTITY(1,1) NOT NULL", RegexOptions.Multiline);
+        sql = Regex.Replace(sql, @"\bis_active INTEGER", "is_active BIT");
+        sql = Regex.Replace(sql, @"\bINTEGER\b", "INT");
+        sql = Regex.Replace(sql, @"\bBOOLEAN\b", "BIT");
+        sql = Regex.Replace(sql, @"\bDATETIME\b", "NVARCHAR(30)");
+        sql = Regex.Replace(sql, @"\bVARCHAR\(", "NVARCHAR(");
+        sql = Regex.Replace(sql, @"\bTEXT\b", "NVARCHAR(MAX)");
+        sql = Regex.Replace(sql, @"DEFAULT ('[^']*'|-?\d+) NOT NULL", "NOT NULL DEFAULT $1");
+        return sql;
+    }
+
+    static void MigrateSqlServer()
+    {
+        using (var m = new SqlConnection(new SqlConnectionStringBuilder(DbConfig.Connection) { InitialCatalog = "master" }.ToString()))
+        {
+            m.Open();
+            using var cmd = m.CreateCommand();
+            cmd.CommandText = $"IF DB_ID(N'{DbConfig.DatabaseName}') IS NULL CREATE DATABASE [{DbConfig.DatabaseName}]";
+            cmd.ExecuteNonQuery();
+        }
+        using var c = new SqlConnection(DbConfig.Connection);
+        c.Open();
+        using (var chk = c.CreateCommand())
+        {
+            chk.CommandText = "SELECT OBJECT_ID(N'dbo.users')";
+            if (chk.ExecuteScalar() is not DBNull and not null) return;
+        }
+        foreach (var stmt in SqlServerSchema().Split(";\n", StringSplitOptions.RemoveEmptyEntries))
+        {
+            var t = stmt.Trim(); if (t == "") continue;
+            using var cmd = c.CreateCommand(); cmd.CommandText = t; cmd.ExecuteNonQuery();
+        }
+    }
+
     public static void Migrate()
     {
+        if (DbConfig.SqlServer) { MigrateSqlServer(); return; }
         using var c = new SqliteConnection(ConnectionString());
         c.Open();
         var tables = Rows(c, "SELECT name FROM sqlite_master WHERE type='table'").ToHashSet();
