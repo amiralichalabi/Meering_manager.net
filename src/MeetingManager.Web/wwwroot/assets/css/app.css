@@ -448,3 +448,15 @@ body.dark .cal-chip.meeting{color:#93c5fd}body.dark .cal-chip.action{color:#fcd3
 .scrollbox::-webkit-scrollbar,.workbody::-webkit-scrollbar{width:8px}
 .scrollbox::-webkit-scrollbar-thumb,.workbody::-webkit-scrollbar-thumb{background:var(--line);border-radius:8px}
 .workbody{overscroll-behavior:contain;scrollbar-gutter:stable}
+
+/* English (left-to-right): the stylesheet is written for right-to-left, so the few directional rules are mirrored here. */
+[dir=ltr] .nav button,[dir=ltr] .table th,[dir=ltr] .table td,[dir=ltr] .cal-day{text-align:left}
+[dir=ltr] .badge:before{margin-left:0;margin-right:5px}
+[dir=ltr] .event,[dir=ltr] .history,[dir=ltr] .subtask,[dir=ltr] .agenda-item{border-right:0;border-left:4px solid var(--brand)}
+[dir=ltr] .subtask{border-left-color:var(--violet)}
+[dir=ltr] .agenda-item.action{border-left-color:var(--warn)}[dir=ltr] .agenda-item.project{border-left-color:var(--violet)}
+[dir=ltr] .card:before{right:auto;left:0}
+[dir=ltr] .legend-item .pct{text-align:right}
+[dir=ltr] .gantt-label{border-left:0;border-right:1px solid var(--line)}
+[dir=ltr] .sumcard .dot{right:auto;left:12px}
+[dir=ltr] .iconbtn[style*="float:left"]{float:right!important}

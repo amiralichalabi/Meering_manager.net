@@ -11,7 +11,7 @@ const ROLE_LABEL = { admin: 'مدیر سامانه', manager: 'مدیر', user: 
 const STATUSES = ['جدید', 'در حال انجام', 'انجام شده', 'عقب‌افتاده'];
 
 async function api(url, opt = {}) {
-  opt.headers = { ...(opt.headers || {}), 'Content-Type': 'application/json', 'X-Session-Token': token };
+  opt.headers = { ...(opt.headers || {}), 'Content-Type': 'application/json', 'X-Session-Token': token, 'X-Lang': I18N.lang };
   const r = await fetch(url, opt);
   if (r.status === 401 && token) { logout(); throw Error('نشست شما منقضی شده است.'); }
   if (!r.ok) {
@@ -89,6 +89,7 @@ const progressBar = pct => `<div class="progressbar" role="progressbar" aria-val
 /* ───────── File download (Excel / Word / PDF / backup) ───────── */
 /** Asks the server for a short-lived ticket so the file URL works on its own (also for download managers such as IDM). */
 async function ticketUrl(url) {
+  if (I18N.lang === 'en' && !/[?&]lang=/.test(url)) url += (url.includes('?') ? '&' : '?') + 'lang=en';
   const { ticket } = await api('/api/auth/ticket', { method: 'POST', body: JSON.stringify({ url }) });
   return url + (url.includes('?') ? '&' : '?') + 'ticket=' + ticket;
 }

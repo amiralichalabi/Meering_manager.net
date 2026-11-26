@@ -94,7 +94,7 @@ const Jalali = (() => {
   }
 
   const pad = n => String(n).padStart(2, '0');
-  const toFa = v => String(v ?? '').replace(/\d/g, c => FA[c]);
+  const toFa = v => (I18N.lang === 'en' ? String(v ?? '') : String(v ?? '').replace(/\d/g, c => FA[c]));
   const toEn = v => String(v ?? '').replace(/[۰-۹]/g, c => FA.indexOf(c)).replace(/[٠-٩]/g, c => '٠١٢٣٤٥٦٧٨٩'.indexOf(c));
 
   /** {y,m,d} -> '1405/07/09' */

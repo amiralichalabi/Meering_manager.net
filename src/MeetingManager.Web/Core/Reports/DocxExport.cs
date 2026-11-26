@@ -8,19 +8,23 @@ namespace MeetingManager.Core;
 /// <summary>Word reports (actions / meetings): right-to-left tables, B Nazanin font, same columns as the Excel report.</summary>
 public static class DocxExport
 {
-    const string Font = "B Nazanin";
+    static string Font => Loc.En ? "Calibri" : "B Nazanin";
 
     static RunProperties Props(int halfPoints, bool bold)
     {
         var rp = new RunProperties(new RunFonts { Ascii = Font, HighAnsi = Font, ComplexScript = Font }, new FontSize { Val = halfPoints.ToString() }, new FontSizeComplexScript { Val = halfPoints.ToString() });
         if (bold) { rp.Append(new Bold()); rp.Append(new BoldComplexScript()); }
-        rp.Append(new RightToLeftText());
+        if (!Loc.En) rp.Append(new RightToLeftText());
         return rp;
     }
 
     static Paragraph Para(string text, int halfPoints, bool bold, JustificationValues just)
     {
-        var p = new Paragraph(new ParagraphProperties(new BiDi(), new Justification { Val = just }));
+        if (Loc.En && just == JustificationValues.Right) just = JustificationValues.Left;
+        var pp = new ParagraphProperties();
+        if (!Loc.En) pp.Append(new BiDi());
+        pp.Append(new Justification { Val = just });
+        var p = new Paragraph(pp);
         p.Append(new Run(Props(halfPoints, bold), new Text(text) { Space = SpaceProcessingModeValues.Preserve }));
         return p;
     }
@@ -31,14 +35,14 @@ public static class DocxExport
         var borders = new TableBorders();
         foreach (var b in new BorderType[] { new TopBorder(), new BottomBorder(), new LeftBorder(), new RightBorder(), new InsideHorizontalBorder(), new InsideVerticalBorder() })
         { b.Val = BorderValues.Single; b.Size = 4; borders.Append(b); }
-        t.Append(new TableProperties(borders, new BiDiVisual(), new TableWidth { Width = "5000", Type = TableWidthUnitValues.Pct }));
+        t.Append(Loc.En ? new TableProperties(borders, new TableWidth { Width = "5000", Type = TableWidthUnitValues.Pct }) : new TableProperties(borders, new BiDiVisual(), new TableWidth { Width = "5000", Type = TableWidthUnitValues.Pct }));
         void AddRow(string[] cells, bool bold)
         {
             var tr = new TableRow();
             foreach (var c in cells) tr.Append(new TableCell(Para(c, 20, bold, JustificationValues.Right)));
             t.Append(tr);
         }
-        AddRow(heads, true);
+        AddRow(heads.Select(Loc.T).ToArray(), true);
         foreach (var r in rows) AddRow(r, false);
         return t;
     }
@@ -56,15 +60,15 @@ public static class DocxExport
         return ms.ToArray();
     }
 
-    static string Join(ActionItem a) => string.Join("، ", a.Collaborators.Select(p => p.Name));
+    static string Join(ActionItem a) => string.Join(Loc.Sep, a.Collaborators.Select(p => p.Name));
 
     public static byte[] Actions(IList<ActionItem> acts)
     {
         return Build(body =>
         {
-            body.Append(Para("گزارش اقدامات", 40, true, JustificationValues.Center));
+            body.Append(Para(Loc.T("گزارش اقدامات"), 40, true, JustificationValues.Center));
             var heads = new[] { "ردیف", "موضوع", "پروژه", "مسئول اصلی", "همکاران", "مهلت", "پیشرفت", "وضعیت" };
-            var rows = acts.Select((a, i) => new[] { (i + 1).ToString(), a.Subject, a.Project?.Name ?? "", a.OwnerPerson?.Name ?? "", Join(a), a.Due, $"{a.Progress}%", Status.Effective(a) });
+            var rows = acts.Select((a, i) => new[] { (i + 1).ToString(), a.Subject, a.Project?.Name ?? "", a.OwnerPerson?.Name ?? "", Join(a), a.Due, $"{a.Progress}%", Loc.T(Status.Effective(a)) });
             body.Append(MakeTable(heads, rows));
         });
     }
@@ -73,15 +77,15 @@ public static class DocxExport
     {
         return Build(body =>
         {
-            body.Append(Para("گزارش جلسات و اقدامات", 40, true, JustificationValues.Center));
+            body.Append(Para(Loc.T("گزارش جلسات و اقدامات"), 40, true, JustificationValues.Center));
             foreach (var m in meetings)
             {
                 body.Append(Para(m.Title, 32, true, JustificationValues.Right));
                 foreach (var (label, val) in new[] { ("تاریخ", m.MeetingDate), ("ساعت", m.Time), ("محل", m.Place), ("پروژه", m.Project?.Name ?? ""), ("خلاصه جلسه", m.Summary) })
-                    body.Append(Para($"{label}: {val}", 22, false, JustificationValues.Right));
+                    body.Append(Para($"{Loc.T(label)}: {val}", 22, false, JustificationValues.Right));
                 var acts = Api.Views.MeetingActions(m).OrderBy(a => a.Sprint == "" ? "~" : a.Sprint, StringComparer.Ordinal).ThenBy(a => a.Id).ToList();
                 var heads = new[] { "ردیف", "موضوع", "تصمیم", "اسپرینت", "مسئول اصلی", "همکاران", "مهلت", "وضعیت / پیشرفت" };
-                var rows = acts.Select((a, i) => new[] { (i + 1).ToString(), a.Subject, a.Decision, a.Sprint == "" ? "—" : a.Sprint, a.OwnerPerson?.Name ?? "", Join(a), a.Due, $"{Status.Effective(a)} / {a.Progress}%" });
+                var rows = acts.Select((a, i) => new[] { (i + 1).ToString(), a.Subject, a.Decision, a.Sprint == "" ? "—" : a.Sprint, a.OwnerPerson?.Name ?? "", Join(a), a.Due, $"{Loc.T(Status.Effective(a))} / {a.Progress}%" });
                 body.Append(MakeTable(heads, rows));
                 body.Append(new Paragraph());
             }

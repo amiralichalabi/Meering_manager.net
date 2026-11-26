@@ -244,3 +244,42 @@ public class GoldenTests
         Assert.False(Security.VerifyPw("x", h));
     }
 }
+
+[Collection("assistant")]
+public class LanguageTests : IDisposable
+{
+    readonly ApiFixture host = new();
+    public void Dispose() => host.Dispose();
+
+    [Fact]
+    public async Task Dictionary_is_served_and_has_phrases()
+    {
+        var r = await host.Client.GetAsync("/api/i18n/en");
+        r.EnsureSuccessStatusCode();
+        var d = System.Text.Json.JsonSerializer.Deserialize<Dictionary<string, string>>(await r.Content.ReadAsStringAsync())!;
+        Assert.Equal("Projects", d["پروژه‌ها"]);
+    }
+
+    [Fact]
+    public async Task Server_messages_are_translated_on_request()
+    {
+        var fa = await host.Client.PostAsync("/api/auth/login", new StringContent("{\"username\":\"admin\",\"password\":\"x\"}", System.Text.Encoding.UTF8, "application/json"));
+        Assert.Contains("صحیح نیست", await fa.Content.ReadAsStringAsync());
+        var req = new HttpRequestMessage(HttpMethod.Post, "/api/auth/login") { Content = new StringContent("{\"username\":\"admin\",\"password\":\"x\"}", System.Text.Encoding.UTF8, "application/json") };
+        req.Headers.Add("X-Lang", "en");
+        var en = await host.Client.SendAsync(req);
+        Assert.Contains("incorrect", await en.Content.ReadAsStringAsync());
+    }
+
+    [Fact]
+    public void Translation_handles_interpolated_text_and_digits()
+    {
+        Loc.En = true;
+        try
+        {
+            Assert.Equal("Row 5: Description is empty; skipped.", Loc.T("ردیف 5: Description خالی است؛ رد شد."));
+            Assert.Equal("Prepared on: 2026", Loc.T("تاریخ تهیه: ۲۰۲۶"));
+        }
+        finally { Loc.En = false; }
+    }
+}

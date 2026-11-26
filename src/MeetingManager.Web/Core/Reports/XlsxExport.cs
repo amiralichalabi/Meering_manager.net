@@ -7,8 +7,10 @@ namespace MeetingManager.Core;
 /// <summary>Excel exports of actions and meetings.</summary>
 public static class XlsxExport
 {
-    const string FontName = "B Nazanin";
+    static string FontName => Loc.En ? "Calibri" : "B Nazanin";
     static readonly XLColor HeaderFill = XLColor.FromHtml("#D9EAF7");
+
+    static XLAlignmentHorizontalValues Align => Loc.En ? XLAlignmentHorizontalValues.Left : XLAlignmentHorizontalValues.Right;
 
     static void Put(IXLCell cell, object? v)
     {
@@ -43,7 +45,7 @@ public static class XlsxExport
             z.Style.Font.FontName = FontName;
             z.Style.Font.Bold = true;
             z.Style.Fill.BackgroundColor = HeaderFill;
-            z.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Right;
+            z.Style.Alignment.Horizontal = Align;
             if (verticalCenter) z.Style.Alignment.Vertical = XLAlignmentVerticalValues.Center;
             z.Style.Alignment.WrapText = true;
         }
@@ -57,7 +59,7 @@ public static class XlsxExport
             Put(cell, vals[c]);
             cell.Style.Font.FontName = FontName;
             cell.Style.Font.FontSize = 12;
-            cell.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Right;
+            cell.Style.Alignment.Horizontal = Align;
             cell.Style.Alignment.Vertical = XLAlignmentVerticalValues.Top;
             cell.Style.Alignment.WrapText = true;
         }
@@ -80,19 +82,19 @@ public static class XlsxExport
     public static byte[] Actions(IList<ActionItem> acts)
     {
         using var wb = new XLWorkbook();
-        var ws = wb.Worksheets.Add("اقدامات");
-        ws.RightToLeft = true;
+        var ws = wb.Worksheets.Add(Loc.T("اقدامات"));
+        ws.RightToLeft = !Loc.En;
         var heads = new[] { "ردیف", "موضوع اقدام", "تصمیم", "پروژه", "جلسه", "مسئول اصلی", "همکاران", "انجام‌دهنده", "مهلت", "اولویت", "پیشرفت", "وضعیت", "اسپرینت" };
-        Title(ws, "گزارش اقدامات", heads.Length);
-        Headers(ws, heads, true);
+        Title(ws, Loc.T("گزارش اقدامات"), heads.Length);
+        Headers(ws, heads.Select(Loc.T).ToArray(), true);
         int r = 4;
         foreach (var a in acts)
         {
             DataRow(ws, r, new object?[]
             {
                 r - 3, a.Subject, a.Decision, a.Project?.Name ?? "", a.Meeting?.Title ?? "", Views.PName(a.OwnerPerson),
-                string.Join("، ", a.Collaborators.Select(p => p.Name)), Views.PName(a.AssigneePerson), a.Due, a.Priority,
-                $"{a.Progress}%", Status.Effective(a), a.Sprint ?? "",
+                string.Join(Loc.Sep, a.Collaborators.Select(p => p.Name)), Views.PName(a.AssigneePerson), a.Due, Loc.T(a.Priority),
+                $"{a.Progress}%", Loc.T(Status.Effective(a)), a.Sprint ?? "",
             });
             r++;
         }
@@ -103,16 +105,16 @@ public static class XlsxExport
     public static byte[] Meetings(IList<Meeting> meetings)
     {
         using var wb = new XLWorkbook();
-        var ws = wb.Worksheets.Add("جلسات");
-        ws.RightToLeft = true;
+        var ws = wb.Worksheets.Add(Loc.T("جلسات"));
+        ws.RightToLeft = !Loc.En;
         var heads = new[] { "ردیف", "جلسه", "تاریخ", "ساعت", "محل", "پروژه", "خلاصه جلسه", "تعداد اقدامات", "اسپرینت‌ها" };
-        Title(ws, "گزارش جلسات", heads.Length);
-        Headers(ws, heads, false);
+        Title(ws, Loc.T("گزارش جلسات"), heads.Length);
+        Headers(ws, heads.Select(Loc.T).ToArray(), false);
         int r = 4;
         foreach (var m in meetings)
         {
             var ma = Views.MeetingActions(m);
-            var sprints = string.Join("، ", ma.Where(a => !string.IsNullOrEmpty(a.Sprint)).GroupBy(a => a.Sprint)
+            var sprints = string.Join(Loc.Sep, ma.Where(a => !string.IsNullOrEmpty(a.Sprint)).GroupBy(a => a.Sprint)
                 .OrderBy(g => g.Key, StringComparer.Ordinal).Select(g => $"{g.Key} ({g.Count()})"));
             DataRow(ws, r, new object?[]
             {

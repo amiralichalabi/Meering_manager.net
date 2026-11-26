@@ -724,7 +724,7 @@ function openAction(id, prefill = {}) {
     <div class="section"><div class="sectionhead"><h3>زیرکارها</h3><button class="btn secondary" onclick="addSubtaskPrompt(${id})">+ زیرکار</button></div>
       ${(base.subtasks || []).map(x => `<div class="subtask"><b>${esc(x.subject)}</b> · ${fa(x.progress)}٪ · ${esc(x.assignee)}</div>`).join('') || '<div class="muted">زیرکاری ثبت نشده است.</div>'}</div>
     <div class="section"><div class="sectionhead"><h3>یادداشت‌ها</h3><button class="btn secondary" onclick="addNotePrompt(${id})">+ یادداشت</button></div>
-      ${(base.notes || []).map(n => `<div class="history"><button class="iconbtn" style="float:left" title="حذف یادداشت" aria-label="حذف یادداشت" onclick="deleteActionNote(${id},${n.id})">×</button><b>${esc(n.user)}</b> · ${esc(new Date(n.created_at + 'Z').toLocaleString('fa-IR'))}<br>${esc(n.body)}</div>`).join('') || '<div class="muted">یادداشتی ثبت نشده است.</div>'}</div>
+      ${(base.notes || []).map(n => `<div class="history"><button class="iconbtn" style="float:left" title="حذف یادداشت" aria-label="حذف یادداشت" onclick="deleteActionNote(${id},${n.id})">×</button><b>${esc(n.user)}</b> · ${esc(new Date(n.created_at + 'Z').toLocaleString(I18N.locale))}<br>${esc(n.body)}</div>`).join('') || '<div class="muted">یادداشتی ثبت نشده است.</div>'}</div>
     <div class="section"><div class="sectionhead"><h3>تاریخچه پیشرفت</h3><button class="btn secondary" onclick="openProgress(${id})">ثبت پیشرفت</button></div>
       ${(base.history || []).slice().reverse().map(h => `<div class="history"><b>${fa(h.from)}٪ ← ${fa(h.to)}٪</b> · ${fd(h.date)}<br>${esc(h.note)}</div>`).join('') || '<div class="muted">سابقه‌ای وجود ندارد.</div>'}</div>` : '';
   modal(mh(id ? 'ویرایش اقدام' : 'اقدام جدید', `

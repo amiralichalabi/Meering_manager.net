@@ -29,10 +29,12 @@ public static class PdfExport
         }
     }
 
-    static string Fa(string? s) => Jalali.FaDigits(s ?? "");
+    static string Fa(string? s) => Loc.En ? Loc.T(s) : Jalali.FaDigits(s ?? "");
+    static string T(string? s) => Loc.T(s);
+    static IContainer Al(this IContainer c) => Loc.En ? c.AlignLeft() : c.AlignRight();
     static string StatusColor(string st) => st == Status.Done ? "#15803D" : st == ReportModel.InProgress ? "#1D4ED8" : st == Status.Late ? "#B91C1C" : "#475569";
 
-    static void Head(IContainer c, string text) => c.Background("#1E3A5F").Padding(4).AlignRight().Text(text).FontColor(Colors.White).Bold().FontSize(9);
+    static void Head(IContainer c, string text) => c.Background("#1E3A5F").Padding(4).Al().Text(T(text)).FontColor(Colors.White).Bold().FontSize(9);
     static IContainer Cell(IContainer c, bool zebra) => c.Background(zebra ? "#F5F7FA" : "#FFFFFF").BorderBottom(0.5f).BorderColor("#D5DCE6").Padding(4);
 
     static void ActionsTable(ColumnDescriptor col, List<ActionRowData> rows)
@@ -50,14 +52,14 @@ public static class PdfExport
             foreach (var r in rows)
             {
                 var z = r.Index % 2 == 0;
-                t.Cell().Element(c => Cell(c, z)).AlignRight().Text(Fa(r.Index.ToString())).FontSize(9);
-                t.Cell().Element(c => Cell(c, z)).AlignRight().Text(r.Subject).FontSize(9);
-                t.Cell().Element(c => Cell(c, z)).AlignRight().Text(r.Project).FontSize(9);
-                t.Cell().Element(c => Cell(c, z)).AlignRight().Text(r.Owner).FontSize(9);
-                t.Cell().Element(c => Cell(c, z)).AlignRight().Text(r.Collaborators).FontSize(9);
-                t.Cell().Element(c => Cell(c, z)).AlignRight().Text(Fa(r.Due)).FontSize(9);
-                t.Cell().Element(c => Cell(c, z)).AlignRight().Text(Fa(r.Progress + "%")).FontSize(9);
-                t.Cell().Element(c => Cell(c, z)).AlignRight().Text(r.Status).FontSize(9).FontColor(StatusColor(r.Status)).Bold();
+                t.Cell().Element(c => Cell(c, z)).Al().Text(Fa(r.Index.ToString())).FontSize(9);
+                t.Cell().Element(c => Cell(c, z)).Al().Text(r.Subject).FontSize(9);
+                t.Cell().Element(c => Cell(c, z)).Al().Text(r.Project).FontSize(9);
+                t.Cell().Element(c => Cell(c, z)).Al().Text(r.Owner).FontSize(9);
+                t.Cell().Element(c => Cell(c, z)).Al().Text(r.Collaborators).FontSize(9);
+                t.Cell().Element(c => Cell(c, z)).Al().Text(Fa(r.Due)).FontSize(9);
+                t.Cell().Element(c => Cell(c, z)).Al().Text(Fa(r.Progress + "%")).FontSize(9);
+                t.Cell().Element(c => Cell(c, z)).Al().Text(T(r.Status)).FontSize(9).FontColor(StatusColor(r.Status)).Bold();
             }
         });
     }
@@ -65,8 +67,8 @@ public static class PdfExport
     static void Kpi(RowDescriptor row, string label, string value) =>
         row.RelativeItem().Border(0.5f).BorderColor("#D5DCE6").Padding(6).Column(c =>
         {
-            c.Item().AlignRight().Text(value).Bold().FontSize(14).FontColor("#1E3A5F");
-            c.Item().AlignRight().Text(label).FontSize(8).FontColor("#64748B");
+            c.Item().Al().Text(value).Bold().FontSize(14).FontColor("#1E3A5F");
+            c.Item().Al().Text(T(label)).FontSize(8).FontColor("#64748B");
         });
 
     static byte[] Doc(Action<ColumnDescriptor> body, string footer)
@@ -76,7 +78,7 @@ public static class PdfExport
         {
             p.Size(PageSizes.A4.Landscape());
             p.Margin(24);
-            p.ContentFromRightToLeft();
+            if (!Loc.En) p.ContentFromRightToLeft();
             p.DefaultTextStyle(x => x.FontFamily(Family).FontSize(10).FontColor("#1F2937"));
             p.Content().Column(body);
             p.Footer().AlignCenter().Text(t =>
@@ -91,8 +93,8 @@ public static class PdfExport
     public static byte[] Actions(ActionsReportData m) => Doc(col =>
     {
         col.Spacing(8);
-        col.Item().AlignRight().Text(m.Title).Bold().FontSize(18).FontColor("#1E3A5F");
-        col.Item().AlignRight().Text(Fa($"تاریخ تهیه: {m.PreparedDate}" + (m.PreparedBy != "" ? $"  ·  تهیه‌کننده: {m.PreparedBy}" : ""))).FontSize(9).FontColor("#64748B");
+        col.Item().Al().Text(T(m.Title)).Bold().FontSize(18).FontColor("#1E3A5F");
+        col.Item().Al().Text(Fa($"تاریخ تهیه: {m.PreparedDate}" + (m.PreparedBy != "" ? $"  ·  تهیه‌کننده: {m.PreparedBy}" : ""))).FontSize(9).FontColor("#64748B");
         col.Item().Row(r =>
         {
             r.Spacing(6);
@@ -108,21 +110,21 @@ public static class PdfExport
     public static byte[] Meetings(MeetingsReportData m) => Doc(col =>
     {
         col.Spacing(10);
-        col.Item().AlignRight().Text(m.Title).Bold().FontSize(18).FontColor("#1E3A5F");
-        col.Item().AlignRight().Text(Fa($"تاریخ تهیه: {m.PreparedDate}  ·  تعداد جلسات: {m.MeetingCount}")).FontSize(9).FontColor("#64748B");
+        col.Item().Al().Text(T(m.Title)).Bold().FontSize(18).FontColor("#1E3A5F");
+        col.Item().Al().Text(Fa($"تاریخ تهیه: {m.PreparedDate}  ·  تعداد جلسات: {m.MeetingCount}")).FontSize(9).FontColor("#64748B");
         foreach (var s in m.Meetings)
         {
             col.Item().Column(c =>
             {
                 c.Spacing(3);
-                c.Item().AlignRight().Text(s.Title).Bold().FontSize(13);
+                c.Item().Al().Text(s.Title).Bold().FontSize(13);
                 var meta = new List<string> { $"تاریخ: {s.Date}" };
                 if (s.Time != "") meta.Add($"ساعت: {s.Time}");
                 if (s.Place != "") meta.Add($"محل: {s.Place}");
                 if (s.Project != "") meta.Add($"پروژه: {s.Project}");
-                c.Item().AlignRight().Text(Fa(string.Join("  ·  ", meta))).FontSize(9).FontColor("#64748B");
-                if (s.Attendees.Count > 0) c.Item().AlignRight().Text("حاضران: " + string.Join("، ", s.Attendees)).FontSize(9);
-                if (s.Summary != "") c.Item().AlignRight().Text(s.Summary).FontSize(9);
+                c.Item().Al().Text(Fa(string.Join("  ·  ", meta))).FontSize(9).FontColor("#64748B");
+                if (s.Attendees.Count > 0) c.Item().Al().Text(T("حاضران: ") + string.Join(Loc.Sep, s.Attendees)).FontSize(9);
+                if (s.Summary != "") c.Item().Al().Text(s.Summary).FontSize(9);
                 if (s.Actions.Count > 0) ActionsTable(c, s.Actions);
             });
         }

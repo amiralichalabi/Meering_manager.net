@@ -201,7 +201,7 @@ public static class Assistant
         if (ov != null) return ov(question, context, history ?? new List<JsonElement>());
         var msgs = new List<Dictionary<string, string>>
         {
-            new() { ["role"] = "system", ["content"] = SystemPrompt + "\n\n=== داده‌های سامانه ===\n" + context + "\n=== پایان داده‌ها ===" },
+            new() { ["role"] = "system", ["content"] = SystemPrompt + (Loc.En ? "\nThe user uses the English interface: write your answer in English (the data below is in Persian; translate names and terms as needed). " : "") + "\n\n=== داده‌های سامانه ===\n" + context + "\n=== پایان داده‌ها ===" },
         };
         var hist = history ?? new List<JsonElement>();
         foreach (var h in hist.Skip(Math.Max(0, hist.Count - MaxHistory)))

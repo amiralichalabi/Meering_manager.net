@@ -34,6 +34,14 @@ app.Use(async (ctx, next) =>
     await next();
 });
 
+// Language of this request: English when the page (or a download link) says so; everything the server writes is then translated.
+app.Use(async (ctx, next) =>
+{
+    Loc.En = ctx.Request.Query["lang"] == "en" || ctx.Request.Headers["X-Lang"] == "en";
+    await next();
+});
+app.MapGet("/api/i18n/en", () => Results.Text(Loc.Json, "application/json; charset=utf-8"));
+
 // Every error answers with {"detail": "..."}: the UI shows it as a toast.
 app.Use(async (ctx, next) =>
 {
@@ -49,6 +57,7 @@ static async Task Write(HttpContext ctx, int status, string detail)
 {
     if (ctx.Response.HasStarted) return;
     ctx.Response.Clear();
+    detail = Loc.T(detail);
     ctx.Response.StatusCode = status;
     ctx.Response.ContentType = "application/json; charset=utf-8";
     await ctx.Response.WriteAsync(JsonSerializer.Serialize(new { detail }, Http.Json));
