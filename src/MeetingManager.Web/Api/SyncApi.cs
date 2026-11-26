@@ -32,6 +32,9 @@ public static class SyncApi
         {
             Security.Require(c, db, "backup.manage");
             var stamp = DateTime.Now.ToString("yyyyMMdd_HHmmss");
+            // SQL Server has no single file to copy: the backup is the full sync file, which the sync import restores.
+            if (DbConfig.SqlServer)
+                return Results.File(System.Text.Encoding.UTF8.GetBytes(SyncFile.ToJson(SyncFile.Export(db))), "application/json", $"backup_{stamp}.json");
             var dest = Path.Combine(Paths.DataDir, $"backup_{stamp}.db");
             using (var src = new FileStream(Paths.DbPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
             using (var dst = new FileStream(dest, FileMode.Create, FileAccess.Write))
