@@ -66,6 +66,9 @@ public class StaticFilesTests : IDisposable
         Assert.Contains("<html lang=\"fa\"", html);
         foreach (var path in new[] { "/static/assets/js/app.js", "/static/assets/css/app.css", "/static/assets/js/jalali.js" })
             Assert.Equal(System.Net.HttpStatusCode.OK, (await c.GetAsync(path)).StatusCode);
+        Assert.Contains("Meeting Manager", await c.GetStringAsync("/manifest.webmanifest"));
+        Assert.Equal(System.Net.HttpStatusCode.OK, (await c.GetAsync("/sw.js")).StatusCode);
+        Assert.Equal(System.Net.HttpStatusCode.OK, (await c.GetAsync("/static/pwa/icon-180.png")).StatusCode);
         var health = await c.GetStringAsync("/api/health");
         Assert.Contains("\"ok\":true", health);
     }

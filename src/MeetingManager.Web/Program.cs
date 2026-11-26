@@ -67,6 +67,8 @@ static async Task Write(HttpContext ctx, int status, string detail)
 var webroot = Path.Combine(app.Environment.ContentRootPath, "wwwroot");
 if (!Directory.Exists(webroot)) webroot = Path.Combine(AppContext.BaseDirectory, "wwwroot");
 app.UseStaticFiles(new StaticFileOptions { FileProvider = new PhysicalFileProvider(webroot), RequestPath = "/static" });
+app.MapGet("/manifest.webmanifest", () => Results.File(Path.Combine(webroot, "pwa", "manifest.webmanifest"), "application/manifest+json"));
+app.MapGet("/sw.js", (HttpContext c) => { c.Response.Headers["Service-Worker-Allowed"] = "/"; c.Response.Headers["Cache-Control"] = "no-cache"; return Results.File(Path.Combine(webroot, "pwa", "sw.js"), "text/javascript"); });
 app.MapGet("/", () => Results.File(Path.Combine(webroot, "index.html"), "text/html; charset=utf-8"));
 
 AuthApi.Map(app);

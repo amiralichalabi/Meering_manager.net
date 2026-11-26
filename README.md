@@ -61,3 +61,7 @@ or put a `database.json` next to the data folder's database:
 ```
 
 The database is created on first start if it does not exist (the login needs the `dbcreator` role, or create an empty database first), and the tables are created automatically. The Android/iPhone apps keep local SQLite and exchange data through the sync file, so they work the same with either engine. Moving existing SQLite data into SQL Server: export a sync file from the old setup and import it in the new one.
+
+## iPhone (and any phone): install as a web app (PWA)
+
+The web UI is installable. Open the server's address in Safari on the iPhone → Share → **Add to Home Screen**; it then opens full-screen like an app, with its own icon. The phone must be able to reach the server (same Wi-Fi, a VPN such as Tailscale, or the server hosted online); offline service-worker caching only activates over HTTPS.
