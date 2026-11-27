@@ -166,4 +166,6 @@ public class AssistantIn
 }
 public class AssistantConfigIn { public string Url { get; set; } = ""; public string Model { get; set; } = ""; public string Timeout { get; set; } = ""; }
 
+public class TextDraftIn { public string? Transcript { get; set; } }
+
 public class TicketIn { public string? Url { get; set; } }

@@ -243,6 +243,37 @@ public static class Assistant
         }
     }
 
+    /// <summary>One chat completion with ready-made messages (used by the voice draft). Tests set <see cref="RawOverride"/>.</summary>
+    public static Func<string, string, Task<string>>? RawOverride { get; set; }
+
+    public static async Task<string> ChatRaw(string system, string user)
+    {
+        var ov = RawOverride;
+        if (ov != null) return await ov(system, user);
+        try
+        {
+            var model = await PickModel();
+            var timeoutText = LoadConfig().Timeout;
+            var timeout = 180.0;
+            if (timeoutText != "" && double.TryParse(timeoutText, System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out var tv) && tv > 0) timeout = tv;
+            var msgs = new[] { new Dictionary<string, string> { ["role"] = "system", ["content"] = system }, new Dictionary<string, string> { ["role"] = "user", ["content"] = user } };
+            var payload = JsonSerializer.Serialize(new Dictionary<string, object> { ["model"] = model, ["messages"] = msgs, ["temperature"] = 0.2, ["stream"] = false },
+                new JsonSerializerOptions { Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping });
+            using var doc = JsonDocument.Parse(await Request("/v1/chat/completions", payload, timeout));
+            var content = doc.RootElement.GetProperty("choices")[0].GetProperty("message").GetProperty("content");
+            return Clean(content.ValueKind == JsonValueKind.String ? content.GetString() : "");
+        }
+        catch (AssistantException) { throw; }
+        catch (Exception e) when (e is JsonException or KeyNotFoundException or IndexOutOfRangeException or InvalidOperationException && !IsNetworkError(e))
+        {
+            throw new AssistantException("پاسخ مدل محلی قابل خواندن نبود.");
+        }
+        catch (Exception e) when (IsNetworkError(e))
+        {
+            throw new AssistantException($"به مدل محلی در {Base()} وصل نشد. مطمئن شوید Ollama (یا سرور مدل) روشن است.");
+        }
+    }
+
     public static async Task<object> StatusInfo()
     {
         try

@@ -109,7 +109,7 @@ async function section(name) {
   $('title').textContent = SECTION_TITLES[name];
   const quick = {
     dashboard: `<button class="btn" onclick="openMeeting()">+ جلسه جدید</button><button class="btn secondary" onclick="openAction()">+ اقدام جدید</button>`,
-    meetings: has('meetings.manage') ? `<button class="btn" onclick="openMeeting()">+ جلسه جدید</button>` : '',
+    meetings: has('meetings.manage') ? `<button class="btn" onclick="openMeeting()">+ جلسه جدید</button><button class="btn secondary" onclick="openVoiceDraft()">جلسه از روی صدا</button>` : '',
     actions: has('actions.manage') ? `<button class="btn" onclick="openAction()">+ اقدام جدید</button>` : '',
     projects: has('projects.manage') ? `<button class="btn" onclick="openProject()">+ پروژه جدید</button>` : '',
   };
@@ -250,22 +250,22 @@ async function openMeeting(id, prefill = {}) {
   const linkedIds = new Set((m?.current || []).filter(a => a.meeting_id !== id).map(a => a.id));
   modal(mh(id ? 'ویرایش جلسه' : 'جلسه جدید', `
     <div class="grid">
-      <div class="field"><label for="mt">عنوان جلسه</label><input id="mt" value="${esc(m?.title || '')}"></div>
+      <div class="field"><label for="mt">عنوان جلسه</label><input id="mt" value="${esc(m?.title ?? prefill.title ?? '')}"></div>
       <div class="field"><label for="md">تاریخ جلسه</label>${datePicker('md', m?.date || prefill.date || Jalali.format(Jalali.today()))}</div>
       <div class="field"><label for="mti">ساعت (۲۴ ساعته)</label>${timePicker('mti', m?.time || '')}</div>
       <div class="field"><label for="mp">محل</label><input id="mp" list="placeList" value="${esc(m?.place || '')}" placeholder="از لیست مکان‌ها انتخاب کنید یا بنویسید">
         <datalist id="placeList">${(state.locations || []).map(l => `<option value="${esc(l.name)}">`).join('')}</datalist></div>
       <div class="field"><label for="mproj">پروژه</label><select id="mproj">${projectOpts(m?.project_id)}</select></div>
-      <div class="field full"><label for="msum">خلاصه جلسه</label><textarea id="msum">${esc(m?.summary || '')}</textarea></div>
+      <div class="field full"><label for="msum">خلاصه جلسه</label><textarea id="msum">${esc(m?.summary ?? prefill.summary ?? '')}</textarea></div>
       <div class="field full"><label for="mdesc">توضیحات</label><textarea id="mdesc">${esc(m?.desc || '')}</textarea></div>
-      <div class="field full"><label>افراد حاضر در جلسه</label>${attendeeEditor(m?.attendee_ids || [])}</div>
+      <div class="field full"><label>افراد حاضر در جلسه</label>${attendeeEditor(m?.attendee_ids || prefill.attendee_ids || [])}</div>
     </div>
     <div class="section"><h3>اقدامات جلسه قبل</h3><p class="muted">اقدام‌ها مستقل می‌مانند و فقط به این جلسه لینک می‌شوند.</p>
       <div style="max-height:210px;overflow:auto">${avail.map(a => `<label class="check"><input class="prev-action" type="checkbox" value="${a.id}" ${linkedIds.has(a.id) ? 'checked' : ''}> <span><b>${esc(a.subject)}</b> · ${esc(a.project)} · ${fa(a.progress)}٪</span></label>`).join('') || '<div class="empty">اقدام قابل انتخابی وجود ندارد.</div>'}</div></div>
     <div class="section"><div class="sectionhead"><h3>اقدامات جدید جلسه</h3><div class="toolbar"><button class="btn secondary" onclick="addSprintInline()">+ اسپرینت جدید</button><button class="btn secondary" onclick="addMeetingActionRow()">+ افزودن اقدام</button></div></div>${sprintDatalist()}
-      <div id="meetingActionsForm">${(m?.current || []).filter(a => a.meeting_id === id).map(a => meetingActionRow(a)).join('')}</div></div>
+      <div id="meetingActionsForm">${(m ? (m.current || []).filter(a => a.meeting_id === id) : (prefill.actions || [])).map(a => meetingActionRow(a)).join('')}</div></div>
     <div class="actionsbar"><button class="btn" onclick="saveMeeting(${id || 0})">ذخیره جلسه</button><button class="btn secondary" onclick="closeModal()">انصراف</button></div>`));
-  renderAttendeeList(m?.attendee_ids || []);
+  renderAttendeeList(m?.attendee_ids || prefill.attendee_ids || []);
 }
 
 let meetingRowSeq = 0;

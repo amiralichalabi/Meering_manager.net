@@ -80,6 +80,7 @@ ReportsApi.Map(app);
 SyncApi.Map(app);
 ExportApi.Map(app);
 AssistantApi.Map(app);
+VoiceApi.Map(app);
 
 app.Run();
 

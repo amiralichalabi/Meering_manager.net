@@ -11,7 +11,7 @@ const ROLE_LABEL = { admin: 'مدیر سامانه', manager: 'مدیر', user: 
 const STATUSES = ['جدید', 'در حال انجام', 'انجام شده', 'عقب‌افتاده'];
 
 async function api(url, opt = {}) {
-  opt.headers = { ...(opt.headers || {}), 'Content-Type': 'application/json', 'X-Session-Token': token, 'X-Lang': I18N.lang };
+  opt.headers = { 'Content-Type': 'application/json', ...(opt.headers || {}), 'X-Session-Token': token, 'X-Lang': I18N.lang };
   const r = await fetch(url, opt);
   if (r.status === 401 && token) { logout(); throw Error('نشست شما منقضی شده است.'); }
   if (!r.ok) {
