@@ -35,7 +35,8 @@ public static class VoiceApi
         app.MapPost("/api/meetings/voice-draft", async (HttpContext c, AppDb db) =>
         {
             var u = Security.Require(c, db, "meetings.manage");
-            c.Features.Get<IHttpMaxRequestBodySizeFeature>()!.MaxRequestBodySize = Voice.MaxAudioBytes + 1024;
+            var limit = c.Features.Get<IHttpMaxRequestBodySizeFeature>(); // absent on the in-memory test server
+            if (limit is { IsReadOnly: false }) limit.MaxRequestBodySize = Voice.MaxAudioBytes + 1024;
             using var ms = new MemoryStream();
             await c.Request.Body.CopyToAsync(ms);
             var name = Uri.UnescapeDataString(c.Request.Headers["X-Filename"].FirstOrDefault() ?? "meeting.webm");
