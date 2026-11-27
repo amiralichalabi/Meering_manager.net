@@ -81,7 +81,7 @@ public class VoiceTests : IDisposable
         var r = await Post("/api/meetings/text-draft", t, new StringContent("{\"transcript\":\"کوتاه\"}", Encoding.UTF8, "application/json"));
         Assert.Equal(HttpStatusCode.ServiceUnavailable, r.StatusCode);
         Assistant.RawOverride = (s, u) => Task.FromResult("این JSON نیست");
-        var r2 = await Post("/api/meetings/text-draft", t, new StringContent(JsonSerializer.Serialize(new { transcript = new string('الف ', 20) }), Encoding.UTF8, "application/json"));
+        var r2 = await Post("/api/meetings/text-draft", t, new StringContent(JsonSerializer.Serialize(new { transcript = string.Concat(Enumerable.Repeat("الف ", 20)) }), Encoding.UTF8, "application/json"));
         Assert.Equal(HttpStatusCode.ServiceUnavailable, r2.StatusCode);
     }
 
