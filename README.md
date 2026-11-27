@@ -65,3 +65,12 @@ The database is created on first start if it does not exist (the login needs the
 ## iPhone (and any phone): install as a web app (PWA)
 
 The web UI is installable. Open the server's address in Safari on the iPhone → Share → **Add to Home Screen**; it then opens full-screen like an app, with its own icon. The phone must be able to reach the server (same Wi-Fi, a VPN such as Tailscale, or the server hosted online); offline service-worker caching only activates over HTTPS.
+
+## Voice recording → meeting draft (local, private)
+"جلسه از روی صدا" on the Meetings page: record or upload audio, and the app produces a **draft** (title, summary, decisions, attendees, actions with owner/due) that opens pre-filled in the normal new-meeting form. Nothing is saved until you review and press save; the audio is processed in memory only and never stored.
+
+Everything runs on your own machines:
+1. Speech-to-text: any OpenAI-compatible `/v1/audio/transcriptions` server, e.g. faster-whisper-server, whisper.cpp server or LocalAI. Point the app at it with `MM_STT_URL` (default `http://127.0.0.1:8000`), `MM_STT_MODEL`, `MM_STT_TIMEOUT` (seconds), or admin settings in the voice dialog (stored in `stt.json`).
+2. Summary: the same local LLM as the assistant (`MM_LLM_URL`, e.g. Ollama).
+
+Get participants' consent before recording confidential meetings. A good GPU makes transcription much faster.
