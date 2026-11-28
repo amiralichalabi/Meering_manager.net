@@ -109,4 +109,47 @@ public class VoiceTests : IDisposable
         Assert.Equal("http://10.0.0.5:8000", d.RootElement.GetProperty("url").GetString());
         try { File.Delete(Path.Combine(Paths.DataDir, "stt.json")); } catch { }
     }
+
+    [Fact]
+    public async Task DraftXlsx_Is_The_Azure_Sheet_And_Round_Trips()
+    {
+        var t = await Admin();
+        async Task<JsonElement> Make(string url, object body)
+        {
+            var r = new HttpRequestMessage(HttpMethod.Post, url) { Content = new StringContent(JsonSerializer.Serialize(body), Encoding.UTF8, "application/json") };
+            r.Headers.Add("X-Session-Token", t);
+            var resp = await _c.SendAsync(r);
+            using var d = JsonDocument.Parse(await resp.Content.ReadAsStringAsync());
+            return d.RootElement.Clone();
+        }
+        var pid = (await Make("/api/projects", new { name = "پروژه الف" })).GetProperty("id").GetInt32();
+        var ali = (await Make("/api/people", new { name = "علی رضایی" })).GetProperty("id").GetInt32();
+        var req = new HttpRequestMessage(HttpMethod.Post, "/api/meetings/draft-xlsx")
+        {
+            Content = new StringContent(JsonSerializer.Serialize(new { project_id = pid, sprint = "Sprint 3", title = "جلسه گزارش", actions = new object[] { new { subject = "آماده‌سازی گزارش", decision = "تا هفته آینده", due = "1405/09/10", owner_id = ali, assignee_id = ali }, new { subject = "  " } } }), Encoding.UTF8, "application/json"),
+        };
+        req.Headers.Add("X-Session-Token", t);
+        var r = await _c.SendAsync(req);
+        Assert.Equal(HttpStatusCode.OK, r.StatusCode);
+        var bytes = await r.Content.ReadAsByteArrayAsync();
+        using (var wb = new ClosedXML.Excel.XLWorkbook(new MemoryStream(bytes)))
+        {
+            var ws = wb.Worksheet("Items");
+            Assert.Equal("پروژه الف", ws.Cell(2, 1).GetString());
+            Assert.Equal("آماده‌سازی گزارش", ws.Cell(2, 2).GetString());
+            Assert.Equal("علی رضایی", ws.Cell(2, 3).GetString());
+            Assert.Equal("New", ws.Cell(2, 4).GetString());
+            Assert.Equal("Sprint 3", ws.Cell(2, 5).GetString());
+            Assert.Contains("جلسه گزارش", ws.Cell(2, 12).GetString());
+            Assert.Equal(2, ws.LastRowUsed()!.RowNumber());
+        }
+        var imp = new HttpRequestMessage(HttpMethod.Post, "/api/import/tasks") { Content = new ByteArrayContent(bytes) };
+        imp.Headers.Add("X-Session-Token", t);
+        var ir = await _c.SendAsync(imp);
+        using var id = JsonDocument.Parse(await ir.Content.ReadAsStringAsync());
+        Assert.Equal(1, id.RootElement.GetProperty("created").GetInt32());
+        var empty = new HttpRequestMessage(HttpMethod.Post, "/api/meetings/draft-xlsx") { Content = new StringContent("{\"actions\":[]}", Encoding.UTF8, "application/json") };
+        empty.Headers.Add("X-Session-Token", t);
+        Assert.Equal(HttpStatusCode.UnprocessableEntity, (await _c.SendAsync(empty)).StatusCode);
+    }
 }

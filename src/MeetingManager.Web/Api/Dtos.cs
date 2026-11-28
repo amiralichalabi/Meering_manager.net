@@ -187,6 +187,10 @@ public class EventIn
     }
 }
 
+public class DraftSheetAction { public string Subject { get; set; } = ""; public string Decision { get; set; } = ""; public string Due { get; set; } = ""; public int? OwnerId { get; set; } public int? AssigneeId { get; set; } }
+
+public class DraftSheetIn { public int? ProjectId { get; set; } public string Sprint { get; set; } = ""; public string Title { get; set; } = ""; public List<DraftSheetAction> Actions { get; set; } = new(); }
+
 public class TextDraftIn { public string? Transcript { get; set; } }
 
 public class TicketIn { public string? Url { get; set; } }

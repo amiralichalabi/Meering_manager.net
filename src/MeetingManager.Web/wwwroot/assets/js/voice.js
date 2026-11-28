@@ -1,6 +1,6 @@
 /* Meeting from voice: audio (or a pasted transcript) -> local speech server + local model -> a draft that opens in the normal
    meeting form. Nothing is saved until the user reviews and presses "Save". */
-let voiceRecorder = null, voiceChunks = [], voiceBlob = null;
+let voiceRecorder = null, voiceChunks = [], voiceBlob = null, voiceDraft = null;
 
 function openVoiceDraft() {
   voiceBlob = null; voiceRecorder = null;
@@ -58,8 +58,42 @@ async function runVoiceDraft() {
     const draft = blob
       ? await api('/api/meetings/voice-draft', { method: 'POST', headers: { 'Content-Type': blob.type || 'application/octet-stream', 'X-Filename': encodeURIComponent(file?.name || 'meeting.webm') }, body: blob })
       : await api('/api/meetings/text-draft', { method: 'POST', body: JSON.stringify({ transcript: text }) });
-    closeModal();
-    await openMeeting(0, draft);
-    toast('پیش‌نویس ساخته شد؛ آن را بازبینی و سپس ذخیره کنید.');
+    voiceDraft = draft;
+    showVoiceResult();
   } catch (e) { status.textContent = e.message; go.disabled = false; }
+}
+
+/* Step 2: the draft is ready. Review it in the meeting form, or download the Azure DevOps task sheet (same layout as "Excel تسک‌ها"). */
+function showVoiceResult() {
+  const d = voiceDraft, n = (d.actions || []).length;
+  const projects = (state.projects || []).filter(p => !p.archived);
+  modal(mh('پیش‌نویس آماده است', `
+    <p><b>${esc(d.title || 'بدون عنوان')}</b></p>
+    <p class="muted">${fa(n)} اقدام، ${fa((d.attendee_ids || []).length)} حاضر شناسایی شد. هیچ چیزی هنوز ذخیره نشده است.</p>
+    <div class="actionsbar"><button class="btn" onclick="voiceOpenForm()">باز کردن در فرم جلسه</button></div>
+    ${has('actions.export') && n ? `<details class="section" open><summary>اکسل تسک‌ها (Azure DevOps)</summary>
+      <div class="grid">
+        <div class="field"><label for="vsProject">پروژه</label><select id="vsProject"><option value="">—</option>${projects.map(p => `<option value="${p.id}">${esc(p.name)}</option>`).join('')}</select></div>
+        <div class="field"><label for="vsSprint">اسپرینت</label><input id="vsSprint" list="vsSprints" placeholder="مثلاً Sprint 3"><datalist id="vsSprints">${sprintNames().map(s => `<option value="${esc(s)}">`).join('')}</datalist></div>
+      </div>
+      <p class="muted">همان فایل Excel تسک‌های Azure؛ بعد از بازبینی دوباره از «ورود از Excel تسک‌ها» وارد می‌شود. پروژه و اسپرینت برای ورود لازم‌اند.</p>
+      <button type="button" class="btn secondary" onclick="voiceDownloadSheet()">دانلود اکسل Azure</button></details>` : ''}
+    <div class="actionsbar"><button class="btn secondary" onclick="closeModal()">بستن</button></div>`));
+}
+
+async function voiceOpenForm() {
+  const d = voiceDraft; closeModal();
+  await openMeeting(0, d);
+  toast('پیش‌نویس ساخته شد؛ آن را بازبینی و سپس ذخیره کنید.');
+}
+
+async function voiceDownloadSheet() {
+  try {
+    const body = { project_id: Number($('vsProject').value) || null, sprint: $('vsSprint').value, title: voiceDraft.title || '', actions: voiceDraft.actions || [] };
+    const r = await fetch('/api/meetings/draft-xlsx', { method: 'POST', headers: { 'Content-Type': 'application/json', 'X-Session-Token': token, 'X-Lang': I18N.lang }, body: JSON.stringify(body) });
+    if (!r.ok) { const j = await r.json().catch(() => null); throw Error(typeof j?.detail === 'string' ? j.detail : `خطا (${r.status})`); }
+    const url = URL.createObjectURL(await r.blob());
+    const a = Object.assign(document.createElement('a'), { href: url, download: 'Meeting_Tasks.xlsx' });
+    document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(url), 5000);
+  } catch (e) { toast(e.message); }
 }

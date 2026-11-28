@@ -51,6 +51,26 @@ public static class VoiceApi
             catch (AssistantException e) { throw new ApiException(503, e.Message); }
         });
 
+        app.MapPost("/api/meetings/draft-xlsx", async (HttpContext c, AppDb db) =>
+        {
+            var u = Security.Require(c, db, "actions.export");
+            var x = await Http.Body<DraftSheetIn>(c);
+            var proj = x.ProjectId is int pid ? db.Projects.FirstOrDefault(p => p.Id == pid && p.DeletedAt == null) : null;
+            var rows = new List<(string, string, string, string, string)>();
+            foreach (var a in x.Actions)
+            {
+                if (string.IsNullOrWhiteSpace(a.Subject)) continue;
+                var wid = a.AssigneeId ?? a.OwnerId;
+                var who = wid is int w ? db.People.FirstOrDefault(p => p.Id == w)?.Name ?? "" : "";
+                var notes = string.Join(" | ", new[] { a.Decision.Trim(), a.Due != "" ? "مهلت: " + a.Due : "", x.Title.Trim() != "" ? "جلسه: " + x.Title.Trim() : "" }.Where(t => t != ""));
+                rows.Add((proj?.Name ?? "", a.Subject.Trim(), who, x.Sprint.Trim(), notes));
+            }
+            if (rows.Count == 0) throw new ApiException(422, "اقدامی در پیش‌نویس نیست.");
+            var names = db.Projects.Where(p => p.DeletedAt == null).Select(p => p.Name).ToList();
+            Http.Audit(db, u, "meeting", null, "draft-xlsx");
+            return Results.File(TasksExcel.ExportDraft(rows, names), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "Meeting_Tasks.xlsx");
+        });
+
         app.MapPost("/api/meetings/text-draft", async (HttpContext c, AppDb db) =>
         {
             var u = Security.Require(c, db, "meetings.manage");

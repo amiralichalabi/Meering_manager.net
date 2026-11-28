@@ -830,5 +830,14 @@
 "جستجو (عنوان، نوع، فرد، محل)": "Search (title, type, person, place)",
 "هنوز رویدادی ثبت نشده است.": "No events have been added yet.",
 "برای ذخیره با وجود تداخل، دوباره «ذخیره» را بزنید.": "To save despite the conflict, tap Save again.",
-"عنوان رویداد خالی است.": "The event title is empty."
+"عنوان رویداد خالی است.": "The event title is empty.",
+"پیش‌نویس آماده است": "Draft is ready",
+"باز کردن در فرم جلسه": "Open in meeting form",
+"حاضر شناسایی شد.": "attendees identified.",
+"هیچ چیزی هنوز ذخیره نشده است.": "Nothing has been saved yet.",
+"مثلاً Sprint 3": "e.g. Sprint 3",
+"همان فایل Excel تسک‌های Azure؛ بعد از بازبینی دوباره از «ورود از Excel تسک‌ها» وارد می‌شود. پروژه و اسپرینت برای ورود لازم‌اند.": "The same Azure tasks Excel file; after reviewing it, import it again with “Import from tasks Excel”. Project and sprint are required for import.",
+"دانلود اکسل Azure": "Download Azure Excel",
+"اقدامی در پیش‌نویس نیست.": "There are no actions in the draft.",
+"بدون عنوان": "Untitled"
 }

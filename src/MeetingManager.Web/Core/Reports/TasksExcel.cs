@@ -203,6 +203,17 @@ public static class TasksExcel
     // ---- export ----------------------------------------------------------------------------------------------
     static string Clean(string? s) => OfficeText.Clean(s, 32767);
 
+    /// <summary>The same Azure DevOps task sheet, built from the actions of a meeting draft (nothing is saved). Status is New; the file imports back through Import.</summary>
+    public static byte[] ExportDraft(IEnumerable<(string Project, string Subject, string Who, string Sprint, string Notes)> rows, IEnumerable<string> projectNames)
+    {
+        var acts = rows.Select(r => new ActionItem
+        {
+            Project = r.Project == "" ? null : new Project { Name = r.Project }, Subject = r.Subject,
+            AssigneePerson = r.Who == "" ? null : new Person { Name = r.Who }, Status = "جدید", Sprint = r.Sprint, AdoNotes = r.Notes, Priority = "متوسط",
+        }).ToList();
+        return Export(acts, projectNames);
+    }
+
     public static byte[] Export(IList<ActionItem> actions, IEnumerable<string> projectNames)
     {
         using var wb = new XLWorkbook();
