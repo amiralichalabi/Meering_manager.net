@@ -146,6 +146,10 @@ public static class SyncFile
             "title:s,meeting_date:s,time:s,place:s,description:s,summary:s,created_at:dt",
             "project_uuid>ProjectId>projects", "attendee_uuids>Attendees>people,linked_action_uuids>LinkedActions>actions",
             null, db => Ls(db.Meetings.Include(x => x.Attendees).Include(x => x.LinkedActions).AsSplitQuery().OrderBy(x => x.Id))),
+        Mk("events", typeof(Event), db => Ls(db.Events.OrderBy(x => x.Id)), () => new Event(),
+            "title:s,kind:s,event_date:s,start_time:s,end_time:s,place:s,description:s,created_at:dt",
+            "project_uuid>ProjectId>projects", "attendee_uuids>Attendees>people",
+            null, db => Ls(db.Events.Include(x => x.Attendees).OrderBy(x => x.Id))),
         Mk("previous_items", typeof(PreviousItem), db => Ls(db.PreviousItems.OrderBy(x => x.Id)), () => new PreviousItem(),
             "activity:s,owner_name_snapshot:s,status:s,progress:i,note:s",
             "meeting_uuid>MeetingId>meetings,owner_uuid>OwnerId>people", ""),
@@ -196,6 +200,7 @@ public static class SyncFile
         Location x => x.Id,
         Project x => x.Id,
         Meeting x => x.Id,
+        Event x => x.Id,
         PreviousItem x => x.Id,
         ActionItem x => x.Id,
         ProgressHistory x => x.Id,
@@ -595,9 +600,17 @@ public static class SyncFile
             mt.Attendees.Clear();
             Kill(db, gone, mt);
         }
+        else if (obj is Event ev)
+        {
+            var e = db.Entry(ev);
+            e.Collection(q => q.Attendees).Load();
+            ev.Attendees.Clear();
+            Kill(db, gone, ev);
+        }
         else if (obj is Project pr)
         {
             var id = pr.Id;
+            foreach (var evp in db.Events.Where(q => q.ProjectId == id).ToList()) evp.ProjectId = null;
             foreach (var a in db.Actions.Where(q => q.ProjectId == id).ToList()) { a.ProjectId = null; a.UpdatedAt = Clock.Now(); }
             foreach (var m in db.Meetings.Where(q => q.ProjectId == id).ToList()) m.ProjectId = null;
             var e = db.Entry(pr);
@@ -628,6 +641,8 @@ public static class SyncFile
             }
             foreach (var m in db.Meetings.Include(q => q.Attendees).Where(q => q.Attendees.Any(w => w.Id == id)).ToList())
                 m.Attendees.RemoveAll(w => w.Id == id);
+            foreach (var evp in db.Events.Include(q => q.Attendees).Where(q => q.Attendees.Any(w => w.Id == id)).ToList())
+                evp.Attendees.RemoveAll(w => w.Id == id);
             foreach (var pi in db.PreviousItems.Where(q => q.OwnerId == id).ToList()) pi.OwnerId = null;
             Kill(db, gone, pe);
         }
