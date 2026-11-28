@@ -166,6 +166,27 @@ public class AssistantIn
 }
 public class AssistantConfigIn { public string Url { get; set; } = ""; public string Model { get; set; } = ""; public string Timeout { get; set; } = ""; }
 
+public class EventIn
+{
+    public static readonly string[] Kinds = { "مصاحبه", "تحویل", "بازدید", "یادآوری", "سایر" };
+    public int? Id { get; set; }
+    public string Title { get; set; } = ""; public string Kind { get; set; } = "مصاحبه"; public string EventDate { get; set; } = "";
+    public string StartTime { get; set; } = ""; public string EndTime { get; set; } = ""; public string Place { get; set; } = ""; public string Description { get; set; } = "";
+    public int? ProjectId { get; set; } public List<int> AttendeeIds { get; set; } = new();
+    public EventIn Validate()
+    {
+        V.Text(Title, "عنوان", 1, 300);
+        if (Title.Trim() == "") throw new ApiException(422, "عنوان رویداد خالی است.");
+        if (Array.IndexOf(Kinds, Kind) < 0) throw new ApiException(422, "نوع رویداد معتبر نیست.");
+        StartTime = V.Time(StartTime); EndTime = V.Time(EndTime);
+        EventDate = V.Date(EventDate);
+        if (EventDate == "") throw new ApiException(422, "تاریخ رویداد الزامی است.");
+        if (EndTime != "" && StartTime == "") throw new ApiException(422, "برای ساعت پایان، ساعت شروع هم لازم است.");
+        if (StartTime != "" && EndTime != "" && string.CompareOrdinal(EndTime, StartTime) <= 0) throw new ApiException(422, "ساعت پایان باید بعد از ساعت شروع باشد.");
+        return this;
+    }
+}
+
 public class TextDraftIn { public string? Transcript { get; set; } }
 
 public class TicketIn { public string? Url { get; set; } }

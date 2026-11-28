@@ -1,7 +1,7 @@
 /* Meeting Manager Pro — application screens.
    Load order: jalali.js → ui.js → datepicker.js → charts.js → calendar.js → app.js */
 let currentSection = 'dashboard';
-const SECTION_TITLES = { dashboard: 'صفحه اصلی', meetings: 'جلسات', actions: 'اقدامات', projects: 'پروژه‌ها', calendar: 'تقویم', people: 'افراد و تیم‌ها', reports: 'خروجی و پشتیبان‌گیری', imports: 'ورودی', assistant: 'دستیار هوشمند', notes: 'یادداشت‌های من', access: 'دسترسی‌ها و مجوزها' };
+const SECTION_TITLES = { dashboard: 'صفحه اصلی', meetings: 'جلسات', actions: 'اقدامات', projects: 'پروژه‌ها', calendar: 'تقویم', events: 'رویدادها', people: 'افراد و تیم‌ها', reports: 'خروجی و پشتیبان‌گیری', imports: 'ورودی', assistant: 'دستیار هوشمند', notes: 'یادداشت‌های من', access: 'دسترسی‌ها و مجوزها' };
 const STATUS_COLORS = { 'انجام شده': '#16a34a', 'در حال انجام': '#2563eb', 'جدید': '#64748b', 'عقب‌افتاده': '#dc2626' };
 const ids = text => (text || '').split(',').filter(Boolean).map(Number);
 
@@ -31,6 +31,7 @@ async function refresh() {
   try { state.actions = await api('/api/actions'); } catch (e) { state.actions = []; }
   try { state.locations = await api('/api/locations'); } catch (e) { state.locations = []; }
   try { state.sprints = await api('/api/sprints'); } catch (e) { state.sprints = []; }
+  try { state.events = await api('/api/events'); } catch (e) { state.events = []; }
   CalEvents.invalidate();
   MiniCal.render();
 }
@@ -110,11 +111,12 @@ async function section(name) {
   const quick = {
     dashboard: `<button class="btn" onclick="openMeeting()">+ جلسه جدید</button><button class="btn secondary" onclick="openAction()">+ اقدام جدید</button>`,
     meetings: has('meetings.manage') ? `<button class="btn" onclick="openMeeting()">+ جلسه جدید</button><button class="btn secondary" onclick="openVoiceDraft()">جلسه از روی صدا</button>` : '',
+    events: has('meetings.manage') ? `<button class="btn" onclick="openEvent()">+ رویداد جدید</button>` : '',
     actions: has('actions.manage') ? `<button class="btn" onclick="openAction()">+ اقدام جدید</button>` : '',
     projects: has('projects.manage') ? `<button class="btn" onclick="openProject()">+ پروژه جدید</button>` : '',
   };
   $('quick').innerHTML = quick[name] || '';
-  const render = { dashboard: renderDashboard, meetings: renderMeetings, actions: renderActions, projects: renderProjects, calendar: () => Calendar.render(), people: renderPeople, reports: renderReports, imports: renderImports, assistant: renderAssistant, notes: renderNotes, access: renderAccess }[name];
+  const render = { dashboard: renderDashboard, meetings: renderMeetings, actions: renderActions, projects: renderProjects, calendar: () => Calendar.render(), events: renderEvents, people: renderPeople, reports: renderReports, imports: renderImports, assistant: renderAssistant, notes: renderNotes, access: renderAccess }[name];
   await render();
 }
 
@@ -173,6 +175,7 @@ async function renderDashboard() {
         <div class="scrollbox">${d.project_stats.map(p => `<div class="project-row"><b>${esc(p.name)}</b><div>${progressBar(p.progress)}<small class="muted">${fa(p.actions)} اقدام · ${fa(p.done)} انجام‌شده · مدیر: ${esc(p.manager || '—')} · پایان: ${fd(p.end_date) || '—'}</small></div><b>${fa(p.progress)}٪</b></div>`).join('') || '<div class="empty">پروژه‌ای ثبت نشده است.</div>'}</div>
       </div>
       <div class="section">
+      ${(d.upcoming_events || []).length ? `<div class="sectionhead"><h3>رویدادهای پیش‌رو</h3><button class="btn secondary" onclick="section('events')">همه رویدادها</button></div>${d.upcoming_events.map(e => `<div class="event"><div><b>${esc(e.title)}</b><br><span class="muted">${esc(e.kind)} · ${fd(e.date)}${e.start_time ? ' · ' + fa(e.start_time) : ''}${e.place ? ' · ' + esc(e.place) : ''}</span></div></div>`).join('')}` : ''}
       <div class="sectionhead"><h3>جلسات اخیر</h3><button class="btn secondary" onclick="section('meetings')">همه جلسات</button></div>
       <div class="scrollbox">${d.upcoming_meetings.map(m => `<div class="event"><div><b>${esc(m.title)}</b><br><span class="muted">${fd(m.date)}${m.time ? ' · ' + fa(m.time) : ''}${m.place ? ' · ' + esc(m.place) : ''}</span></div><button class="btn secondary" onclick="showMeeting(${m.id})">مشاهده</button></div>`).join('') || '<div class="empty">جلسه‌ای ثبت نشده است.</div>'}</div>
       </div>

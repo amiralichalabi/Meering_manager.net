@@ -41,7 +41,7 @@ public static class ReportsApi
             }
             var avg = acts.Count > 0 ? Math.Round(acts.Sum(a => a.Progress) / (double)acts.Count, 1, MidpointRounding.ToEven) : 0;
             var upcoming = db.Meetings.OrderByDescending(m => m.Id).Take(8).ToList().Select(m => new { id = m.Id, title = m.Title, date = m.MeetingDate, time = m.Time, place = m.Place }).ToList();
-            return Http.Ok(new { today, meetings = db.Meetings.Count(), actions = acts.Count, avg_progress = avg, overdue = byStatus[Status.Late], by_status = byStatus, projects = projects.Count, project_stats = pstats, upcoming_meetings = upcoming });
+            return Http.Ok(new { today, meetings = db.Meetings.Count(), actions = acts.Count, avg_progress = avg, overdue = byStatus[Status.Late], by_status = byStatus, projects = projects.Count, project_stats = pstats, upcoming_events = EventsApi.Upcoming(db, u, today), upcoming_meetings = upcoming });
         });
 
         app.MapGet("/api/calendar", (HttpContext c, AppDb db) =>
@@ -52,6 +52,10 @@ public static class ReportsApi
             foreach (var m in db.Meetings.Include(m => m.Project).ToList())
                 if (month == "" || m.MeetingDate.StartsWith(month, StringComparison.Ordinal))
                     events.Add(new { type = "meeting", id = m.Id, date = m.MeetingDate, title = m.Title, time = m.Time, project = m.Project?.Name ?? "" });
+            if (Security.Has(db, u, "meetings.view"))
+                foreach (var e in db.Events.Include(e => e.Project).ToList())
+                    if (month == "" || e.EventDate.StartsWith(month, StringComparison.Ordinal))
+                        events.Add(new { type = "event", id = e.Id, date = e.EventDate, title = e.Title, time = e.StartTime, kind = e.Kind, project = e.Project?.Name ?? "" });
             foreach (var a in db.Actions.Include(a => a.Collaborators).Where(a => a.ArchivedAt == null).ToList())
                 if (Security.ActionAllowed(db, u, a) && a.Due != "" && (month == "" || a.Due.StartsWith(month, StringComparison.Ordinal)))
                     events.Add(new { type = "action", id = a.Id, date = a.Due, title = a.Subject, status = a.Status });

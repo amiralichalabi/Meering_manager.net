@@ -221,6 +221,10 @@ body.dark .banner{color:#fcd34d;border-color:#8a6d1d}
 .calnum{font-size:16px;font-weight:900;align-self:flex-start}
 .cal-chip{overflow:hidden;padding:2px 6px;border-radius:6px;font-size:12.5px;line-height:1.5;text-overflow:ellipsis;white-space:nowrap}
 .cal-chip.meeting{background:var(--info-soft);color:#1e40af}
+.cal-chip.event{background:#d1fae5;color:#065f46}
+body.dark .cal-chip.event{background:#064e3b;color:#6ee7b7}
+.agenda-item.event{border-right-color:#059669}
+[dir=ltr] .agenda-item.event{border-left-color:#059669}
 .cal-chip.action{background:var(--warn-soft);color:#92400e}
 .cal-chip.late{background:var(--danger-soft);color:#991b1b}
 .cal-chip.project{background:var(--violet-soft);color:#5b21b6}

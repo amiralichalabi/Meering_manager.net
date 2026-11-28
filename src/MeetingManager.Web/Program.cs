@@ -81,6 +81,7 @@ SyncApi.Map(app);
 ExportApi.Map(app);
 AssistantApi.Map(app);
 VoiceApi.Map(app);
+EventsApi.Map(app);
 
 app.Run();
 

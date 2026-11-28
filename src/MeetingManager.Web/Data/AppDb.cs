@@ -27,6 +27,7 @@ public class AppDb : DbContext
     public DbSet<AuditLog> Audit => Set<AuditLog>();
     public DbSet<NoteItem> NoteItems => Set<NoteItem>();
     public DbSet<Sprint> Sprints => Set<Sprint>();
+    public DbSet<Event> Events => Set<Event>();
     public DbSet<Tombstone> Tombstones => Set<Tombstone>();
 
     public static string Snake(string s)
@@ -62,6 +63,8 @@ public class AppDb : DbContext
         b.Entity<AuditLog>().ToTable("audit_logs");
         b.Entity<NoteItem>().ToTable("note_items");
         b.Entity<Sprint>().ToTable("sprints");
+        b.Entity<Event>().ToTable("events");
+        b.Entity<Event>().HasOne(x => x.Project).WithMany().HasForeignKey(x => x.ProjectId);
         b.Entity<Tombstone>().ToTable("sync_tombstones");
 
         b.Entity<UserSession>().HasOne(x => x.User).WithMany().HasForeignKey(x => x.UserId);
@@ -88,6 +91,7 @@ public class AppDb : DbContext
         Join<Team, Person>(b, "team_members", "team_id", "person_id", t => t.Members);
         Join<Project, Person>(b, "project_members", "project_id", "person_id", p => p.Members);
         Join<Meeting, Person>(b, "meeting_attendees", "meeting_id", "person_id", m => m.Attendees);
+        Join<Event, Person>(b, "event_attendees", "event_id", "person_id", e => e.Attendees);
         Join<ActionItem, Person>(b, "action_collaborators", "action_id", "person_id", x => x.Collaborators);
         b.Entity<Meeting>().HasMany(m => m.LinkedActions).WithMany(x => x.LinkedMeetings).UsingEntity<Dictionary<string, object>>("meeting_action_links",
             r => r.HasOne<ActionItem>().WithMany().HasForeignKey("action_id"),

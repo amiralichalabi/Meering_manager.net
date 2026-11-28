@@ -121,7 +121,20 @@ public static class DbInit
         using (var chk = c.CreateCommand())
         {
             chk.CommandText = "SELECT OBJECT_ID(N'dbo.users')";
-            if (chk.ExecuteScalar() is not DBNull and not null) return;
+            if (chk.ExecuteScalar() is not DBNull and not null)
+            {
+                // Existing database: only add tables a newer version introduced (events ...).
+                foreach (var stmt in SqlServerSchema().Split(";\n", StringSplitOptions.RemoveEmptyEntries))
+                {
+                    var t = stmt.Trim();
+                    var mt = Regex.Match(t, @"^CREATE TABLE (\w+)");
+                    if (!mt.Success) continue;
+                    using var cmd = c.CreateCommand();
+                    cmd.CommandText = $"IF OBJECT_ID(N'dbo.{mt.Groups[1].Value}') IS NULL {t}";
+                    cmd.ExecuteNonQuery();
+                }
+                return;
+            }
         }
         foreach (var stmt in SqlServerSchema().Split(";\n", StringSplitOptions.RemoveEmptyEntries))
         {

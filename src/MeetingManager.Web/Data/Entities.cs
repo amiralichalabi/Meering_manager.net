@@ -280,6 +280,24 @@ public class NoteItem
     public DateTime CreatedAt { get; set; } = Clock.Now();
 }
 
+/// <summary>A scheduled happening that is not a meeting (interview, hand-over, visit...): no minutes, no actions. Not part of the sync file.</summary>
+public class Event
+{
+    public int Id { get; set; }
+    public string Title { get; set; } = "";
+    public string Kind { get; set; } = "مصاحبه";
+    public string EventDate { get; set; } = "";
+    public string StartTime { get; set; } = "";
+    public string EndTime { get; set; } = "";
+    public string Place { get; set; } = "";
+    public string Description { get; set; } = "";
+    public int? ProjectId { get; set; }
+    public DateTime CreatedAt { get; set; } = Clock.Now();
+    public int? CreatedBy { get; set; }
+    public Project? Project { get; set; }
+    public List<Person> Attendees { get; set; } = new();
+}
+
 public class Sprint
 {
     public int Id { get; set; }

@@ -3,6 +3,7 @@
 const CalEvents = (() => {
   const TYPES = {
     meeting: { label: 'جلسه', color: '#2563eb' },
+    event: { label: 'رویداد', color: '#059669' },
     action: { label: 'مهلت اقدام', color: '#d97706' },
     project: { label: 'پروژه', color: '#7c3aed' },
   };
@@ -22,6 +23,7 @@ const CalEvents = (() => {
       if (key) (idx[key] ||= []).push(ev);
     };
     (state.meetings || []).forEach(m => add(m.date, { type: 'meeting', id: m.id, title: m.title, time: m.time, place: m.place, project: m.project }));
+    (state.events || []).forEach(e => add(e.date, { type: 'event', id: e.id, title: e.title, time: e.start_time, place: e.place, project: e.project, kind: e.kind }));
     (state.actions || []).forEach(a => add(a.due, { type: 'action', id: a.id, title: a.subject, status: effectiveStatus(a), owner: a.owner || a.assignee, project: a.project }));
     (state.projects || []).forEach(p => {
       add(p.start_date, { type: 'project', id: p.id, title: `شروع پروژه: ${p.name}` });
@@ -103,7 +105,7 @@ const Calendar = (() => {
   const t0 = Jalali.today();
   let view = { y: t0.y, m: t0.m };
   let sel = null;
-  const filters = { meeting: true, action: true, project: true };
+  const filters = { meeting: true, event: true, action: true, project: true };
 
   const selected = () => sel;
 
@@ -115,7 +117,7 @@ const Calendar = (() => {
 
   function render() {
     const { y, m } = view, today = Jalali.today(), lead = Jalali.weekday(y, m, 1), total = Jalali.daysInMonth(y, m);
-    const counts = { meeting: 0, action: 0, project: 0 };
+    const counts = { meeting: 0, event: 0, action: 0, project: 0 };
     let cells = Jalali.WEEKDAYS.map((w, i) => `<div class="cal-head ${i === 6 ? 'fri' : ''}">${w}</div>`).join('') + '<div class="cal-day blank"></div>'.repeat(lead);
     for (let d = 1; d <= total; d++) {
       const date = { y, m, d }, all = CalEvents.on(date);
@@ -152,8 +154,8 @@ const Calendar = (() => {
     if (!sel) return `<h3>برنامه‌ی روز</h3><div class="empty">برای دیدن رویدادها و ثبت جلسه یا اقدام، یک روز را از تقویم انتخاب کنید.</div>`;
     const key = Jalali.format(sel), evs = CalEvents.on(sel).filter(e => filters[e.type]);
     const item = e => {
-      const open = e.type === 'meeting' ? `showMeeting(${e.id})` : e.type === 'action' ? `openAction(${e.id})` : `section('projects')`;
-      const meta = e.type === 'meeting' ? [e.time && fa(e.time), e.place, e.project].filter(Boolean).join(' · ')
+      const open = e.type === 'meeting' ? `showMeeting(${e.id})` : e.type === 'event' ? `openEvent(${e.id})` : e.type === 'action' ? `openAction(${e.id})` : `section('projects')`;
+      const meta = e.type === 'meeting' || e.type === 'event' ? [e.kind, e.time && fa(e.time), e.place, e.project].filter(Boolean).join(' · ')
         : e.type === 'action' ? [e.status, e.owner, e.project].filter(Boolean).join(' · ') : '';
       return `<button type="button" class="agenda-item ${e.type}" onclick="${open}"><b>${esc(e.title)}</b>${meta ? `<small>${esc(meta)}</small>` : ''}</button>`;
     };
@@ -162,6 +164,7 @@ const Calendar = (() => {
       ${evs.map(item).join('')}
       <div class="agenda-actions">
         ${has('meetings.manage') ? `<button type="button" class="btn" onclick="openMeeting(null,{date:'${key}'})">+ جلسه در این روز</button>` : ''}
+        ${has('meetings.manage') ? `<button type="button" class="btn secondary" onclick="openEvent(null,{date:'${key}'})">+ رویداد در این روز</button>` : ''}
         ${has('actions.manage') ? `<button type="button" class="btn secondary" onclick="openAction(null,{due:'${key}'})">+ اقدام با مهلت این روز</button>` : ''}
       </div>`;
   }

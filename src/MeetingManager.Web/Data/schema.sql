@@ -175,6 +175,28 @@ CREATE TABLE sprints (
 	UNIQUE (name), 
 	FOREIGN KEY(project_id) REFERENCES projects (id) ON DELETE SET NULL
 );
+CREATE TABLE events (
+	id INTEGER NOT NULL, 
+	title VARCHAR(300) NOT NULL, 
+	kind VARCHAR(40) NOT NULL, 
+	event_date VARCHAR(30) NOT NULL, 
+	start_time VARCHAR(20) NOT NULL, 
+	end_time VARCHAR(20) NOT NULL, 
+	place VARCHAR(300) NOT NULL, 
+	description TEXT NOT NULL, 
+	project_id INTEGER, 
+	created_at DATETIME NOT NULL, 
+	created_by INTEGER, 
+	PRIMARY KEY (id), 
+	FOREIGN KEY(project_id) REFERENCES projects (id) ON DELETE SET NULL
+);
+CREATE TABLE event_attendees (
+	event_id INTEGER NOT NULL, 
+	person_id INTEGER NOT NULL, 
+	PRIMARY KEY (event_id, person_id), 
+	FOREIGN KEY(event_id) REFERENCES events (id) ON DELETE CASCADE, 
+	FOREIGN KEY(person_id) REFERENCES people (id) ON DELETE CASCADE
+);
 CREATE TABLE meeting_attendees (
 	meeting_id INTEGER NOT NULL, 
 	person_id INTEGER NOT NULL, 
