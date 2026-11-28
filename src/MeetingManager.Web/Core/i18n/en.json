@@ -822,5 +822,13 @@
 "+ رویداد در این روز": "+ Event on this day",
 "تداخل زمانی:": "Time conflict:",
 "با این وجود ذخیره شود؟": "Save anyway?",
-"نوع": "Type"
+"نوع": "Type",
+"نوع رویداد معتبر نیست.": "The event type is not valid.",
+"تاریخ رویداد الزامی است.": "The event date is required.",
+"برای ساعت پایان، ساعت شروع هم لازم است.": "An end time needs a start time too.",
+"ساعت پایان باید بعد از ساعت شروع باشد.": "The end time must be after the start time.",
+"جستجو (عنوان، نوع، فرد، محل)": "Search (title, type, person, place)",
+"هنوز رویدادی ثبت نشده است.": "No events have been added yet.",
+"برای ذخیره با وجود تداخل، دوباره «ذخیره» را بزنید.": "To save despite the conflict, tap Save again.",
+"عنوان رویداد خالی است.": "The event title is empty."
 }
