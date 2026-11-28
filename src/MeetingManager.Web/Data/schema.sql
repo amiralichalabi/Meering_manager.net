@@ -187,6 +187,9 @@ CREATE TABLE events (
 	project_id INTEGER, 
 	created_at DATETIME NOT NULL, 
 	created_by INTEGER, 
+	uuid VARCHAR(36) NOT NULL, 
+	updated_at DATETIME NOT NULL, 
+	deleted_at DATETIME, 
 	PRIMARY KEY (id), 
 	FOREIGN KEY(project_id) REFERENCES projects (id) ON DELETE SET NULL
 );
@@ -339,6 +342,7 @@ CREATE UNIQUE INDEX ix_teams_uuid ON teams (uuid);
 CREATE UNIQUE INDEX ix_projects_uuid ON projects (uuid);
 CREATE UNIQUE INDEX ix_user_sessions_token_hash ON user_sessions (token_hash);
 CREATE UNIQUE INDEX ix_meetings_uuid ON meetings (uuid);
+CREATE UNIQUE INDEX ix_events_uuid ON events (uuid);
 CREATE INDEX ix_note_items_user_id ON note_items (user_id);
 CREATE UNIQUE INDEX ix_previous_items_uuid ON previous_items (uuid);
 CREATE INDEX ix_action_due ON actions (due);

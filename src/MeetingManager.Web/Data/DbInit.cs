@@ -57,7 +57,7 @@ public static class DbConfig
 
 public static class DbInit
 {
-    static readonly string[] SyncTables = { "person_categories", "people", "teams", "locations", "projects", "meetings", "previous_items", "actions", "progress_history", "action_notes", "checklist_items", "comments" };
+    static readonly string[] SyncTables = { "person_categories", "people", "teams", "locations", "projects", "meetings", "events", "previous_items", "actions", "progress_history", "action_notes", "checklist_items", "comments" };
 
     public static string ConnectionString() => new SqliteConnectionStringBuilder { DataSource = Paths.DbPath, ForeignKeys = false }.ToString();
 
