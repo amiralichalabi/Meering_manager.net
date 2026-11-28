@@ -74,3 +74,6 @@ Everything runs on your own machines:
 2. Summary: the same local LLM as the assistant (`MM_LLM_URL`, e.g. Ollama).
 
 Get participants' consent before recording confidential meetings. A good GPU makes transcription much faster.
+
+## Events (interviews, hand-overs, visits)
+"رویدادها" in the sidebar: schedule anything with a time that is not a meeting (interview, hand-over, visit, reminder). An event has a date, optional start/end time (no start time = all day), place or link, related people and an optional project; no minutes and no actions. Events show in the calendar and on the dashboard. When you save one, the app warns if a related person already has a meeting or another event at an overlapping time (a meeting counts as 60 minutes); you can still save. Uses the meetings permissions (`meetings.view` / `meetings.manage`). Desktop/web only for now: events are not part of the sync file.
