@@ -280,8 +280,8 @@ public class NoteItem
     public DateTime CreatedAt { get; set; } = Clock.Now();
 }
 
-/// <summary>A scheduled happening that is not a meeting (interview, hand-over, visit...): no minutes, no actions. Not part of the sync file.</summary>
-public class Event
+/// <summary>A scheduled happening that is not a meeting (interview, hand-over, visit...): no minutes, no actions. Part of the sync file.</summary>
+public class Event : ISync
 {
     public int Id { get; set; }
     public string Title { get; set; } = "";
@@ -296,6 +296,9 @@ public class Event
     public int? CreatedBy { get; set; }
     public Project? Project { get; set; }
     public List<Person> Attendees { get; set; } = new();
+    public string Uuid { get; set; } = "";
+    public DateTime UpdatedAt { get; set; }
+    public DateTime? DeletedAt { get; set; }
 }
 
 public class Sprint
